@@ -1,0 +1,776 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CICCONTROL_SPRINGModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="trn_CIC">
+          <Key>
+            <PropertyRef Name="CIC_ID" />
+          </Key>
+          <Property Name="CIC_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dept_No" Type="nvarchar" MaxLength="50" />
+          <Property Name="CIC_No" Type="nvarchar" MaxLength="50" />
+          <Property Name="Costcenter" Type="nvarchar" MaxLength="20" />
+          <Property Name="CICTypeID" Type="int" />
+          <Property Name="StatusID" Type="int" />
+          <Property Name="AstTypeID" Type="int" />
+          <Property Name="IN_Date" Type="date" />
+          <Property Name="OUT_Date" Type="date" />
+          <Property Name="EmployeeCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="VendorID" Type="bigint" />
+          <Property Name="VendorContact" Type="nvarchar" MaxLength="255" />
+          <Property Name="Vehicle" Type="nvarchar" MaxLength="150" />
+          <Property Name="Brand" Type="nvarchar" MaxLength="150" />
+          <Property Name="License" Type="nvarchar" MaxLength="50" />
+          <Property Name="CICReasonID" Type="int" />
+          <Property Name="Last_update" Type="datetime" />
+          <Property Name="Last_user" Type="nvarchar" MaxLength="20" />
+          <Property Name="Last_CIC_update" Type="datetime" />
+          <Property Name="Last_CIC" Type="nvarchar" MaxLength="20" />
+          <Property Name="Last_App_update" Type="datetime" />
+          <Property Name="Last_App" Type="nvarchar" MaxLength="20" />
+          <Property Name="Last_PO_update" Type="datetime" />
+          <Property Name="Last_PO" Type="nvarchar" MaxLength="20" />
+          <Property Name="Last_Sale_update" Type="datetime" />
+          <Property Name="Last_Sale" Type="nvarchar" MaxLength="20" />
+          <Property Name="closed" Type="bit" />
+          <Property Name="Close_Date" Type="datetime" />
+          <Property Name="Closed_User" Type="nvarchar" MaxLength="20" />
+          <Property Name="Cancel_Date" Type="datetime" />
+          <Property Name="Cancel_User" Type="nvarchar" MaxLength="20" />
+          <Property Name="Objective" Type="nvarchar(max)" />
+          <Property Name="CancelApp_Update" Type="datetime" />
+          <Property Name="CancelApp_User" Type="nvarchar" MaxLength="20" />
+          <Property Name="NotApp_Update" Type="datetime" />
+          <Property Name="Notapp_User" Type="nvarchar" MaxLength="20" />
+          <Property Name="Create_Date" Type="datetime" />
+          <Property Name="Create_By" Type="nvarchar" MaxLength="20" />
+          <Property Name="CancelClose_Update" Type="datetime" />
+          <Property Name="CancelClose_User" Type="nvarchar" MaxLength="20" />
+          <Property Name="Cancelcomment" Type="nvarchar" MaxLength="255" />
+          <Property Name="CICUserID" Type="int" />
+          <Property Name="CIC_No_OLD" Type="nvarchar" MaxLength="50" />
+          <Property Name="CIC_No_REF" Type="nvarchar" MaxLength="50" />
+          <Property Name="FlagDel" Type="bit" />
+          <Property Name="Remark" Type="nvarchar(max)" />
+          <Property Name="Delete_Update" Type="datetime" />
+          <Property Name="Delete_User" Type="nvarchar" MaxLength="50" />
+          <Property Name="CloseRemark" Type="nvarchar(max)" />
+          <Property Name="CICTransfer" Type="bit" />
+          <Property Name="WaitApporveDate" Type="datetime" />
+          <Property Name="UploadUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="UploadDatetime" Type="datetime" />
+          <Property Name="EmployeeCode2" Type="nvarchar" MaxLength="20" />
+          <Property Name="Last_App2" Type="nvarchar" MaxLength="20" />
+          <Property Name="ChangeDate" Type="datetime" />
+          <Property Name="FlagChange" Type="bit" />
+        </EntityType>
+        <EntityType Name="trn_CICAttach">
+          <Key>
+            <PropertyRef Name="CICAttachID" />
+          </Key>
+          <Property Name="CICAttachID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CIC_ID" Type="bigint" />
+          <Property Name="AttachPath" Type="nvarchar(max)" />
+          <Property Name="AttachFile" Type="nvarchar(max)" />
+          <Property Name="AttachUpdate" Type="datetime" />
+          <Property Name="AttachUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="AttachClosed" Type="bit" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserProfileID" />
+          </Key>
+          <Property Name="UserProfileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserProfileLogon" Type="nvarchar" MaxLength="20" />
+          <Property Name="EmployeeCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="UserTypeID" Type="int" />
+          <Property Name="SignaturePath" Type="nvarchar(max)" />
+          <Property Name="ERFlag" Type="bit" />
+          <Property Name="Closed" Type="bit" />
+          <Property Name="Cancel" Type="bit" />
+          <Property Name="UserFlag" Type="bit" />
+          <Property Name="LastUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastUpdate" Type="datetime" />
+          <Property Name="SignatureImage" Type="image" />
+          <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="RequestFormNo" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="UserRolesID" />
+          </Key>
+          <Property Name="UserRolesID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserProfileLogon" Type="nvarchar" MaxLength="20" />
+          <Property Name="CompGroupCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="CompanyCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="PlantCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="DepartmentCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="DivisionCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="Costcenter" Type="nvarchar" MaxLength="20" />
+          <Property Name="LastDateTime" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Approve' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Vw_Approve">
+          <Key>
+            <PropertyRef Name="CIC_ID" />
+            <PropertyRef Name="CICDetailID" />
+          </Key>
+          <Property Name="NO." Type="bigint" />
+          <Property Name="CIC_ID" Type="bigint" Nullable="false" />
+          <Property Name="CICDetailID" Type="bigint" Nullable="false" />
+          <Property Name="CICTypeID" Type="int" />
+          <Property Name="CIC" Type="nvarchar" MaxLength="31" />
+          <Property Name="Dept_No" Type="nvarchar" MaxLength="50" />
+          <Property Name="CIC_No" Type="nvarchar" MaxLength="50" />
+          <Property Name="StatusID" Type="int" />
+          <Property Name="StatusName" Type="nvarchar" MaxLength="150" />
+          <Property Name="Item" Type="int" />
+          <Property Name="AssetList" Type="nvarchar" MaxLength="255" />
+          <Property Name="Model" Type="nvarchar" MaxLength="255" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="UnitID" Type="int" />
+          <Property Name="UnitAlias" Type="nvarchar" MaxLength="20" />
+          <Property Name="Actual_Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Rate" Type="nvarchar" MaxLength="10" />
+          <Property Name="ScrapRet" Type="bit" />
+          <Property Name="Scrap" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LastUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="LastDateTime" Type="datetime" />
+          <Property Name="Costcenter" Type="nvarchar" MaxLength="20" />
+          <Property Name="AstTypeID" Type="int" />
+          <Property Name="AstTypeName" Type="nvarchar" MaxLength="255" />
+          <Property Name="VendorID" Type="bigint" />
+          <Property Name="Vendor" Type="nvarchar" MaxLength="276" />
+          <Property Name="VendorContact" Type="nvarchar" MaxLength="255" />
+          <Property Name="EmployeeCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="EmployeeUsername" Type="nvarchar" MaxLength="150" />
+          <Property Name="Name_user" Type="nvarchar" MaxLength="301" />
+          <Property Name="ContactNo" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="SubDivisionCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="Factory" Type="nvarchar" MaxLength="50" />
+          <Property Name="SubDivisionName" Type="nvarchar" MaxLength="150" />
+          <Property Name="IN_Date" Type="date" />
+          <Property Name="OUT_Date" Type="date" />
+          <Property Name="Vehicle" Type="nvarchar" MaxLength="150" />
+          <Property Name="Brand" Type="nvarchar" MaxLength="150" />
+          <Property Name="License" Type="nvarchar" MaxLength="50" />
+          <Property Name="CICReasonID" Type="int" />
+          <Property Name="CICReason" Type="nvarchar" MaxLength="255" />
+          <Property Name="Last_update" Type="datetime" />
+          <Property Name="Last_user" Type="nvarchar" MaxLength="20" />
+          <Property Name="Last_User_Update" Type="nvarchar" MaxLength="301" />
+          <Property Name="Last_CIC_update" Type="datetime" />
+          <Property Name="Last_CIC" Type="nvarchar" MaxLength="20" />
+          <Property Name="Cicapp" Type="nvarchar" MaxLength="301" />
+          <Property Name="Date_approve" Type="datetime" />
+          <Property Name="Manager_approve" Type="nvarchar" MaxLength="20" />
+          <Property Name="Managerapp" Type="nvarchar" MaxLength="301" />
+          <Property Name="closed" Type="bit" />
+          <Property Name="Close_Date" Type="datetime" />
+          <Property Name="Closed_User" Type="nvarchar" MaxLength="20" />
+          <Property Name="Close_by" Type="nvarchar" MaxLength="301" />
+          <Property Name="Cancel_Date" Type="datetime" />
+          <Property Name="Cancel_User" Type="nvarchar" MaxLength="20" />
+          <Property Name="Objective" Type="nvarchar(max)" />
+          <Property Name="Create_Date" Type="datetime" />
+          <Property Name="Create_By" Type="nvarchar" MaxLength="20" />
+          <Property Name="Create_By_User" Type="nvarchar" MaxLength="301" />
+          <Property Name="CancelClose_Update" Type="datetime" />
+          <Property Name="CancelClose_User" Type="nvarchar" MaxLength="20" />
+          <Property Name="Cancelcomment" Type="nvarchar" MaxLength="255" />
+          <Property Name="CICUserID" Type="int" />
+          <Property Name="CIC_No_OLD" Type="nvarchar" MaxLength="50" />
+          <Property Name="CIC_No_REF" Type="nvarchar" MaxLength="50" />
+          <Property Name="FlagDel" Type="bit" />
+          <Property Name="Remark" Type="nvarchar(max)" />
+          <Property Name="Delete_Update" Type="datetime" />
+          <Property Name="Delete_User" Type="nvarchar" MaxLength="50" />
+          <Property Name="CloseRemark" Type="nvarchar(max)" />
+          <Property Name="CICTransfer" Type="bit" />
+          <Property Name="WaitApporveDate" Type="datetime" />
+          <Property Name="UploadUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="UploadDatetime" Type="datetime" />
+          <Property Name="EmployeeCode2" Type="nvarchar" MaxLength="20" />
+          <Property Name="Last_App2" Type="nvarchar" MaxLength="20" />
+          <Property Name="ChangeDate" Type="datetime" />
+          <Property Name="FlagChange" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Vw_Manager">
+          <Key>
+            <PropertyRef Name="UserProfileID" />
+          </Key>
+          <Property Name="UserProfileID" Type="int" Nullable="false" />
+          <Property Name="UserProfileLogon" Type="nvarchar" MaxLength="20" />
+          <Property Name="EmployeeCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="UserTypeID" Type="int" />
+          <Property Name="Costcenter" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <Function Name="Send_CIC_Mail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Dept_No" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="CICCONTROL_SPRINGModelStoreContainer">
+          <EntitySet Name="trn_CIC" EntityType="Self.trn_CIC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_CICAttach" EntityType="Self.trn_CICAttach" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vw_Approve" EntityType="Self.Vw_Approve" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Vw_Approve].[NO.] AS [NO.], 
+    [Vw_Approve].[CIC_ID] AS [CIC_ID], 
+    [Vw_Approve].[CICDetailID] AS [CICDetailID], 
+    [Vw_Approve].[CICTypeID] AS [CICTypeID], 
+    [Vw_Approve].[CIC] AS [CIC], 
+    [Vw_Approve].[Dept_No] AS [Dept_No], 
+    [Vw_Approve].[CIC_No] AS [CIC_No], 
+    [Vw_Approve].[StatusID] AS [StatusID], 
+    [Vw_Approve].[StatusName] AS [StatusName], 
+    [Vw_Approve].[Item] AS [Item], 
+    [Vw_Approve].[AssetList] AS [AssetList], 
+    [Vw_Approve].[Model] AS [Model], 
+    [Vw_Approve].[Amount] AS [Amount], 
+    [Vw_Approve].[UnitID] AS [UnitID], 
+    [Vw_Approve].[UnitAlias] AS [UnitAlias], 
+    [Vw_Approve].[Actual_Amount] AS [Actual_Amount], 
+    [Vw_Approve].[Rate] AS [Rate], 
+    [Vw_Approve].[ScrapRet] AS [ScrapRet], 
+    [Vw_Approve].[Scrap] AS [Scrap], 
+    [Vw_Approve].[LastUser] AS [LastUser], 
+    [Vw_Approve].[LastDateTime] AS [LastDateTime], 
+    [Vw_Approve].[Costcenter] AS [Costcenter], 
+    [Vw_Approve].[AstTypeID] AS [AstTypeID], 
+    [Vw_Approve].[AstTypeName] AS [AstTypeName], 
+    [Vw_Approve].[VendorID] AS [VendorID], 
+    [Vw_Approve].[Vendor] AS [Vendor], 
+    [Vw_Approve].[VendorContact] AS [VendorContact], 
+    [Vw_Approve].[EmployeeCode] AS [EmployeeCode], 
+    [Vw_Approve].[EmployeeUsername] AS [EmployeeUsername], 
+    [Vw_Approve].[Name_user] AS [Name_user], 
+    [Vw_Approve].[ContactNo] AS [ContactNo], 
+    [Vw_Approve].[Email] AS [Email], 
+    [Vw_Approve].[SubDivisionCode] AS [SubDivisionCode], 
+    [Vw_Approve].[Factory] AS [Factory], 
+    [Vw_Approve].[SubDivisionName] AS [SubDivisionName], 
+    [Vw_Approve].[IN_Date] AS [IN_Date], 
+    [Vw_Approve].[OUT_Date] AS [OUT_Date], 
+    [Vw_Approve].[Vehicle] AS [Vehicle], 
+    [Vw_Approve].[Brand] AS [Brand], 
+    [Vw_Approve].[License] AS [License], 
+    [Vw_Approve].[CICReasonID] AS [CICReasonID], 
+    [Vw_Approve].[CICReason] AS [CICReason], 
+    [Vw_Approve].[Last_update] AS [Last_update], 
+    [Vw_Approve].[Last_user] AS [Last_user], 
+    [Vw_Approve].[Last_User_Update] AS [Last_User_Update], 
+    [Vw_Approve].[Last_CIC_update] AS [Last_CIC_update], 
+    [Vw_Approve].[Last_CIC] AS [Last_CIC], 
+    [Vw_Approve].[Cicapp] AS [Cicapp], 
+    [Vw_Approve].[Date_approve] AS [Date_approve], 
+    [Vw_Approve].[Manager_approve] AS [Manager_approve], 
+    [Vw_Approve].[Managerapp] AS [Managerapp], 
+    [Vw_Approve].[closed] AS [closed], 
+    [Vw_Approve].[Close_Date] AS [Close_Date], 
+    [Vw_Approve].[Closed_User] AS [Closed_User], 
+    [Vw_Approve].[Close_by] AS [Close_by], 
+    [Vw_Approve].[Cancel_Date] AS [Cancel_Date], 
+    [Vw_Approve].[Cancel_User] AS [Cancel_User], 
+    [Vw_Approve].[Objective] AS [Objective], 
+    [Vw_Approve].[Create_Date] AS [Create_Date], 
+    [Vw_Approve].[Create_By] AS [Create_By], 
+    [Vw_Approve].[Create_By_User] AS [Create_By_User], 
+    [Vw_Approve].[CancelClose_Update] AS [CancelClose_Update], 
+    [Vw_Approve].[CancelClose_User] AS [CancelClose_User], 
+    [Vw_Approve].[Cancelcomment] AS [Cancelcomment], 
+    [Vw_Approve].[CICUserID] AS [CICUserID], 
+    [Vw_Approve].[CIC_No_OLD] AS [CIC_No_OLD], 
+    [Vw_Approve].[CIC_No_REF] AS [CIC_No_REF], 
+    [Vw_Approve].[FlagDel] AS [FlagDel], 
+    [Vw_Approve].[Remark] AS [Remark], 
+    [Vw_Approve].[Delete_Update] AS [Delete_Update], 
+    [Vw_Approve].[Delete_User] AS [Delete_User], 
+    [Vw_Approve].[CloseRemark] AS [CloseRemark], 
+    [Vw_Approve].[CICTransfer] AS [CICTransfer], 
+    [Vw_Approve].[WaitApporveDate] AS [WaitApporveDate], 
+    [Vw_Approve].[UploadUser] AS [UploadUser], 
+    [Vw_Approve].[UploadDatetime] AS [UploadDatetime], 
+    [Vw_Approve].[EmployeeCode2] AS [EmployeeCode2], 
+    [Vw_Approve].[Last_App2] AS [Last_App2], 
+    [Vw_Approve].[ChangeDate] AS [ChangeDate], 
+    [Vw_Approve].[FlagChange] AS [FlagChange]
+    FROM [dbo].[Vw_Approve] AS [Vw_Approve]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Vw_Manager" EntityType="Self.Vw_Manager" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Vw_Manager].[UserProfileID] AS [UserProfileID], 
+    [Vw_Manager].[UserProfileLogon] AS [UserProfileLogon], 
+    [Vw_Manager].[EmployeeCode] AS [EmployeeCode], 
+    [Vw_Manager].[UserTypeID] AS [UserTypeID], 
+    [Vw_Manager].[Costcenter] AS [Costcenter]
+    FROM [dbo].[Vw_Manager] AS [Vw_Manager]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CICCONTROL_SPRINGModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="trn_CIC">
+          <Key>
+            <PropertyRef Name="CIC_ID" />
+          </Key>
+          <Property Name="CIC_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dept_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CIC_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CICTypeID" Type="Int32" />
+          <Property Name="StatusID" Type="Int32" />
+          <Property Name="AstTypeID" Type="Int32" />
+          <Property Name="IN_Date" Type="DateTime" Precision="0" />
+          <Property Name="OUT_Date" Type="DateTime" Precision="0" />
+          <Property Name="EmployeeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="VendorID" Type="Int64" />
+          <Property Name="VendorContact" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Vehicle" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Brand" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="License" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CICReasonID" Type="Int32" />
+          <Property Name="Last_update" Type="DateTime" Precision="3" />
+          <Property Name="Last_user" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Last_CIC_update" Type="DateTime" Precision="3" />
+          <Property Name="Last_CIC" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Last_App_update" Type="DateTime" Precision="3" />
+          <Property Name="Last_App" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Last_PO_update" Type="DateTime" Precision="3" />
+          <Property Name="Last_PO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Sale_update" Type="DateTime" Precision="3" />
+          <Property Name="Last_Sale" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="closed" Type="Boolean" />
+          <Property Name="Close_Date" Type="DateTime" Precision="3" />
+          <Property Name="Closed_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Cancel_Date" Type="DateTime" Precision="3" />
+          <Property Name="Cancel_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Objective" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CancelApp_Update" Type="DateTime" Precision="3" />
+          <Property Name="CancelApp_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="NotApp_Update" Type="DateTime" Precision="3" />
+          <Property Name="Notapp_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Create_Date" Type="DateTime" Precision="3" />
+          <Property Name="Create_By" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CancelClose_Update" Type="DateTime" Precision="3" />
+          <Property Name="CancelClose_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Cancelcomment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CICUserID" Type="Int32" />
+          <Property Name="CIC_No_OLD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CIC_No_REF" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlagDel" Type="Boolean" />
+          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Delete_Update" Type="DateTime" Precision="3" />
+          <Property Name="Delete_User" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CloseRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CICTransfer" Type="Boolean" />
+          <Property Name="WaitApporveDate" Type="DateTime" Precision="3" />
+          <Property Name="UploadUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UploadDatetime" Type="DateTime" Precision="3" />
+          <Property Name="EmployeeCode2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Last_App2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ChangeDate" Type="DateTime" Precision="3" />
+          <Property Name="FlagChange" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="trn_CICAttach">
+          <Key>
+            <PropertyRef Name="CICAttachID" />
+          </Key>
+          <Property Name="CICAttachID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CIC_ID" Type="Int64" />
+          <Property Name="AttachPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AttachFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AttachUpdate" Type="DateTime" Precision="3" />
+          <Property Name="AttachUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AttachClosed" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserProfileID" />
+          </Key>
+          <Property Name="UserProfileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserProfileLogon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UserTypeID" Type="Int32" />
+          <Property Name="SignaturePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ERFlag" Type="Boolean" />
+          <Property Name="Closed" Type="Boolean" />
+          <Property Name="Cancel" Type="Boolean" />
+          <Property Name="UserFlag" Type="Boolean" />
+          <Property Name="LastUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+          <Property Name="SignatureImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="RequestFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRolesID" />
+          </Key>
+          <Property Name="UserRolesID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserProfileLogon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CompGroupCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PlantCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DepartmentCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DivisionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LastDateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Vw_Approve">
+          <Key>
+            <PropertyRef Name="CIC_ID" />
+            <PropertyRef Name="CICDetailID" />
+          </Key>
+          <Property Name="NO_" Type="Int64" />
+          <Property Name="CIC_ID" Type="Int64" Nullable="false" />
+          <Property Name="CICDetailID" Type="Int64" Nullable="false" />
+          <Property Name="CICTypeID" Type="Int32" />
+          <Property Name="CIC" Type="String" MaxLength="31" FixedLength="false" Unicode="true" />
+          <Property Name="Dept_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CIC_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatusID" Type="Int32" />
+          <Property Name="StatusName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Item" Type="Int32" />
+          <Property Name="AssetList" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="UnitID" Type="Int32" />
+          <Property Name="UnitAlias" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Actual_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Rate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ScrapRet" Type="Boolean" />
+          <Property Name="Scrap" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LastUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LastDateTime" Type="DateTime" Precision="3" />
+          <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AstTypeID" Type="Int32" />
+          <Property Name="AstTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VendorID" Type="Int64" />
+          <Property Name="Vendor" Type="String" MaxLength="276" FixedLength="false" Unicode="true" />
+          <Property Name="VendorContact" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeUsername" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Name_user" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SubDivisionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Factory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SubDivisionName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="IN_Date" Type="DateTime" Precision="0" />
+          <Property Name="OUT_Date" Type="DateTime" Precision="0" />
+          <Property Name="Vehicle" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Brand" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="License" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CICReasonID" Type="Int32" />
+          <Property Name="CICReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Last_update" Type="DateTime" Precision="3" />
+          <Property Name="Last_user" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Last_User_Update" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+          <Property Name="Last_CIC_update" Type="DateTime" Precision="3" />
+          <Property Name="Last_CIC" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Cicapp" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+          <Property Name="Date_approve" Type="DateTime" Precision="3" />
+          <Property Name="Manager_approve" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Managerapp" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+          <Property Name="closed" Type="Boolean" />
+          <Property Name="Close_Date" Type="DateTime" Precision="3" />
+          <Property Name="Closed_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Close_by" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+          <Property Name="Cancel_Date" Type="DateTime" Precision="3" />
+          <Property Name="Cancel_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Objective" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Create_Date" Type="DateTime" Precision="3" />
+          <Property Name="Create_By" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Create_By_User" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+          <Property Name="CancelClose_Update" Type="DateTime" Precision="3" />
+          <Property Name="CancelClose_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Cancelcomment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CICUserID" Type="Int32" />
+          <Property Name="CIC_No_OLD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CIC_No_REF" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlagDel" Type="Boolean" />
+          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Delete_Update" Type="DateTime" Precision="3" />
+          <Property Name="Delete_User" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CloseRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CICTransfer" Type="Boolean" />
+          <Property Name="WaitApporveDate" Type="DateTime" Precision="3" />
+          <Property Name="UploadUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UploadDatetime" Type="DateTime" Precision="3" />
+          <Property Name="EmployeeCode2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Last_App2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ChangeDate" Type="DateTime" Precision="3" />
+          <Property Name="FlagChange" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Vw_Manager">
+          <Key>
+            <PropertyRef Name="UserProfileID" />
+          </Key>
+          <Property Name="UserProfileID" Type="Int32" Nullable="false" />
+          <Property Name="UserProfileLogon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UserTypeID" Type="Int32" />
+          <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="CICCONTROL_SPRINGEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="trn_CIC" EntityType="Self.trn_CIC" />
+          <EntitySet Name="trn_CICAttach" EntityType="Self.trn_CICAttach" />
+          <EntitySet Name="UserProfiles" EntityType="Self.UserProfile" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+          <EntitySet Name="Vw_Approve" EntityType="Self.Vw_Approve" />
+          <EntitySet Name="Vw_Manager" EntityType="Self.Vw_Manager" />
+          <FunctionImport Name="Send_CIC_Mail">
+            <Parameter Name="Dept_No" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CICCONTROL_SPRINGModelStoreContainer" CdmEntityContainer="CICCONTROL_SPRINGEntities2">
+          <EntitySetMapping Name="trn_CIC">
+            <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.trn_CIC">
+              <MappingFragment StoreEntitySet="trn_CIC">
+                <ScalarProperty Name="CIC_ID" ColumnName="CIC_ID" />
+                <ScalarProperty Name="Dept_No" ColumnName="Dept_No" />
+                <ScalarProperty Name="CIC_No" ColumnName="CIC_No" />
+                <ScalarProperty Name="Costcenter" ColumnName="Costcenter" />
+                <ScalarProperty Name="CICTypeID" ColumnName="CICTypeID" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="AstTypeID" ColumnName="AstTypeID" />
+                <ScalarProperty Name="IN_Date" ColumnName="IN_Date" />
+                <ScalarProperty Name="OUT_Date" ColumnName="OUT_Date" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+                <ScalarProperty Name="VendorContact" ColumnName="VendorContact" />
+                <ScalarProperty Name="Vehicle" ColumnName="Vehicle" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="License" ColumnName="License" />
+                <ScalarProperty Name="CICReasonID" ColumnName="CICReasonID" />
+                <ScalarProperty Name="Last_update" ColumnName="Last_update" />
+                <ScalarProperty Name="Last_user" ColumnName="Last_user" />
+                <ScalarProperty Name="Last_CIC_update" ColumnName="Last_CIC_update" />
+                <ScalarProperty Name="Last_CIC" ColumnName="Last_CIC" />
+                <ScalarProperty Name="Last_App_update" ColumnName="Last_App_update" />
+                <ScalarProperty Name="Last_App" ColumnName="Last_App" />
+                <ScalarProperty Name="Last_PO_update" ColumnName="Last_PO_update" />
+                <ScalarProperty Name="Last_PO" ColumnName="Last_PO" />
+                <ScalarProperty Name="Last_Sale_update" ColumnName="Last_Sale_update" />
+                <ScalarProperty Name="Last_Sale" ColumnName="Last_Sale" />
+                <ScalarProperty Name="closed" ColumnName="closed" />
+                <ScalarProperty Name="Close_Date" ColumnName="Close_Date" />
+                <ScalarProperty Name="Closed_User" ColumnName="Closed_User" />
+                <ScalarProperty Name="Cancel_Date" ColumnName="Cancel_Date" />
+                <ScalarProperty Name="Cancel_User" ColumnName="Cancel_User" />
+                <ScalarProperty Name="Objective" ColumnName="Objective" />
+                <ScalarProperty Name="CancelApp_Update" ColumnName="CancelApp_Update" />
+                <ScalarProperty Name="CancelApp_User" ColumnName="CancelApp_User" />
+                <ScalarProperty Name="NotApp_Update" ColumnName="NotApp_Update" />
+                <ScalarProperty Name="Notapp_User" ColumnName="Notapp_User" />
+                <ScalarProperty Name="Create_Date" ColumnName="Create_Date" />
+                <ScalarProperty Name="Create_By" ColumnName="Create_By" />
+                <ScalarProperty Name="CancelClose_Update" ColumnName="CancelClose_Update" />
+                <ScalarProperty Name="CancelClose_User" ColumnName="CancelClose_User" />
+                <ScalarProperty Name="Cancelcomment" ColumnName="Cancelcomment" />
+                <ScalarProperty Name="CICUserID" ColumnName="CICUserID" />
+                <ScalarProperty Name="CIC_No_OLD" ColumnName="CIC_No_OLD" />
+                <ScalarProperty Name="CIC_No_REF" ColumnName="CIC_No_REF" />
+                <ScalarProperty Name="FlagDel" ColumnName="FlagDel" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Delete_Update" ColumnName="Delete_Update" />
+                <ScalarProperty Name="Delete_User" ColumnName="Delete_User" />
+                <ScalarProperty Name="CloseRemark" ColumnName="CloseRemark" />
+                <ScalarProperty Name="CICTransfer" ColumnName="CICTransfer" />
+                <ScalarProperty Name="WaitApporveDate" ColumnName="WaitApporveDate" />
+                <ScalarProperty Name="UploadUser" ColumnName="UploadUser" />
+                <ScalarProperty Name="UploadDatetime" ColumnName="UploadDatetime" />
+                <ScalarProperty Name="EmployeeCode2" ColumnName="EmployeeCode2" />
+                <ScalarProperty Name="Last_App2" ColumnName="Last_App2" />
+                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
+                <ScalarProperty Name="FlagChange" ColumnName="FlagChange" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_CICAttach">
+            <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.trn_CICAttach">
+              <MappingFragment StoreEntitySet="trn_CICAttach">
+                <ScalarProperty Name="CICAttachID" ColumnName="CICAttachID" />
+                <ScalarProperty Name="CIC_ID" ColumnName="CIC_ID" />
+                <ScalarProperty Name="AttachPath" ColumnName="AttachPath" />
+                <ScalarProperty Name="AttachFile" ColumnName="AttachFile" />
+                <ScalarProperty Name="AttachUpdate" ColumnName="AttachUpdate" />
+                <ScalarProperty Name="AttachUser" ColumnName="AttachUser" />
+                <ScalarProperty Name="AttachClosed" ColumnName="AttachClosed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserProfileID" ColumnName="UserProfileID" />
+                <ScalarProperty Name="UserProfileLogon" ColumnName="UserProfileLogon" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="SignaturePath" ColumnName="SignaturePath" />
+                <ScalarProperty Name="ERFlag" ColumnName="ERFlag" />
+                <ScalarProperty Name="Closed" ColumnName="Closed" />
+                <ScalarProperty Name="Cancel" ColumnName="Cancel" />
+                <ScalarProperty Name="UserFlag" ColumnName="UserFlag" />
+                <ScalarProperty Name="LastUser" ColumnName="LastUser" />
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="SignatureImage" ColumnName="SignatureImage" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="RequestFormNo" ColumnName="RequestFormNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="UserRolesID" ColumnName="UserRolesID" />
+                <ScalarProperty Name="UserProfileLogon" ColumnName="UserProfileLogon" />
+                <ScalarProperty Name="CompGroupCode" ColumnName="CompGroupCode" />
+                <ScalarProperty Name="CompanyCode" ColumnName="CompanyCode" />
+                <ScalarProperty Name="PlantCode" ColumnName="PlantCode" />
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="DivisionCode" ColumnName="DivisionCode" />
+                <ScalarProperty Name="Costcenter" ColumnName="Costcenter" />
+                <ScalarProperty Name="LastDateTime" ColumnName="LastDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vw_Approve">
+            <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.Vw_Approve">
+              <MappingFragment StoreEntitySet="Vw_Approve">
+                <ScalarProperty Name="NO_" ColumnName="NO." />
+                <ScalarProperty Name="CIC_ID" ColumnName="CIC_ID" />
+                <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
+                <ScalarProperty Name="CICTypeID" ColumnName="CICTypeID" />
+                <ScalarProperty Name="CIC" ColumnName="CIC" />
+                <ScalarProperty Name="Dept_No" ColumnName="Dept_No" />
+                <ScalarProperty Name="CIC_No" ColumnName="CIC_No" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="Item" ColumnName="Item" />
+                <ScalarProperty Name="AssetList" ColumnName="AssetList" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="UnitAlias" ColumnName="UnitAlias" />
+                <ScalarProperty Name="Actual_Amount" ColumnName="Actual_Amount" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="ScrapRet" ColumnName="ScrapRet" />
+                <ScalarProperty Name="Scrap" ColumnName="Scrap" />
+                <ScalarProperty Name="LastUser" ColumnName="LastUser" />
+                <ScalarProperty Name="LastDateTime" ColumnName="LastDateTime" />
+                <ScalarProperty Name="Costcenter" ColumnName="Costcenter" />
+                <ScalarProperty Name="AstTypeID" ColumnName="AstTypeID" />
+                <ScalarProperty Name="AstTypeName" ColumnName="AstTypeName" />
+                <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+                <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+                <ScalarProperty Name="VendorContact" ColumnName="VendorContact" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="EmployeeUsername" ColumnName="EmployeeUsername" />
+                <ScalarProperty Name="Name_user" ColumnName="Name_user" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="SubDivisionCode" ColumnName="SubDivisionCode" />
+                <ScalarProperty Name="Factory" ColumnName="Factory" />
+                <ScalarProperty Name="SubDivisionName" ColumnName="SubDivisionName" />
+                <ScalarProperty Name="IN_Date" ColumnName="IN_Date" />
+                <ScalarProperty Name="OUT_Date" ColumnName="OUT_Date" />
+                <ScalarProperty Name="Vehicle" ColumnName="Vehicle" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="License" ColumnName="License" />
+                <ScalarProperty Name="CICReasonID" ColumnName="CICReasonID" />
+                <ScalarProperty Name="CICReason" ColumnName="CICReason" />
+                <ScalarProperty Name="Last_update" ColumnName="Last_update" />
+                <ScalarProperty Name="Last_user" ColumnName="Last_user" />
+                <ScalarProperty Name="Last_User_Update" ColumnName="Last_User_Update" />
+                <ScalarProperty Name="Last_CIC_update" ColumnName="Last_CIC_update" />
+                <ScalarProperty Name="Last_CIC" ColumnName="Last_CIC" />
+                <ScalarProperty Name="Cicapp" ColumnName="Cicapp" />
+                <ScalarProperty Name="Date_approve" ColumnName="Date_approve" />
+                <ScalarProperty Name="Manager_approve" ColumnName="Manager_approve" />
+                <ScalarProperty Name="Managerapp" ColumnName="Managerapp" />
+                <ScalarProperty Name="closed" ColumnName="closed" />
+                <ScalarProperty Name="Close_Date" ColumnName="Close_Date" />
+                <ScalarProperty Name="Closed_User" ColumnName="Closed_User" />
+                <ScalarProperty Name="Close_by" ColumnName="Close_by" />
+                <ScalarProperty Name="Cancel_Date" ColumnName="Cancel_Date" />
+                <ScalarProperty Name="Cancel_User" ColumnName="Cancel_User" />
+                <ScalarProperty Name="Objective" ColumnName="Objective" />
+                <ScalarProperty Name="Create_Date" ColumnName="Create_Date" />
+                <ScalarProperty Name="Create_By" ColumnName="Create_By" />
+                <ScalarProperty Name="Create_By_User" ColumnName="Create_By_User" />
+                <ScalarProperty Name="CancelClose_Update" ColumnName="CancelClose_Update" />
+                <ScalarProperty Name="CancelClose_User" ColumnName="CancelClose_User" />
+                <ScalarProperty Name="Cancelcomment" ColumnName="Cancelcomment" />
+                <ScalarProperty Name="CICUserID" ColumnName="CICUserID" />
+                <ScalarProperty Name="CIC_No_OLD" ColumnName="CIC_No_OLD" />
+                <ScalarProperty Name="CIC_No_REF" ColumnName="CIC_No_REF" />
+                <ScalarProperty Name="FlagDel" ColumnName="FlagDel" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Delete_Update" ColumnName="Delete_Update" />
+                <ScalarProperty Name="Delete_User" ColumnName="Delete_User" />
+                <ScalarProperty Name="CloseRemark" ColumnName="CloseRemark" />
+                <ScalarProperty Name="CICTransfer" ColumnName="CICTransfer" />
+                <ScalarProperty Name="WaitApporveDate" ColumnName="WaitApporveDate" />
+                <ScalarProperty Name="UploadUser" ColumnName="UploadUser" />
+                <ScalarProperty Name="UploadDatetime" ColumnName="UploadDatetime" />
+                <ScalarProperty Name="EmployeeCode2" ColumnName="EmployeeCode2" />
+                <ScalarProperty Name="Last_App2" ColumnName="Last_App2" />
+                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
+                <ScalarProperty Name="FlagChange" ColumnName="FlagChange" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vw_Manager">
+            <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.Vw_Manager">
+              <MappingFragment StoreEntitySet="Vw_Manager">
+                <ScalarProperty Name="UserProfileID" ColumnName="UserProfileID" />
+                <ScalarProperty Name="UserProfileLogon" ColumnName="UserProfileLogon" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="Costcenter" ColumnName="Costcenter" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Send_CIC_Mail" FunctionName="CICCONTROL_SPRINGModel.Store.Send_CIC_Mail" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CICCONTROL_SPRINGModelStoreContainer" CdmEntityContainer="viewEntities">
+    <EntitySetMapping Name="TEST_CIC_APPROVE">
+      <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.TEST_CIC_APPROVE">
+        <MappingFragment StoreEntitySet="TEST_CIC_APPROVE">
+          <ScalarProperty Name="FlagChange" ColumnName="FlagChange" />
+          <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
+          <ScalarProperty Name="Last_App2" ColumnName="Last_App2" />
+          <ScalarProperty Name="EmployeeCode2" ColumnName="EmployeeCode2" />
+          <ScalarProperty Name="UploadDatetime" ColumnName="UploadDatetime" />
+          <ScalarProperty Name="UploadUser" ColumnName="UploadUser" />
+          <ScalarProperty Name="WaitApporveDate" ColumnName="WaitApporveDate" />
+          <ScalarProperty Name="CICTransfer" ColumnName="CICTransfer" />
+          <ScalarProperty Name="CloseRemark" ColumnName="CloseRemark" />
+          <ScalarProperty Name="Delete_User" ColumnName="Delete_User" />
+          <ScalarProperty Name="Delete_Update" ColumnName="Delete_Update" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="FlagDel" ColumnName="FlagDel" />
+          <ScalarProperty Name="CIC_No_REF" ColumnName="CIC_No_REF" />
+          <ScalarProperty Name="CIC_No_OLD" ColumnName="CIC_No_OLD" />
+          <ScalarProperty Name="CICUserID" ColumnName="CICUserID" />
+          <ScalarProperty Name="Cancelcomment" ColumnName="Cancelcomment" />
+          <ScalarProperty Name="CancelClose_User" ColumnName="CancelClose_User" />
+          <ScalarProperty Name="CancelClose_Update" ColumnName="CancelClose_Update" />
+          <ScalarProperty Name="Create_By_User" ColumnName="Create_By_User" />
+          <ScalarProperty Name="Create_By" ColumnName="Create_By" />
+          <ScalarProperty Name="Create_Date" ColumnName="Create_Date" />
+          <ScalarProperty Name="Objective" ColumnName="Objective" />
+          <ScalarProperty Name="Cancel_User" ColumnName="Cancel_User" />
+          <ScalarProperty Name="Cancel_Date" ColumnName="Cancel_Date" />
+          <ScalarProperty Name="Close_by" ColumnName="Close_by" />
+          <ScalarProperty Name="Closed_User" ColumnName="Closed_User" />
+          <ScalarProperty Name="Close_Date" ColumnName="Close_Date" />
+          <ScalarProperty Name="closed" ColumnName="closed" />
+          <ScalarProperty Name="Managerapp" ColumnName="Managerapp" />
+          <ScalarProperty Name="Manager_approve" ColumnName="Manager_approve" />
+          <ScalarProperty Name="Date_approve" ColumnName="Date_approve" />
+          <ScalarProperty Name="Last_CIC" ColumnName="Last_CIC" />
+          <ScalarProperty Name="Last_CIC_update" ColumnName="Last_CIC_update" />
+          <ScalarProperty Name="Last_User_Update" ColumnName="Last_User_Update" />
+          <ScalarProperty Name="Last_user" ColumnName="Last_user" />
+          <ScalarProperty Name="Last_update" ColumnName="Last_update" />
+          <ScalarProperty Name="CICReason" ColumnName="CICReason" />
+          <ScalarProperty Name="CICReasonID" ColumnName="CICReasonID" />
+          <ScalarProperty Name="License" ColumnName="License" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="Vehicle" ColumnName="Vehicle" />
+          <ScalarProperty Name="OUT_Date" ColumnName="OUT_Date" />
+          <ScalarProperty Name="IN_Date" ColumnName="IN_Date" />
+          <ScalarProperty Name="SubDivisionName" ColumnName="SubDivisionName" />
+          <ScalarProperty Name="Factory" ColumnName="Factory" />
+          <ScalarProperty Name="SubDivisionCode" ColumnName="SubDivisionCode" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="Name_user" ColumnName="Name_user" />
+          <ScalarProperty Name="EmployeeUsername" ColumnName="EmployeeUsername" />
+          <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+          <ScalarProperty Name="VendorContact" ColumnName="VendorContact" />
+          <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+          <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+          <ScalarProperty Name="AstTypeName" ColumnName="AstTypeName" />
+          <ScalarProperty Name="AstTypeID" ColumnName="AstTypeID" />
+          <ScalarProperty Name="Costcenter" ColumnName="Costcenter" />
+          <ScalarProperty Name="LastDateTime" ColumnName="LastDateTime" />
+          <ScalarProperty Name="LastUser" ColumnName="LastUser" />
+          <ScalarProperty Name="Scrap" ColumnName="Scrap" />
+          <ScalarProperty Name="ScrapRet" ColumnName="ScrapRet" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="Actual_Amount" ColumnName="Actual_Amount" />
+          <ScalarProperty Name="UnitAlias" ColumnName="UnitAlias" />
+          <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="AssetList" ColumnName="AssetList" />
+          <ScalarProperty Name="Item" ColumnName="Item" />
+          <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+          <ScalarProperty Name="CIC_No" ColumnName="CIC_No" />
+          <ScalarProperty Name="Dept_No" ColumnName="Dept_No" />
+          <ScalarProperty Name="CIC" ColumnName="CIC" />
+          <ScalarProperty Name="CICTypeID" ColumnName="CICTypeID" />
+          <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
+          <ScalarProperty Name="CIC_ID" ColumnName="CIC_ID" />
+          <ScalarProperty Name="NO_" ColumnName="NO." />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

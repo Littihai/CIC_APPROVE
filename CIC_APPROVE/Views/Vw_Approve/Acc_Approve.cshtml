@@ -1,0 +1,708 @@
+﻿@model IEnumerable<CIC_APPROVE.Models.Vw_Approve>
+@{
+    ViewBag.Title = "MANAGER APPROVE";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using System.Collections.Generic
+
+@{
+    var status = Model.First().StatusID ?? 0;
+}
+
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <title>CIC OUT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 2px;
+        }
+
+        /* input readonly ตัวอักษรสีน้ำเงิน */
+        .card input[readonly],
+        .card textarea[readonly] {
+            color: #0d6efd !important;
+            /* Bootstrap primary blue */
+            background-color: #fff;
+            /* ไม่ให้เป็นสีเทา */
+            opacity: 1;
+            /* กัน Bootstrap ทำให้ซีด */
+            font-weight: 500;
+        }
+
+        .card {
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn:hover {
+                transform: scale(1.05);
+            }
+
+        .btn-green {
+            background-color: #28a745; /* เขียว Bootstrap */
+            color: white;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <!-- Header -->
+        <div class="card mb-3">
+            <div class="card-body">
+                @foreach (var item in Model
+                    .GroupBy(x => x.Dept_No)
+                    .Select(g => g.First()))
+                {
+                    <h5 class="mb-1">
+                        @Html.DisplayFor(modelItem => item.CIC)
+                    </h5>
+                    <div class="row mt-3 align-items-center text-end">
+                        <div class="col text-start text-success fw-bold" id="company_name">
+                            บริษัท ไทยซัมมิท เอนจิเนียริ่ง จำกัด
+                        </div>
+                        <div class="col-auto">
+                            Dept. No :
+                            @Html.DisplayFor(modelItem => item.Dept_No)
+                        </div>
+
+                        <div class="col-auto">
+                            CIC No :@Html.DisplayFor(modelItem => item.CIC_No)
+                        </div>
+
+                        @*เพิ่ม StatusID เป็น 1 ให้เป็นสีฟ้า คือรออนุมัติ*@
+                        @*เพิ่ม StatusID เป็น 4 ให้เป็นสีส้ม คือรอ CIC อนุมัติ*@
+                        @{
+                            string statusClass = "text-dark";
+
+                            if (item.StatusID == 1)
+                            {
+                                statusClass = "text-primary";   // ฟ้า
+                            }
+                            else if (item.StatusID == 4)
+                            {
+                                statusClass = "text-warning";   // ส้ม
+                            }
+                        }
+
+                        <div class="col-auto">
+                            สถานะ :
+                            <span class="fw-semibold @statusClass">
+                                @Html.DisplayFor(modelItem => item.StatusName)
+                            </span>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="mb-3">
+            <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#itemDetailModal">
+                รายการทรัพย์สิน
+            </button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal">
+                รายละเอียด
+            </button>
+        </div>
+
+        <!-- Form Section -->
+        <div class="card mb-4">
+            <div class="card-body">
+                @foreach (var item in Model
+                    .GroupBy(x => x.Dept_No)
+                    .Select(g => g.First()))
+                {
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">ประเภททรัพย์สิน</label>
+                            @Html.TextBoxFor(modelItem => item.AstTypeName,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">สาเหตุการทำ CIC</label>
+                            @Html.TextBoxFor(modelItem => item.CICReason,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        @{
+                            bool showInDate = item.CICTypeID == 1 || item.CICTypeID == 2 || item.CICTypeID == 4;
+                            bool showOutDate = item.CICTypeID == 3 || item.CICTypeID == 2 || item.CICTypeID == 4;
+                        }
+
+                        @if (showInDate)
+                        {
+                            <div class="col-md-3">
+                                <label class="form-label">วันที่นำเข้า</label>
+                                @Html.TextBoxFor(modelItem => item.IN_Date,
+                            new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        }
+
+                        @if (showOutDate)
+                        {
+                            <div class="col-md-3">
+                                <label class="form-label">วันที่นำออก</label>
+                                @Html.TextBoxFor(modelItem => item.OUT_Date,
+                            new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        }
+
+                        <div class="col-md-2">
+                            <label class="form-label">ผู้ติดต่อชื่อ</label>
+                            @Html.TextBoxFor(modelItem => item.VendorContact,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">นำไปที่</label>
+                            @Html.TextBoxFor(modelItem => item.Vendor,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">ทะเบียน</label>
+                            @Html.TextBoxFor(modelItem => item.License,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">พาหนะ</label>
+                            @Html.TextBoxFor(modelItem => item.Vehicle,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">ยี่ห้อ</label>
+                            @Html.TextBoxFor(modelItem => item.License,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        @*<div class="col-md-3">
+                                <label class="form-label">รหัสพนักงาน</label>
+                                @Html.TextBoxFor(modelItem => item.EmployeeUsername,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>*@
+
+                        <div class="col-md-3">
+                            <label class="form-label">ชื่อ-สกุล</label>
+                            @Html.TextBoxFor(modelItem => item.Name_user,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">เบอร์ติดต่อ</label>
+                            @Html.TextBoxFor(modelItem => item.ContactNo,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        @*<div class="col-md-3">
+                                <label class="form-label">รหัสหน่วยงาน</label>
+                                @Html.TextBoxFor(modelItem => item.SubDivisionCode,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>*@
+
+                        <div class="col-md-3">
+                            <label class="form-label">อีเมล</label>
+                            @Html.TextBoxFor(modelItem => item.Email,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        @*<div class="col-md-3">
+                                <label class="form-label">รหัสหน่วยงาน</label>
+                                @Html.TextBoxFor(modelItem => item.SubDivisionCode,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>*@
+
+                        @*<div class="col-md-3">
+                                <label class="form-label">ฝ่าย</label>
+                                @Html.TextBoxFor(modelItem => item.SubDivisionName,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">ส่วน</label>
+                                @Html.TextBoxFor(modelItem => item.SubDivisionName,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>*@
+
+                        <div class="col-md-3">
+                            <label class="form-label">แผนก</label>
+                            @Html.TextBoxFor(modelItem => item.SubDivisionName,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">โรงงาน</label>
+                            @Html.TextBoxFor(modelItem => item.Factory,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">วัตถุประสงค์</label>
+                            @Html.TextBoxFor(modelItem => item.Objective,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <form id="approveForm" method="post" action="@Url.Action("UpdateStatus", "Vw_Approve")">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="StatusID" id="StatusID" />
+            <input type="hidden" name="Dept_No" value="@Model.First().Dept_No" />
+            <input type="hidden" name="SelectedManager" id="SelectedManager" />
+
+            @* แสดงเฉพาะกรณีมี Manager มากกว่า 1 คน *@
+            @if (ViewBag.RequireSelectManager == true)
+            {
+                <div class="mb-3 text-center">
+                    <label class="form-label fw-bold">เลือกผู้อนุมัติ</label>
+                    @Html.DropDownList(
+                        "ManagerDDL",
+                        ViewBag.ManagerList as SelectList,
+                        "-- กรุณาเลือกผู้อนุมัติ --",
+                        new { @class = "form-select w-50 mx-auto", id = "ManagerDDL" }
+                    )
+                </div>
+            }
+            @if (ViewBag.ShowSelectManagerWarning == true)
+            {
+                <script>
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'กรุณาเลือกผู้อนุมัติ',
+                        text: 'พบผู้อนุมัติมากกว่า 1 คน กรุณาเลือกก่อนดำเนินการต่อ'
+                    });
+                </script>
+            }
+            @if (TempData["SwalInfo"] != null)
+            {
+                <text>
+                    Swal.fire({
+                    icon: 'info',
+                    title: 'ข้อมูลเพิ่มเติม',
+                    text: '@TempData["SwalInfo"]'
+                    });
+                </text>
+            }
+
+            <div class="d-flex justify-content-center align-items-center mt-3 gap-2">
+
+                <!-- ปุ่มอนุมัติ -->
+                <button type="button"
+                        class="btn btn-success"
+                        onclick="confirmSubmit(4)"
+                        @(status == 4 || status == 2 ? "disabled" : "")>
+                    อนุมัติเอกสาร
+                </button>
+
+                <!-- ปุ่มยกเลิก -->
+                <button type="button"
+                        class="btn btn-danger"
+                        onclick="confirmSubmit(1)"
+                        @(status == 1 ? "disabled" : "")>
+                    ยกเลิกเอกสาร
+                </button>
+
+            </div>
+        </form>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            function confirmSubmit(statusId) {
+
+                // set StatusID
+                document.getElementById("StatusID").value = statusId;
+
+                // กรณีอนุมัติ และต้องเลือก Manager
+                if (statusId === 4 && document.getElementById("ManagerDDL")) {
+                    const manager = document.getElementById("ManagerDDL").value;
+
+                    if (!manager) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'กรุณาเลือกผู้อนุมัติ',
+                            text: 'ต้องเลือก Manager ก่อนทำการอนุมัติ'
+                        });
+                        return;
+                    }
+
+                    document.getElementById("SelectedManager").value = manager;
+                }
+
+                const isApprove = statusId === 4;
+
+                Swal.fire({
+                    title: isApprove ? 'ยืนยันการอนุมัติ?' : 'ยืนยันการยกเลิก?',
+                    text: 'ระบบจะดำเนินการทันที',
+                    icon: 'question',
+                    showCancelButton: true,
+
+                    confirmButtonText: isApprove ? 'อนุมัติ' : 'ยกเลิก',
+                    cancelButtonText: 'ปิด',
+
+                    // ===== สีปุ่ม =====
+                    confirmButtonColor: isApprove ? '#28a745' : '#dc3545', // เขียว / แดง
+                    cancelButtonColor: '#6c757d' // เทา
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        Swal.fire({
+                            title: 'กำลังดำเนินการ...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        document.getElementById("approveForm").submit();
+                    }
+                });
+            }
+        </script>
+
+        <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+
+                    @if (TempData["SwalSuccess"] != null)
+                    {
+                    <text>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'สำเร็จ',
+                        text: '@TempData["SwalSuccess"]',
+                        confirmButtonColor: '#28a745' // เขียว
+                    });
+                    </text>
+                    }
+
+                    @if (TempData["SwalError"] != null)
+                    {
+                    <text>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ผิดพลาด',
+                        text: '@TempData["SwalError"]',
+                        confirmButtonColor: '#dc3545' // แดง
+                    });
+                    </text>
+                    }
+
+                    @if (TempData["SwalWarning"] != null)
+                    {
+                    <text>
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'แจ้งเตือน',
+                        text: '@TempData["SwalWarning"]',
+                        confirmButtonColor: '#fd7e14' // ส้ม
+                    });
+                    </text>
+                    }
+
+                    });
+        </script>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            @if (TempData["SwalSuccess"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ',
+                    text: '@TempData["SwalSuccess"]'
+                });
+                </text>
+            }
+
+            @if (TempData["SwalError"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: '@TempData["SwalError"]'
+                });
+                </text>
+            }
+
+            @if (TempData["SwalWarning"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'แจ้งเตือน',
+                    text: '@TempData["SwalWarning"]'
+                });
+                </text>
+            }
+
+            @if (TempData["SwalInfo"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'info',
+                    title: 'ข้อมูลเพิ่มเติม',
+                    text: '@TempData["SwalInfo"]'
+                });
+                </text>
+            }
+        });
+        </script>
+
+    </div>
+    <!--Asset Modal : รายการทรัพย์สิน -->
+
+    <div class="modal fade" id="itemDetailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="itemDetailModal" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">รายการทรัพย์สิน</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width:5%">No.</th>
+                                    <th>Asset</th>
+                                    <th class="text-start">Model/Serial No.</th>
+                                    <th>Quantity</th>
+                                    @*<th>คงเหลือ</th>*@
+                                    <th>Unit</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="itemTableBody">
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td>@item.AssetList</td>
+                                        <td class="text-start">@item.Model</td>
+                                        <td>@item.Amount</td>
+                                        @*<td>@item.Actual_Amount</td>*@
+                                        <td>@item.UnitAlias</td>
+                                        <td>@item.StatusName</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                        ปิด
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var rows = document.querySelectorAll("#itemTableBody tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].cells[0].innerText = i + 1;
+            }
+        });
+    </script>
+
+    <!-- Detail Modal รายละเอียดเอกสาร-->
+
+    <div class="modal fade" id="detailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="detailModal" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">รายละเอียดเอกสาร</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    @foreach (var item in Model
+                        .GroupBy(x => x.Dept_No)
+                        .Select(g => g.First()))
+                    {
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">สร้างเอกสาร</label>
+                                @Html.TextBoxFor(modelItem => item.Create_By_User,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">วันที่</label>
+                                @Html.TextBoxFor(modelItem => item.Create_Date,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">ผจก. อนุมัติ</label>
+                                @Html.TextBoxFor(modelItem => item.Managerapp,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">วันที่อนุมัติ</label>
+                                @Html.TextBoxFor(modelItem => item.Date_approve,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">CIC อนุมัติ</label>
+                                @Html.TextBoxFor(modelItem => item.Last_CIC,
+                                new { @class = "form-control", @readonly = "readonly" }) @*ยังไม่ได้แก้ไข*@
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">วันที่ CIC</label>
+                                @Html.TextBoxFor(modelItem => item.Last_CIC_update,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">ปิดเอกสาร</label>
+                                @Html.TextBoxFor(modelItem => item.Close_by,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">วันที่ปิด</label>
+                                @Html.TextBoxFor(modelItem => item.Close_Date,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label">บันทึกข้อมูลล่าสุด</label>
+                                @Html.TextBoxFor(modelItem => item.Last_update,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                        ปิด
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+@section scripts {
+    <script type="text/javascript">
+        window.onload = function () {
+
+            var btnApprove = document.getElementById("btnApprove");
+            var btnCancel = document.getElementById("btnCancel");
+
+            btnApprove.onclick = function () {
+                alert("กดอนุมัติแล้ว");
+            };
+
+            btnCancel.onclick = function () {
+                alert("กดยกเลิกแล้ว");
+            };
+        };
+    </script>
+}
+<script type="text/javascript">
+        window.onload = function () {
+
+            var btnApprove = document.getElementById("btnApprove");
+            var btnCancel = document.getElementById("btnCancel");
+
+            var cicId = @ViewBag.Dept_No;
+            var statusId = @ViewBag.StatusID;
+
+            // ถ้า status = 4 → disable อนุมัติ
+            if (statusId === 4) {
+                btnApprove.disabled = true;
+            }
+
+            btnApprove.onclick = function () {
+                updateStatus(1);
+            };
+
+            btnCancel.onclick = function () {
+                updateStatus(1);
+            };
+
+            function updateStatus(status) {
+
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+
+                        var result = JSON.parse(xhr.responseText);
+
+                        if (result.success) {
+                            alert("เปลี่ยนสถานะจาก " + result.oldStatus + " เป็น " + result.newStatus);
+                            location.reload();
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                };
+
+
+                xhr.send("Dept_No=" + cicId + "&StatusID=" + status);
+            }
+        };
+</script>

@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TSGCORE_SPRINGModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TSGCORE_SPRING.dbo.Employee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+            <PropertyRef Name="EmployeeCode" />
+          </Key>
+          <Property Name="EmployeeID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="EmployeeUsername" Type="nvarchar" MaxLength="150" />
+          <Property Name="PersonCardID" Type="nvarchar" MaxLength="13" />
+          <Property Name="Prefix" Type="nvarchar" MaxLength="20" />
+          <Property Name="ThFirstName" Type="nvarchar" MaxLength="150" />
+          <Property Name="ThLastName" Type="nvarchar" MaxLength="150" />
+          <Property Name="EngFirstName" Type="nvarchar" MaxLength="150" />
+          <Property Name="EngLastName" Type="nvarchar" MaxLength="150" />
+          <Property Name="GenderCode" Type="nvarchar" MaxLength="1" />
+          <Property Name="NationalityID" Type="int" />
+          <Property Name="CompanyCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="DepartmentCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="DivisionCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="SubDivisionCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="SubGroupCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="CostCenter" Type="nvarchar" MaxLength="20" />
+          <Property Name="DateTrain" Type="date" />
+          <Property Name="DateAppoint" Type="date" />
+          <Property Name="DateLastday" Type="date" />
+          <Property Name="DateResign" Type="date" />
+          <Property Name="Level" Type="nvarchar" MaxLength="10" />
+          <Property Name="SubLevelNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="Position" Type="nvarchar" MaxLength="255" />
+          <Property Name="PositionEName" Type="nvarchar" MaxLength="255" />
+          <Property Name="EmployeeStatusCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="RemarkStatus" Type="nvarchar" MaxLength="250" />
+          <Property Name="EmployeeTypeCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="ContactNo" Type="nvarchar" MaxLength="100" />
+          <Property Name="MobilePhone" Type="nchar" MaxLength="10" />
+          <Property Name="MobileDisplay" Type="int" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmployeePicture" Type="nvarchar" MaxLength="250" />
+          <Property Name="WorkPermitStart" Type="date" />
+          <Property Name="WorkPermitValid" Type="date" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="LastUpdateDate" Type="datetime" />
+          <Property Name="TimpStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="Remark2" Type="nvarchar" MaxLength="250" />
+          <Property Name="UpdateUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="UpdateDatetime" Type="datetime" />
+          <Property Name="RE_CODE" Type="nvarchar" MaxLength="10" />
+          <Property Name="RE_TNAME" Type="nvarchar" MaxLength="40" />
+          <Property Name="RE_ENAME" Type="nvarchar" MaxLength="40" />
+        </EntityType>
+        <EntityContainer Name="TSGCORE_SPRINGModelStoreContainer">
+          <EntitySet Name="Employee" EntityType="Self.Employee" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Employee].[EmployeeID] AS [EmployeeID], 
+    [Employee].[EmployeeCode] AS [EmployeeCode], 
+    [Employee].[EmployeeUsername] AS [EmployeeUsername], 
+    [Employee].[PersonCardID] AS [PersonCardID], 
+    [Employee].[Prefix] AS [Prefix], 
+    [Employee].[ThFirstName] AS [ThFirstName], 
+    [Employee].[ThLastName] AS [ThLastName], 
+    [Employee].[EngFirstName] AS [EngFirstName], 
+    [Employee].[EngLastName] AS [EngLastName], 
+    [Employee].[GenderCode] AS [GenderCode], 
+    [Employee].[NationalityID] AS [NationalityID], 
+    [Employee].[CompanyCode] AS [CompanyCode], 
+    [Employee].[DepartmentCode] AS [DepartmentCode], 
+    [Employee].[DivisionCode] AS [DivisionCode], 
+    [Employee].[SubDivisionCode] AS [SubDivisionCode], 
+    [Employee].[SubGroupCode] AS [SubGroupCode], 
+    [Employee].[CostCenter] AS [CostCenter], 
+    [Employee].[DateTrain] AS [DateTrain], 
+    [Employee].[DateAppoint] AS [DateAppoint], 
+    [Employee].[DateLastday] AS [DateLastday], 
+    [Employee].[DateResign] AS [DateResign], 
+    [Employee].[Level] AS [Level], 
+    [Employee].[SubLevelNo] AS [SubLevelNo], 
+    [Employee].[Position] AS [Position], 
+    [Employee].[PositionEName] AS [PositionEName], 
+    [Employee].[EmployeeStatusCode] AS [EmployeeStatusCode], 
+    [Employee].[RemarkStatus] AS [RemarkStatus], 
+    [Employee].[EmployeeTypeCode] AS [EmployeeTypeCode], 
+    [Employee].[ContactNo] AS [ContactNo], 
+    [Employee].[MobilePhone] AS [MobilePhone], 
+    [Employee].[MobileDisplay] AS [MobileDisplay], 
+    [Employee].[Email] AS [Email], 
+    [Employee].[EmployeePicture] AS [EmployeePicture], 
+    [Employee].[WorkPermitStart] AS [WorkPermitStart], 
+    [Employee].[WorkPermitValid] AS [WorkPermitValid], 
+    [Employee].[CreatedDate] AS [CreatedDate], 
+    [Employee].[LastUpdateDate] AS [LastUpdateDate], 
+    [Employee].[TimpStamp] AS [TimpStamp], 
+    [Employee].[Remark2] AS [Remark2], 
+    [Employee].[UpdateUser] AS [UpdateUser], 
+    [Employee].[UpdateDatetime] AS [UpdateDatetime], 
+    [Employee].[RE_CODE] AS [RE_CODE], 
+    [Employee].[RE_TNAME] AS [RE_TNAME], 
+    [Employee].[RE_ENAME] AS [RE_ENAME]
+    FROM [dbo].[Employee] AS [Employee]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TSGCORE_SPRINGModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+            <PropertyRef Name="EmployeeCode" />
+          </Key>
+          <Property Name="EmployeeID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmployeeUsername" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="PersonCardID" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="Prefix" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ThFirstName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ThLastName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="EngFirstName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="EngLastName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="GenderCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="NationalityID" Type="Int32" />
+          <Property Name="CompanyCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DepartmentCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DivisionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SubDivisionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SubGroupCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CostCenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DateTrain" Type="DateTime" Precision="0" />
+          <Property Name="DateAppoint" Type="DateTime" Precision="0" />
+          <Property Name="DateLastday" Type="DateTime" Precision="0" />
+          <Property Name="DateResign" Type="DateTime" Precision="0" />
+          <Property Name="Level" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SubLevelNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PositionEName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeStatusCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RemarkStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeTypeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MobilePhone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="MobileDisplay" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeePicture" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="WorkPermitStart" Type="DateTime" Precision="0" />
+          <Property Name="WorkPermitValid" Type="DateTime" Precision="0" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="TimpStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Remark2" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateDatetime" Type="DateTime" Precision="3" />
+          <Property Name="RE_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="RE_TNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="RE_ENAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="TSGCORE_SPRINGEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TSGCORE_SPRINGModelStoreContainer" CdmEntityContainer="TSGCORE_SPRINGEntities">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="TSGCORE_SPRINGModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="EmployeeUsername" ColumnName="EmployeeUsername" />
+                <ScalarProperty Name="PersonCardID" ColumnName="PersonCardID" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="ThFirstName" ColumnName="ThFirstName" />
+                <ScalarProperty Name="ThLastName" ColumnName="ThLastName" />
+                <ScalarProperty Name="EngFirstName" ColumnName="EngFirstName" />
+                <ScalarProperty Name="EngLastName" ColumnName="EngLastName" />
+                <ScalarProperty Name="GenderCode" ColumnName="GenderCode" />
+                <ScalarProperty Name="NationalityID" ColumnName="NationalityID" />
+                <ScalarProperty Name="CompanyCode" ColumnName="CompanyCode" />
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="DivisionCode" ColumnName="DivisionCode" />
+                <ScalarProperty Name="SubDivisionCode" ColumnName="SubDivisionCode" />
+                <ScalarProperty Name="SubGroupCode" ColumnName="SubGroupCode" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="DateTrain" ColumnName="DateTrain" />
+                <ScalarProperty Name="DateAppoint" ColumnName="DateAppoint" />
+                <ScalarProperty Name="DateLastday" ColumnName="DateLastday" />
+                <ScalarProperty Name="DateResign" ColumnName="DateResign" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="SubLevelNo" ColumnName="SubLevelNo" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="PositionEName" ColumnName="PositionEName" />
+                <ScalarProperty Name="EmployeeStatusCode" ColumnName="EmployeeStatusCode" />
+                <ScalarProperty Name="RemarkStatus" ColumnName="RemarkStatus" />
+                <ScalarProperty Name="EmployeeTypeCode" ColumnName="EmployeeTypeCode" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="MobileDisplay" ColumnName="MobileDisplay" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmployeePicture" ColumnName="EmployeePicture" />
+                <ScalarProperty Name="WorkPermitStart" ColumnName="WorkPermitStart" />
+                <ScalarProperty Name="WorkPermitValid" ColumnName="WorkPermitValid" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="TimpStamp" ColumnName="TimpStamp" />
+                <ScalarProperty Name="Remark2" ColumnName="Remark2" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="UpdateDatetime" ColumnName="UpdateDatetime" />
+                <ScalarProperty Name="RE_CODE" ColumnName="RE_CODE" />
+                <ScalarProperty Name="RE_TNAME" ColumnName="RE_TNAME" />
+                <ScalarProperty Name="RE_ENAME" ColumnName="RE_ENAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,45 @@
+﻿html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.body-content {
+    flex: 1 0 auto;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding-bottom: 40px; /* กันชิด footer */
+}
+
+.pagination-container {
+    margin-top: auto;
+    background-color: #fff;
+    padding: 1rem 0;
+}
+
+footer {
+    background: #eee;
+    text-align: center;
+    padding: 1rem 0;
+}
+/* ลอยเฉพาะจอใหญ่ (>= 576px) */
+@media (min-width: 576px) {
+    .pagination-container {
+        position: fixed;
+        bottom: 3.5rem;
+        left: 0;
+        width: 100%;
+        z-index: 1030;
+    }
+}
+
+/* จอเล็ก (มือถือ < 576px) = ไม่ลอย */
+@media (max-width: 575.98px) {
+    .pagination-container {
+        position: static !important;
+    }
+}

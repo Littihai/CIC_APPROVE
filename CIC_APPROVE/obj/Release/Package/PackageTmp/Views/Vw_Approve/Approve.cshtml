@@ -1,0 +1,806 @@
+﻿﻿@model IEnumerable<CIC_APPROVE.Models.Vw_Approve>
+
+@{
+    ViewBag.Title = "MANAGER APPROVE";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var status = Model.Any()
+        ? (Model.First().StatusID ?? 0)
+        : 0;
+}
+@{
+    bool isDept11 = ViewBag.Dept_No != null && ViewBag.Dept_No.ToString().StartsWith("11");
+}
+
+@{
+    var attachList = ViewBag.AttachList
+        as List<CIC_APPROVE.Models.trn_CICAttach>;
+}
+
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <title>CIC OUT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 2px;
+        }
+
+        /* input readonly ตัวอักษรสีน้ำเงิน */
+        .card input[readonly],
+        .card textarea[readonly] {
+            color: #0d6efd !important;
+            /* Bootstrap primary blue */
+            background-color: #fff;
+            /* ไม่ให้เป็นสีเทา */
+            opacity: 1;
+            /* กัน Bootstrap ทำให้ซีด */
+            font-weight: 500;
+        }
+
+        .card {
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn:hover {
+                transform: scale(1.05);
+            }
+
+        .btn-green {
+            background-color: #28a745; /* เขียว Bootstrap */
+            color: white;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <!-- Header -->
+        <div class="card mb-3">
+            <div class="card-body">
+                @foreach (var item in Model
+                    .GroupBy(x => x.Dept_No)
+                    .Select(g => g.First()))
+                {
+                    <h5 class="mb-1">
+                        @Html.DisplayFor(modelItem => item.CIC)
+                    </h5>
+                    <div class="row mt-3 align-items-center text-end">
+                        <div class="col text-start text-success fw-bold" id="company_name">
+                            บริษัท ไทยซัมมิท เอนจิเนียริง จำกัด
+                        </div>
+                        <div class="col-auto">
+                            Dept. No :
+                            @Html.DisplayFor(modelItem => item.Dept_No)
+                        </div>
+
+                        <div class="col-auto">
+                            CIC No :@Html.DisplayFor(modelItem => item.CIC_No)
+                        </div>
+
+                        @*เพิ่ม StatusID เป็น 1 ให้เป็นสีฟ้า คือรออนุมัติ*@
+                        @*เพิ่ม StatusID เป็น 4 ให้เป็นสีส้ม คือรอ CIC อนุมัติ*@
+                        @{
+                            string statusClass = "text-dark";
+
+                            if (item.StatusID == 1)
+                            {
+                                statusClass = "text-primary";   // ฟ้า
+                            }
+                            else if (item.StatusID == 4)
+                            {
+                                statusClass = "text-warning";   // ส้ม
+                            }
+                        }
+
+                        <div class="col-auto">
+                            สถานะ :
+                            <span class="fw-semibold @statusClass">
+                                @Html.DisplayFor(modelItem => item.StatusName)
+                            </span>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+        <!-- Tabs -->
+        @{
+            var firstItem = Model.FirstOrDefault();
+        }
+
+        <div class="mb-3">
+            <button class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#detailModal">
+                รายละเอียด
+            </button>
+            @if (firstItem != null)
+            {
+                <button class="btn btn-primary me-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#attachModal"
+                        data-cicid="@firstItem.CIC_ID">
+                    ไฟล์แนบ
+                </button>
+            }
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="attachModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content shadow-lg">
+
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">ไฟล์แนบ</h5>
+                        <button type="button"
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal">
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div id="attachContainer"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script>
+    var attachList = @Html.Raw(
+        Json.Encode(ViewBag.AttachList ?? new List<object>())
+    );
+
+    var modal = document.getElementById('attachModal');
+
+    modal.addEventListener('show.bs.modal', function (event) {
+
+        var button = event.relatedTarget;
+        var cicId = button.getAttribute('data-cicid');
+
+        var container = document.getElementById('attachContainer');
+        container.innerHTML = "";
+
+        if (!attachList || attachList.length === 0) {
+            container.innerHTML =
+                "<div class='alert alert-warning'>ไม่มีไฟล์แนบ</div>";
+            return;
+        }
+
+        // กรองตาม CIC_ID และเรียงตาม ID
+        var files = attachList
+            .filter(x => x.CIC_ID == cicId)
+            .sort((a, b) => a.CICAttachID - b.CICAttachID);
+
+        if (!files || files.length === 0) {
+            container.innerHTML =
+                "<div class='alert alert-warning'>ไม่มีไฟล์แนบ</div>";
+            return;
+        }
+
+        // กันไฟล์ชื่อซ้ำ
+        var uniqueFiles = [];
+        var fileNames = new Set();
+
+        files.forEach(function (file) {
+            if (!fileNames.has(file.AttachFile)) {
+                fileNames.add(file.AttachFile);
+                uniqueFiles.push(file);
+            }
+        });
+
+        if (uniqueFiles.length === 0) {
+            container.innerHTML =
+                "<div class='alert alert-warning'>ไม่มีไฟล์แนบ</div>";
+            return;
+        }
+
+        // สร้างตาราง
+        var table = document.createElement("table");
+        table.className = "table table-bordered table-striped";
+
+        table.innerHTML = `
+            <thead class="table-primary">
+                <tr>
+                    <th>ชื่อไฟล์</th>
+                    <th width="150">เปิดไฟล์</th>
+                </tr>
+            </thead>
+        `;
+
+        var tbody = document.createElement("tbody");
+
+        uniqueFiles.forEach(function (file) {
+
+            var row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${file.AttachFile ? file.AttachFile : ""}</td>
+                <td>
+                    <a href='@Url.Action("OpenFile","Vw_Approve")?id=${file.CICAttachID}'
+                       target='_blank'
+                       class='btn btn-sm btn-success w-100'>
+                       เปิดไฟล์
+                    </a>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+
+        table.appendChild(tbody);
+        container.appendChild(table);
+    });
+        </script>
+
+
+        <!-- Form Section -->
+        <div class="card mb-4">
+            <div class="card-body">
+                @foreach (var item in Model
+                    .GroupBy(x => x.Dept_No)
+                    .Select(g => g.First()))
+                {
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">ประเภททรัพย์สิน</label>
+                            @Html.TextBoxFor(modelItem => item.AstTypeName,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">สาเหตุการทำ CIC</label>
+                            @Html.TextBoxFor(modelItem => item.CICReason,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        @{
+                            bool showInDate = item.CICTypeID == 1 || item.CICTypeID == 2 || item.CICTypeID == 4;
+                            bool showOutDate = item.CICTypeID == 3 || item.CICTypeID == 2 || item.CICTypeID == 4;
+                        }
+                        @*@{
+                            var deptNoItem = item.Dept_No ?? "";
+
+                            bool is11 = deptNoItem.StartsWith("11");
+                            bool is12 = deptNoItem.StartsWith("12");
+                            bool is13 = deptNoItem.StartsWith("13");
+                            bool is14 = deptNoItem.StartsWith("14");
+
+                            bool showIn = showInDate && !is13;   // 13% ไม่แสดง IN
+                            bool showOut = showOutDate && !is11; // 11% ไม่แสดง OUT
+                        }*@
+
+                        @{
+                            var currentDept = item.Dept_No ?? "";
+
+                            bool is11 = currentDept.StartsWith("11");
+                            bool is12 = currentDept.StartsWith("12");
+                            bool is13 = currentDept.StartsWith("13");
+                            bool is14 = currentDept.StartsWith("14");
+
+                            // ===== เงื่อนไขแสดงช่อง =====
+                            bool showIn = !is13;   // 13 ไม่เอาวันเข้า
+                            bool showOut = !is11;   // 11 ไม่เอาวันออก
+
+                            // ===== Layout =====
+                            bool isSpecial = is11 || is13;
+
+                            string colDateIn = isSpecial ? "col-md-4" : "col-md-3";
+                            string colDateOut = isSpecial ? "col-md-4" : "col-md-3";
+                            string colContact = isSpecial ? "col-md-4" : "col-md-2";
+                            string colVendor = isSpecial ? "col-md-4" : "col-md-4";
+
+                            string colFactory = (is11 || is13) ? "col-md-12"
+                                                : (is12 || is14) ? "col-md-4"
+                                                : "col-md-12";
+
+
+                        }
+
+
+                        @if (showIn)
+                        {
+                            <div class="@colDateIn">
+                                <label class="form-label">
+                                    @(is14 ? "วันที่คาดว่าจะนำเข้า" : "วันที่นำเข้า")
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       readonly
+                                       value="@(item.IN_Date.HasValue
+                        ? item.IN_Date.Value.ToString("dd/MM/yyyy")
+                        : "")" />
+                            </div>
+                        }
+
+                        @if (showOut)
+                        {
+                            <div class="@colDateOut">
+                                <label class="form-label">
+                                    @(is12 ? "วันที่คาดว่าจะนำออก" : "วันที่นำออก")
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       readonly
+                                       value="@(item.OUT_Date.HasValue
+                        ? item.OUT_Date.Value.ToString("dd/MM/yyyy")
+                        : "")" />
+                            </div>
+                        }
+
+                        <div class="@colContact">
+                            <label class="form-label">ผู้ติดต่อชื่อ</label>
+                            @Html.TextBoxFor(m => item.VendorContact,
+                                new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="@colVendor">
+                            <label class="form-label">นำไปที่</label>
+                            @Html.TextBoxFor(m => item.Vendor,
+                                new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">ทะเบียน</label>
+                            @Html.TextBoxFor(modelItem => item.License,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">พาหนะ</label>
+                            @Html.TextBoxFor(modelItem => item.Vehicle,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">ยี่ห้อ</label>
+                            @Html.TextBoxFor(modelItem => item.License,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">วัตถุประสงค์</label>
+                            @Html.TextBoxFor(modelItem => item.Objective,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">ชื่อ-สกุล</label>
+                            @Html.TextBoxFor(modelItem => item.Name_user,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">แผนก</label>
+                            @Html.TextBoxFor(modelItem => item.SubDivisionName,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">อีเมล</label>
+                            @Html.TextBoxFor(modelItem => item.Email,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">เบอร์ติดต่อ</label>
+                            @Html.TextBoxFor(modelItem => item.ContactNo,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">หมายเหตุ</label>
+                            @Html.TextBoxFor(modelItem => item.Remark,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">โรงงาน</label>
+                            @Html.TextBoxFor(modelItem => item.Factory,
+                            new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">รายการทรัพย์สิน</h5>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width:5%" align="center">No.</th>
+                                <th style="text-align:center">Asset</th>
+                                <th style="text-align:center">Model / Serial No.</th>
+                                <th style="text-align:center">Quantity</th>
+                                <th style="text-align:center">Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemTableBody">
+                            @{
+                                int no = 1;
+                            }
+
+                            @foreach (var item in Model
+                                .OrderBy(x => x.Dept_No))
+                            {
+                                <tr>
+                                    <td>@no</td>
+                                    <td style="text-align:left">@item.AssetList</td>
+                                    <td style="text-align:left">@item.Model</td>
+                                    <td>@item.Amount</td>
+                                    <td>@item.UnitAlias</td>
+                                </tr>
+                                no++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @{
+            string deptNo = ViewBag.Dept_No as string;
+        }
+
+        @{
+            int viewStatus = ViewBag.StatusID != null ? (int)ViewBag.StatusID : 0;
+            int userTypeId = ViewBag.UserTypeID != null ? (int)ViewBag.UserTypeID : 0;
+
+            string viewDept = ViewBag.Dept_No != null ? ViewBag.Dept_No.ToString() : "";
+            string viewUser = ViewBag.ApproveUser != null ? ViewBag.ApproveUser.ToString() : "";
+
+            bool canApprove = false;
+            bool canCancel = false;
+
+            // =========================
+            // DEPT 11
+            // =========================
+            if (viewDept.StartsWith("11"))
+            {
+                if (userTypeId == 2) // Manager
+                {
+                    if (viewStatus == 1)
+                    {
+                        canApprove = true;   // 1 → 2
+                    }
+                    else if (viewStatus == 2)
+                    {
+                        canCancel = true;    // 2 → 1
+                    }
+                }
+                else if (userTypeId == 7) // Accounting
+                {
+                    if (viewStatus == 2)
+                    {
+                        canApprove = true;   // 2 → 4
+                    }
+                    else if (viewStatus == 4)
+                    {
+                        canCancel = true;    // 4 → 1
+                    }
+                }
+            }
+
+            // =========================
+            // DEPT 12 / 13 / 14
+            // =========================
+            else if (viewDept.StartsWith("12")
+                  || viewDept.StartsWith("13")
+                  || viewDept.StartsWith("14"))
+            {
+                if (userTypeId == 2) // Manager Only
+                {
+                    if (viewStatus == 1)
+                    {
+                        canApprove = true;   // 1 → 4
+                    }
+                    else if (viewStatus == 4)
+                    {
+                        canCancel = true;    // 4 → 1
+                    }
+                }
+            }
+        }
+        <form id="approveForm" method="post" action="@Url.Action("UpdateStatus","Vw_Approve")">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="StatusID" id="fStatusID" />
+            <input type="hidden" name="Dept_No" value="@viewDept" />
+            <input type="hidden" name="ApproveUser" value="@viewUser" />
+        </form>
+        <div class="text-center mt-5 d-flex justify-content-center gap-3">
+
+            @if (canApprove)
+            {
+                <button type="button"
+                        class="btn btn-success btn-lg"
+                        style="width:200px;"
+                        onclick="submitApprove(@viewStatus)">
+                    อนุมัติ
+                </button>
+            }
+            else
+            {
+                <button type="button"
+                        class="btn btn-success btn-lg"
+                        style="width:200px;"
+                        disabled>
+                    อนุมัติ
+                </button>
+            }
+
+            @if (canCancel)
+            {
+                <button type="button"
+                        class="btn btn-danger btn-lg"
+                        style="width:200px;"
+                        onclick="submitCancel(@viewStatus)">
+                    ยกเลิกอนุมัติ
+                </button>
+            }
+            else
+            {
+                <button type="button"
+                        class="btn btn-danger btn-lg"
+                        style="width:200px;"
+                        disabled>
+                    ยกเลิกอนุมัติ
+                </button>
+            }
+
+        </div>
+
+        <script>
+    function submitApprove(currentStatus) {
+
+        let nextStatus = 0;
+        let dept = "@viewDept";
+
+        // Dept 11
+        if (dept.startsWith("11")) {
+            if (currentStatus === 1)
+                nextStatus = 2;
+            else if (currentStatus === 2)
+                nextStatus = 4;
+        }
+
+        // Dept 12 / 13 / 14
+        else if (dept.startsWith("12") ||
+                 dept.startsWith("13") ||
+                 dept.startsWith("14")) {
+
+            if (currentStatus === 1)
+                nextStatus = 4;
+        }
+
+        if (nextStatus === 0) return;
+
+        document.getElementById('fStatusID').value = nextStatus;
+        document.getElementById('approveForm').submit();
+    }
+
+    function submitCancel(currentStatus) {
+
+        let backStatus = 0;
+        let dept = "@viewDept";
+
+        // Dept 11
+        if (dept.startsWith("11")) {
+            if (currentStatus === 2 || currentStatus === 4)
+                backStatus = 1;
+        }
+
+        // Dept 12 / 13 / 14
+        else if (dept.startsWith("12") ||
+                 dept.startsWith("13") ||
+                 dept.startsWith("14")) {
+
+            if (currentStatus === 4)
+                backStatus = 1;
+        }
+
+        if (backStatus === 0) return;
+
+        document.getElementById('fStatusID').value = backStatus;
+        document.getElementById('approveForm').submit();
+    }
+        </script>
+
+
+    </div>
+
+    <!-- Detail Modal รายละเอียดเอกสาร-->
+
+    <div class="modal fade" id="detailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="detailModal" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">รายละเอียดเอกสาร</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    @foreach (var item in Model
+                        .GroupBy(x => x.Dept_No)
+                        .Select(g => g.First()))
+                    {
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">สร้างเอกสาร</label>
+                                @Html.TextBoxFor(modelItem => item.Create_By_User,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">วันที่</label>
+                                <input type="text"
+                                       class="form-control"
+                                       readonly
+                                       value="@(item.Create_Date.HasValue
+                    ? item.Create_Date.Value.ToString("dd/MM/yyyy")
+                    : "")" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">ผจก. อนุมัติ</label>
+                                @Html.TextBoxFor(modelItem => item.Managerapp,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">วันที่อนุมัติ</label>
+                                <input type="text"
+                                       class="form-control"
+                                       readonly
+                                       value="@(item.Date_approve.HasValue
+                    ? item.Date_approve.Value.ToString("dd/MM/yyyy")
+                    : "")" />
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <label class="form-label">CIC อนุมัติ</label>
+                                @Html.TextBoxFor(modelItem => item.Last_CIC,
+                                new { @class = "form-control", @readonly = "readonly" }) @*ยังไม่ได้แก้ไข*@
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">วันที่ CIC</label>
+                                <input type="text" class="form-control" readonly value="@(item.Last_CIC_update.HasValue? item.Last_CIC_update.Value.ToString("dd/MM/yyyy"): "")" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">ปิดเอกสาร</label>
+                                @Html.TextBoxFor(modelItem => item.Close_by,
+                                new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">วันที่ปิด</label>
+                                <input type="text" class="form-control" readonly value="@(item.Close_Date.HasValue ? item.Close_Date.Value.ToString("dd/MM/yyyy") : "")" />
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label">บันทึกข้อมูลล่าสุด</label>
+                                <input type="text" class="form-control" readonly value="@(item.Last_update.HasValue? item.Last_update.Value.ToString("dd/MM/yyyy") : "")" />
+                            </div>
+
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                        ปิด
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+@section scripts {
+    <script type="text/javascript">
+        window.onload = function () {
+
+            var btnApprove = document.getElementById("btnApprove");
+            var btnCancel = document.getElementById("btnCancel");
+
+            btnApprove.onclick = function () {
+                alert("กดอนุมัติแล้ว");
+            };
+
+            btnCancel.onclick = function () {
+                alert("กดยกเลิกแล้ว");
+            };
+        };
+    </script>
+}
+<script type="text/javascript">
+        window.onload = function () {
+
+            var btnApprove = document.getElementById("btnApprove");
+            var btnCancel = document.getElementById("btnCancel");
+
+            var cicId = @ViewBag.Dept_No;
+            var statusId = @ViewBag.StatusID;
+
+            // ถ้า status = 4 → disable อนุมัติ
+            if (statusId === 4) {
+                btnApprove.disabled = true;
+            }
+
+            btnApprove.onclick = function () {
+                updateStatus(1);
+            };
+
+            btnCancel.onclick = function () {
+                updateStatus(1);
+            };
+
+            function updateStatus(status) {
+
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+
+                        var result = JSON.parse(xhr.responseText);
+
+                        if (result.success) {
+                            alert("เปลี่ยนสถานะจาก " + result.oldStatus + " เป็น " + result.newStatus);
+                            location.reload();
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                };
+
+
+                xhr.send("Dept_No=" + cicId + "&StatusID=" + status);
+            }
+        };
+</script>

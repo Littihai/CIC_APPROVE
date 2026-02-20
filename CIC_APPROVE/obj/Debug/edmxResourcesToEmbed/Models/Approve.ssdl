@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CICCONTROL_SPRINGModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'CICCONTROL_SPRING.dbo._Approve' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="_Approve">
+    <Key>
+      <PropertyRef Name="CIC_ID" />
+      <PropertyRef Name="Dept_No" />
+    </Key>
+    <Property Name="CIC_ID" Type="bigint" Nullable="false" />
+    <Property Name="Dept_No" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CIC_No" Type="nvarchar" MaxLength="50" />
+    <Property Name="Costcenter" Type="nvarchar" MaxLength="20" />
+    <Property Name="CICTypeID" Type="int" />
+    <Property Name="StatusID" Type="int" />
+    <Property Name="AstTypeID" Type="int" />
+    <Property Name="IN_Date" Type="date" />
+    <Property Name="OUT_Date" Type="date" />
+    <Property Name="EmployeeCode" Type="nvarchar" MaxLength="20" />
+    <Property Name="VendorID" Type="bigint" />
+    <Property Name="VendorContact" Type="nvarchar" MaxLength="255" />
+    <Property Name="Vehicle" Type="nvarchar" MaxLength="150" />
+    <Property Name="Brand" Type="nvarchar" MaxLength="150" />
+    <Property Name="License" Type="nvarchar" MaxLength="50" />
+    <Property Name="CICReasonID" Type="int" />
+    <Property Name="Last_update" Type="datetime" />
+    <Property Name="Last_user" Type="nvarchar" MaxLength="20" />
+    <Property Name="Last_CIC_update" Type="datetime" />
+    <Property Name="Last_CIC" Type="nvarchar" MaxLength="20" />
+    <Property Name="Last_App_update" Type="datetime" />
+    <Property Name="Last_App" Type="nvarchar" MaxLength="20" />
+    <Property Name="Last_PO_update" Type="datetime" />
+    <Property Name="Last_PO" Type="nvarchar" MaxLength="20" />
+    <Property Name="Last_Sale_update" Type="datetime" />
+    <Property Name="Last_Sale" Type="nvarchar" MaxLength="20" />
+    <Property Name="closed" Type="bit" />
+    <Property Name="Close_Date" Type="datetime" />
+    <Property Name="Closed_User" Type="nvarchar" MaxLength="20" />
+    <Property Name="Cancel_Date" Type="datetime" />
+    <Property Name="Cancel_User" Type="nvarchar" MaxLength="20" />
+    <Property Name="Objective" Type="nvarchar(max)" />
+    <Property Name="CancelApp_Update" Type="datetime" />
+    <Property Name="CancelApp_User" Type="nvarchar" MaxLength="20" />
+    <Property Name="NotApp_Update" Type="datetime" />
+    <Property Name="Notapp_User" Type="nvarchar" MaxLength="20" />
+    <Property Name="Create_Date" Type="datetime" />
+    <Property Name="Create_By" Type="nvarchar" MaxLength="20" />
+    <Property Name="CancelClose_Update" Type="datetime" />
+    <Property Name="CancelClose_User" Type="nvarchar" MaxLength="20" />
+    <Property Name="Cancelcomment" Type="nvarchar" MaxLength="255" />
+    <Property Name="CICUserID" Type="int" />
+    <Property Name="CIC_No_OLD" Type="nvarchar" MaxLength="50" />
+    <Property Name="CIC_No_REF" Type="nvarchar" MaxLength="50" />
+    <Property Name="FlagDel" Type="bit" />
+    <Property Name="Remark" Type="nvarchar(max)" />
+    <Property Name="Delete_Update" Type="datetime" />
+    <Property Name="Delete_User" Type="nvarchar" MaxLength="50" />
+    <Property Name="CloseRemark" Type="nvarchar(max)" />
+    <Property Name="CICTransfer" Type="bit" />
+    <Property Name="WaitApporveDate" Type="datetime" />
+    <Property Name="UploadUser" Type="nvarchar" MaxLength="20" />
+    <Property Name="UploadDatetime" Type="datetime" />
+    <Property Name="EmployeeCode2" Type="nvarchar" MaxLength="20" />
+    <Property Name="Last_App2" Type="nvarchar" MaxLength="20" />
+    <Property Name="ChangeDate" Type="datetime" />
+    <Property Name="FlagChange" Type="bit" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'CICCONTROL_SPRING.dbo.TEST_CIC_APPROVE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="TEST_CIC_APPROVE">
+    <Key>
+      <PropertyRef Name="CIC_ID" />
+      <PropertyRef Name="CICDetailID" />
+      <PropertyRef Name="Dept_No" />
+    </Key>
+    <Property Name="NO." Type="bigint" />
+    <Property Name="CIC_ID" Type="bigint" Nullable="false" />
+    <Property Name="CICDetailID" Type="bigint" Nullable="false" />
+    <Property Name="CICTypeID" Type="int" />
+    <Property Name="CIC" Type="nvarchar" MaxLength="31" />
+    <Property Name="Dept_No" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CIC_No" Type="nvarchar" MaxLength="50" />
+    <Property Name="StatusID" Type="int" />
+    <Property Name="StatusName" Type="nvarchar" MaxLength="150" />
+    <Property Name="Item" Type="int" />
+    <Property Name="AssetList" Type="nvarchar" MaxLength="255" />
+    <Property Name="Model" Type="nvarchar" MaxLength="255" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="UnitID" Type="int" />
+    <Property Name="UnitAlias" Type="nvarchar" MaxLength="20" />
+    <Property Name="Actual_Amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Rate" Type="nvarchar" MaxLength="10" />
+    <Property Name="ScrapRet" Type="bit" />
+    <Property Name="Scrap" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="LastUser" Type="nvarchar" MaxLength="20" />
+    <Property Name="LastDateTime" Type="datetime" />
+    <Property Name="Costcenter" Type="nvarchar" MaxLength="20" />
+    <Property Name="AstTypeID" Type="int" />
+    <Property Name="AstTypeName" Type="nvarchar" MaxLength="255" />
+    <Property Name="VendorID" Type="bigint" />
+    <Property Name="Vendor" Type="nvarchar" MaxLength="276" />
+    <Property Name="VendorContact" Type="nvarchar" MaxLength="255" />
+    <Property Name="EmployeeCode" Type="nvarchar" MaxLength="20" />
+    <Property Name="EmployeeUsername" Type="nvarchar" MaxLength="150" />
+    <Property Name="Name_user" Type="nvarchar" MaxLength="301" />
+    <Property Name="ContactNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" />
+    <Property Name="SubDivisionCode" Type="nvarchar" MaxLength="20" />
+    <Property Name="Factory" Type="nvarchar" MaxLength="50" />
+    <Property Name="SubDivisionName" Type="nvarchar" MaxLength="150" />
+    <Property Name="IN_Date" Type="date" />
+    <Property Name="OUT_Date" Type="date" />
+    <Property Name="Vehicle" Type="nvarchar" MaxLength="150" />
+    <Property Name="Brand" Type="nvarchar" MaxLength="150" />
+    <Property Name="License" Type="nvarchar" MaxLength="50" />
+    <Property Name="CICReasonID" Type="int" />
+    <Property Name="CICReason" Type="nvarchar" MaxLength="255" />
+    <Property Name="Last_update" Type="datetime" />
+    <Property Name="Last_user" Type="nvarchar" MaxLength="20" />
+    <Property Name="Last_User_Update" Type="nvarchar" MaxLength="301" />
+    <Property Name="Last_CIC_update" Type="datetime" />
+    <Property Name="Last_CIC" Type="nvarchar" MaxLength="20" />
+    <Property Name="Date_approve" Type="datetime" />
+    <Property Name="Manager_approve" Type="nvarchar" MaxLength="20" />
+    <Property Name="Managerapp" Type="nvarchar" MaxLength="301" />
+    <Property Name="closed" Type="bit" />
+    <Property Name="Close_Date" Type="datetime" />
+    <Property Name="Closed_User" Type="nvarchar" MaxLength="20" />
+    <Property Name="Close_by" Type="nvarchar" MaxLength="301" />
+    <Property Name="Cancel_Date" Type="datetime" />
+    <Property Name="Cancel_User" Type="nvarchar" MaxLength="20" />
+    <Property Name="Objective" Type="nvarchar(max)" />
+    <Property Name="Create_Date" Type="datetime" />
+    <Property Name="Create_By" Type="nvarchar" MaxLength="20" />
+    <Property Name="Create_By_User" Type="nvarchar" MaxLength="301" />
+    <Property Name="CancelClose_Update" Type="datetime" />
+    <Property Name="CancelClose_User" Type="nvarchar" MaxLength="20" />
+    <Property Name="Cancelcomment" Type="nvarchar" MaxLength="255" />
+    <Property Name="CICUserID" Type="int" />
+    <Property Name="CIC_No_OLD" Type="nvarchar" MaxLength="50" />
+    <Property Name="CIC_No_REF" Type="nvarchar" MaxLength="50" />
+    <Property Name="FlagDel" Type="bit" />
+    <Property Name="Remark" Type="nvarchar(max)" />
+    <Property Name="Delete_Update" Type="datetime" />
+    <Property Name="Delete_User" Type="nvarchar" MaxLength="50" />
+    <Property Name="CloseRemark" Type="nvarchar(max)" />
+    <Property Name="CICTransfer" Type="bit" />
+    <Property Name="WaitApporveDate" Type="datetime" />
+    <Property Name="UploadUser" Type="nvarchar" MaxLength="20" />
+    <Property Name="UploadDatetime" Type="datetime" />
+    <Property Name="EmployeeCode2" Type="nvarchar" MaxLength="20" />
+    <Property Name="Last_App2" Type="nvarchar" MaxLength="20" />
+    <Property Name="ChangeDate" Type="datetime" />
+    <Property Name="FlagChange" Type="bit" />
+  </EntityType>
+  <EntityContainer Name="CICCONTROL_SPRINGModelStoreContainer">
+    <EntitySet Name="_Approve" EntityType="Self._Approve" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [_Approve].[CIC_ID] AS [CIC_ID], 
+    [_Approve].[Dept_No] AS [Dept_No], 
+    [_Approve].[CIC_No] AS [CIC_No], 
+    [_Approve].[Costcenter] AS [Costcenter], 
+    [_Approve].[CICTypeID] AS [CICTypeID], 
+    [_Approve].[StatusID] AS [StatusID], 
+    [_Approve].[AstTypeID] AS [AstTypeID], 
+    [_Approve].[IN_Date] AS [IN_Date], 
+    [_Approve].[OUT_Date] AS [OUT_Date], 
+    [_Approve].[EmployeeCode] AS [EmployeeCode], 
+    [_Approve].[VendorID] AS [VendorID], 
+    [_Approve].[VendorContact] AS [VendorContact], 
+    [_Approve].[Vehicle] AS [Vehicle], 
+    [_Approve].[Brand] AS [Brand], 
+    [_Approve].[License] AS [License], 
+    [_Approve].[CICReasonID] AS [CICReasonID], 
+    [_Approve].[Last_update] AS [Last_update], 
+    [_Approve].[Last_user] AS [Last_user], 
+    [_Approve].[Last_CIC_update] AS [Last_CIC_update], 
+    [_Approve].[Last_CIC] AS [Last_CIC], 
+    [_Approve].[Last_App_update] AS [Last_App_update], 
+    [_Approve].[Last_App] AS [Last_App], 
+    [_Approve].[Last_PO_update] AS [Last_PO_update], 
+    [_Approve].[Last_PO] AS [Last_PO], 
+    [_Approve].[Last_Sale_update] AS [Last_Sale_update], 
+    [_Approve].[Last_Sale] AS [Last_Sale], 
+    [_Approve].[closed] AS [closed], 
+    [_Approve].[Close_Date] AS [Close_Date], 
+    [_Approve].[Closed_User] AS [Closed_User], 
+    [_Approve].[Cancel_Date] AS [Cancel_Date], 
+    [_Approve].[Cancel_User] AS [Cancel_User], 
+    [_Approve].[Objective] AS [Objective], 
+    [_Approve].[CancelApp_Update] AS [CancelApp_Update], 
+    [_Approve].[CancelApp_User] AS [CancelApp_User], 
+    [_Approve].[NotApp_Update] AS [NotApp_Update], 
+    [_Approve].[Notapp_User] AS [Notapp_User], 
+    [_Approve].[Create_Date] AS [Create_Date], 
+    [_Approve].[Create_By] AS [Create_By], 
+    [_Approve].[CancelClose_Update] AS [CancelClose_Update], 
+    [_Approve].[CancelClose_User] AS [CancelClose_User], 
+    [_Approve].[Cancelcomment] AS [Cancelcomment], 
+    [_Approve].[CICUserID] AS [CICUserID], 
+    [_Approve].[CIC_No_OLD] AS [CIC_No_OLD], 
+    [_Approve].[CIC_No_REF] AS [CIC_No_REF], 
+    [_Approve].[FlagDel] AS [FlagDel], 
+    [_Approve].[Remark] AS [Remark], 
+    [_Approve].[Delete_Update] AS [Delete_Update], 
+    [_Approve].[Delete_User] AS [Delete_User], 
+    [_Approve].[CloseRemark] AS [CloseRemark], 
+    [_Approve].[CICTransfer] AS [CICTransfer], 
+    [_Approve].[WaitApporveDate] AS [WaitApporveDate], 
+    [_Approve].[UploadUser] AS [UploadUser], 
+    [_Approve].[UploadDatetime] AS [UploadDatetime], 
+    [_Approve].[EmployeeCode2] AS [EmployeeCode2], 
+    [_Approve].[Last_App2] AS [Last_App2], 
+    [_Approve].[ChangeDate] AS [ChangeDate], 
+    [_Approve].[FlagChange] AS [FlagChange]
+    FROM [dbo].[_Approve] AS [_Approve]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="TEST_CIC_APPROVE" EntityType="Self.TEST_CIC_APPROVE" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [TEST_CIC_APPROVE].[NO.] AS [NO.], 
+    [TEST_CIC_APPROVE].[CIC_ID] AS [CIC_ID], 
+    [TEST_CIC_APPROVE].[CICDetailID] AS [CICDetailID], 
+    [TEST_CIC_APPROVE].[CICTypeID] AS [CICTypeID], 
+    [TEST_CIC_APPROVE].[CIC] AS [CIC], 
+    [TEST_CIC_APPROVE].[Dept_No] AS [Dept_No], 
+    [TEST_CIC_APPROVE].[CIC_No] AS [CIC_No], 
+    [TEST_CIC_APPROVE].[StatusID] AS [StatusID], 
+    [TEST_CIC_APPROVE].[StatusName] AS [StatusName], 
+    [TEST_CIC_APPROVE].[Item] AS [Item], 
+    [TEST_CIC_APPROVE].[AssetList] AS [AssetList], 
+    [TEST_CIC_APPROVE].[Model] AS [Model], 
+    [TEST_CIC_APPROVE].[Amount] AS [Amount], 
+    [TEST_CIC_APPROVE].[UnitID] AS [UnitID], 
+    [TEST_CIC_APPROVE].[UnitAlias] AS [UnitAlias], 
+    [TEST_CIC_APPROVE].[Actual_Amount] AS [Actual_Amount], 
+    [TEST_CIC_APPROVE].[Rate] AS [Rate], 
+    [TEST_CIC_APPROVE].[ScrapRet] AS [ScrapRet], 
+    [TEST_CIC_APPROVE].[Scrap] AS [Scrap], 
+    [TEST_CIC_APPROVE].[LastUser] AS [LastUser], 
+    [TEST_CIC_APPROVE].[LastDateTime] AS [LastDateTime], 
+    [TEST_CIC_APPROVE].[Costcenter] AS [Costcenter], 
+    [TEST_CIC_APPROVE].[AstTypeID] AS [AstTypeID], 
+    [TEST_CIC_APPROVE].[AstTypeName] AS [AstTypeName], 
+    [TEST_CIC_APPROVE].[VendorID] AS [VendorID], 
+    [TEST_CIC_APPROVE].[Vendor] AS [Vendor], 
+    [TEST_CIC_APPROVE].[VendorContact] AS [VendorContact], 
+    [TEST_CIC_APPROVE].[EmployeeCode] AS [EmployeeCode], 
+    [TEST_CIC_APPROVE].[EmployeeUsername] AS [EmployeeUsername], 
+    [TEST_CIC_APPROVE].[Name_user] AS [Name_user], 
+    [TEST_CIC_APPROVE].[ContactNo] AS [ContactNo], 
+    [TEST_CIC_APPROVE].[Email] AS [Email], 
+    [TEST_CIC_APPROVE].[SubDivisionCode] AS [SubDivisionCode], 
+    [TEST_CIC_APPROVE].[Factory] AS [Factory], 
+    [TEST_CIC_APPROVE].[SubDivisionName] AS [SubDivisionName], 
+    [TEST_CIC_APPROVE].[IN_Date] AS [IN_Date], 
+    [TEST_CIC_APPROVE].[OUT_Date] AS [OUT_Date], 
+    [TEST_CIC_APPROVE].[Vehicle] AS [Vehicle], 
+    [TEST_CIC_APPROVE].[Brand] AS [Brand], 
+    [TEST_CIC_APPROVE].[License] AS [License], 
+    [TEST_CIC_APPROVE].[CICReasonID] AS [CICReasonID], 
+    [TEST_CIC_APPROVE].[CICReason] AS [CICReason], 
+    [TEST_CIC_APPROVE].[Last_update] AS [Last_update], 
+    [TEST_CIC_APPROVE].[Last_user] AS [Last_user], 
+    [TEST_CIC_APPROVE].[Last_User_Update] AS [Last_User_Update], 
+    [TEST_CIC_APPROVE].[Last_CIC_update] AS [Last_CIC_update], 
+    [TEST_CIC_APPROVE].[Last_CIC] AS [Last_CIC], 
+    [TEST_CIC_APPROVE].[Date_approve] AS [Date_approve], 
+    [TEST_CIC_APPROVE].[Manager_approve] AS [Manager_approve], 
+    [TEST_CIC_APPROVE].[Managerapp] AS [Managerapp], 
+    [TEST_CIC_APPROVE].[closed] AS [closed], 
+    [TEST_CIC_APPROVE].[Close_Date] AS [Close_Date], 
+    [TEST_CIC_APPROVE].[Closed_User] AS [Closed_User], 
+    [TEST_CIC_APPROVE].[Close_by] AS [Close_by], 
+    [TEST_CIC_APPROVE].[Cancel_Date] AS [Cancel_Date], 
+    [TEST_CIC_APPROVE].[Cancel_User] AS [Cancel_User], 
+    [TEST_CIC_APPROVE].[Objective] AS [Objective], 
+    [TEST_CIC_APPROVE].[Create_Date] AS [Create_Date], 
+    [TEST_CIC_APPROVE].[Create_By] AS [Create_By], 
+    [TEST_CIC_APPROVE].[Create_By_User] AS [Create_By_User], 
+    [TEST_CIC_APPROVE].[CancelClose_Update] AS [CancelClose_Update], 
+    [TEST_CIC_APPROVE].[CancelClose_User] AS [CancelClose_User], 
+    [TEST_CIC_APPROVE].[Cancelcomment] AS [Cancelcomment], 
+    [TEST_CIC_APPROVE].[CICUserID] AS [CICUserID], 
+    [TEST_CIC_APPROVE].[CIC_No_OLD] AS [CIC_No_OLD], 
+    [TEST_CIC_APPROVE].[CIC_No_REF] AS [CIC_No_REF], 
+    [TEST_CIC_APPROVE].[FlagDel] AS [FlagDel], 
+    [TEST_CIC_APPROVE].[Remark] AS [Remark], 
+    [TEST_CIC_APPROVE].[Delete_Update] AS [Delete_Update], 
+    [TEST_CIC_APPROVE].[Delete_User] AS [Delete_User], 
+    [TEST_CIC_APPROVE].[CloseRemark] AS [CloseRemark], 
+    [TEST_CIC_APPROVE].[CICTransfer] AS [CICTransfer], 
+    [TEST_CIC_APPROVE].[WaitApporveDate] AS [WaitApporveDate], 
+    [TEST_CIC_APPROVE].[UploadUser] AS [UploadUser], 
+    [TEST_CIC_APPROVE].[UploadDatetime] AS [UploadDatetime], 
+    [TEST_CIC_APPROVE].[EmployeeCode2] AS [EmployeeCode2], 
+    [TEST_CIC_APPROVE].[Last_App2] AS [Last_App2], 
+    [TEST_CIC_APPROVE].[ChangeDate] AS [ChangeDate], 
+    [TEST_CIC_APPROVE].[FlagChange] AS [FlagChange]
+    FROM [dbo].[TEST_CIC_APPROVE] AS [TEST_CIC_APPROVE]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

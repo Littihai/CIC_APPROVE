@@ -1,0 +1,343 @@
+USE [CICCONTROL_SPRING]
+GO
+/****** Object:  StoredProcedure [dbo].[Send_CIC_Mail]    Script Date: 09/02/2026 15:24:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[Send_CIC_Mail]
+(
+    @Dept_No NVARCHAR(50)
+)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    /* =====================================================
+       1) Declare Variables
+       ===================================================== */
+    DECLARE
+        @Costcenter     NVARCHAR(50),
+        @StatusID       INT,
+        @EmployeeName   NVARCHAR(200),
+        @CIC_No         INT,
+        @OUT_Date       DATETIME,
+        @IN_Date        DATETIME,
+        @AstTypeName    NVARCHAR(200),
+        @CICReason      NVARCHAR(200),
+        @VendorName     NVARCHAR(200),
+        @Objective      NVARCHAR(500),
+        @StatusName     NVARCHAR(100),
+        @AssetRows      NVARCHAR(MAX),
+        @SendName       NVARCHAR(200),
+        @SendEmail      NVARCHAR(200),
+        @ToEmail        NVARCHAR(MAX),
+        @Subject        NVARCHAR(200),
+        @Body           NVARCHAR(MAX),
+        @CICPrefix      NVARCHAR(20),
+
+        -- =========================
+        -- [NEW]
+        -- =========================
+        @CreateUser     NVARCHAR(50),
+        @CreateEmail    NVARCHAR(200);
+
+    /* =====================================================
+       2) Load CIC Data
+       ===================================================== */
+    SELECT TOP 1
+        @Costcenter   = cic.Costcenter,
+        @StatusID     = cic.StatusID,
+        @CIC_No       = cic.CIC_No,
+        @OUT_Date     = cic.OUT_Date,
+        @IN_Date      = cic.IN_Date,
+        @Objective    = cic.Objective,
+		@CreateUser   = cic.Create_By,
+        @EmployeeName = emp.ThFirstName + ' ' + emp.ThLastName,
+        @AstTypeName  = ast.AstTypeName,
+        @VendorName   = vendor.VendorCode + ' ' + vendor.VendorName,
+        @CICReason    = reason.CICReason,
+        @StatusName   = stat.StatusName,
+		@CreateUser   = cic.Create_By
+        --@CanCelUser   = cic.Cancel_User         -- [NEW]
+
+    FROM trn_CIC cic
+    LEFT JOIN MS_Status stat ON stat.StatusID = cic.StatusID
+    LEFT JOIN MS_AstType ast ON ast.AstTypeID = cic.AstTypeID
+    LEFT JOIN MS_Vendor vendor ON vendor.VendorID = cic.VendorID
+    LEFT JOIN MS_CICReason reason ON reason.CICReasonID = cic.CICReasonID
+    LEFT JOIN TSGCORE_SPRING.dbo.Employee emp ON emp.EmployeeCode = cic.EmployeeCode
+    WHERE cic.Dept_No = @Dept_No
+      AND cic.Delete_Update IS NULL
+    ORDER BY cic.Create_Date DESC;
+
+    IF @StatusID IS NULL
+    BEGIN
+        RAISERROR (N'ไม่พบข้อมูล CIC', 16, 1);
+        RETURN;
+    END
+
+    /* =====================================================
+       3) Asset List (เดิม)
+       ===================================================== */
+    SELECT @AssetRows =
+    (
+        SELECT
+            N'<tr>' +
+            N'<td>' + CAST(ROW_NUMBER() OVER (ORDER BY d.CICDetailID) AS NVARCHAR(10)) + N'</td>' +
+            N'<td>' + ISNULL(d.AssetList,'-') + N'</td>' +
+            N'<td>' + ISNULL(d.Model,'-') + N'</td>' +
+            N'<td>' + CAST(ISNULL(d.Amount,0) AS NVARCHAR(20)) + N'</td>' +
+            N'<td>' + ISNULL(u.UnitAlias,'-') + N'</td>' +
+            N'</tr>'
+        FROM trn_CIC c
+        LEFT JOIN trn_CICDetail d ON c.CIC_ID = d.CIC_ID
+        LEFT JOIN MS_Unit u ON u.UnitID = d.UnitID
+        WHERE c.Dept_No = @Dept_No
+        FOR XML PATH(''), TYPE
+    ).value('.', 'NVARCHAR(MAX)');
+
+    IF @AssetRows IS NULL
+        SET @AssetRows = N'<tr><td colspan="5">- ไม่พบรายการทรัพย์สิน -</td></tr>';
+
+    /* =====================================================
+       4) Receiver (NEW LOGIC – ไม่ลบของเดิม)
+       ===================================================== */
+
+   /* -------- Cancel → ส่งกลับผู้สร้าง -------- */
+	IF @StatusID = 1 AND EXISTS (SELECT 1
+		FROM trn_CIC WHERE Dept_No = @Dept_No AND Cancel_User IS NOT NULL
+	)
+	BEGIN
+		SELECT @ToEmail = emp.Email
+		FROM UserProfile up
+		INNER JOIN TSGCORE_SPRING.dbo.Employee emp
+			ON emp.EmployeeCode = up.EmployeeCode
+		WHERE up.UserProfileLogon = @CreateUser
+		  AND emp.Email IS NOT NULL;
+	END
+
+
+    /* -------- Create → ส่ง Manager ใน CostCenter เดียวกัน -------- */
+    ELSE IF @StatusID = 1
+    BEGIN
+        SELECT @ToEmail = STRING_AGG(emp.Email,';')
+        FROM UserProfile up
+        INNER JOIN UserRoles ur ON ur.UserProfileLogon = up.UserProfileLogon
+        INNER JOIN TSGCORE_SPRING.dbo.Employee emp ON emp.EmployeeCode = up.EmployeeCode
+        WHERE up.UserTypeID = 2
+          AND ur.CostCenter = @Costcenter;
+    END
+
+	/* -------- MANAGER APPROVE → ส่ง CIC -------- */
+	ELSE IF @StatusID = 4
+	BEGIN
+		SELECT @ToEmail = STRING_AGG(emp.Email,';')
+		FROM UserProfile up
+		INNER JOIN TSGCORE_SPRING.dbo.Employee emp
+			ON emp.EmployeeCode = up.EmployeeCode
+		WHERE up.UserTypeID = 9
+		  AND emp.Email IS NOT NULL;
+	END
+
+    /* -------- Approve -------- */
+    ELSE IF @StatusID = 2
+    BEGIN
+        -- Dept 11 → ผู้จัดการบัญชี
+        IF @Dept_No LIKE N'11%'
+        BEGIN
+            SELECT @ToEmail = STRING_AGG(emp.Email,';')
+            FROM UserProfile up
+            INNER JOIN TSGCORE_SPRING.dbo.Employee emp
+                ON emp.EmployeeCode = up.EmployeeCode
+            WHERE up.UserTypeID = 7;
+        END
+        ELSE
+        BEGIN
+            -- Dept 12,13,14 → CIC
+            SELECT @ToEmail = STRING_AGG(emp.Email,';')
+            FROM UserProfile up
+            INNER JOIN TSGCORE_SPRING.dbo.Employee emp
+                ON emp.EmployeeCode = up.EmployeeCode
+            WHERE up.UserTypeID = 9;
+        END
+    END
+
+    /* =====================================================
+       5) Subject (เดิมทั้งหมด)
+       ===================================================== */
+    SET @CICPrefix = N'CIC-' + LEFT(@Dept_No,2);
+
+    IF @StatusID = 1
+    AND EXISTS (SELECT 1 FROM trn_CIC WHERE Dept_No=@Dept_No AND Cancel_User IS NOT NULL)
+        SET @Subject = N'CANCEL ' + @CICPrefix + N' AUTO E-MAIL [' + @Dept_No + N']';
+    ELSE IF @StatusID = 1
+        SET @Subject = N'CREATE ' + @CICPrefix + N' AUTO E-MAIL [' + @Dept_No + N']';
+    ELSE IF @StatusID = 2
+        SET @Subject = N'ACCOUNT APPROVE ' + @CICPrefix + N' AUTO E-MAIL [' + @Dept_No + N']';
+    ELSE IF @StatusID = 4
+        SET @Subject = N'MANAGER APPROVE ' + @CICPrefix + N' AUTO E-MAIL [' + @Dept_No + N']';
+
+			/* =====================================================
+		   6) Body Email (แยก 3 กรณีชัดเจน)
+		   ===================================================== */
+
+		   /* =====================================================
+   3) CANCEL → ส่งคนสร้าง
+   ===================================================== */
+IF @StatusID = 1
+AND EXISTS (
+    SELECT 1
+    FROM trn_CIC
+    WHERE Dept_No = @Dept_No
+      AND Cancel_User IS NOT NULL
+)
+BEGIN
+    -- ===== HTML แบบที่ 3 =====
+    SET @Body = N'
+		<html>
+		<body style="font-family:Tahoma; font-size:14px;">
+		<head>Notify details about CIC documents as below. </head>
+		</b><br/><br/>
+		<b style="color:red;">
+		*** เอกสารถูกส่งกลับจากการยกเลิก กรุณาตรวจสอบ ***
+		</b><br/><br/>
+
+		<table width="700" style="border-collapse:collapse; border:1px solid #C0C0C0;">
+		<tr>
+			<td colspan="3" align="center" bgcolor="#ff5733" height="35">
+				CIC CONTROL SYSTEM
+			</td>
+		</tr>
+		<tr><td width="25%">From</td><td>:</td><td>' + ISNULL(@EmployeeName,'-') + N'</td></tr>
+		<tr><td>Status</td><td>:</td><td>' + ISNULL(@StatusName,'-') + N'</td></tr>
+		<tr><td>Dept No.</td><td>:</td><td>' + @Dept_No + N'</td></tr>
+		<tr><td>CIC No.</td><td>:</td><td>' + ISNULL(CAST(@CIC_No AS NVARCHAR(50)),'-') + N'</td></tr>
+		<tr><td>OUT Date</td><td>:</td><td>' + CONVERT(NVARCHAR(10),@OUT_Date,103) + N'</td></tr>
+		<tr><td>IN Date</td><td>:</td><td>' + CONVERT(NVARCHAR(10),@IN_Date,103) + N'</td></tr>
+		<tr><td>Asset Type</td><td>:</td><td>' + ISNULL(@AstTypeName,'-') + N'</td></tr>
+		<tr><td>Reason</td><td>:</td><td>' + ISNULL(@CICReason,'-') + N'</td></tr>
+		<tr><td>Vendor</td><td>:</td><td>' + ISNULL(@VendorName,'-') + N'</td></tr>
+		<tr><td>Objective</td><td>:</td><td>' + ISNULL(@Objective,'-') + N'</td></tr>
+		</table>
+
+		<br/>
+		<table width="700" style="border-collapse:collapse; border:1px solid #C0C0C0;">
+		<tr bgcolor="#00b33c">
+		<td>Item</td><td>Asset</td><td>Model</td><td>Qty</td><td>Unit</td>
+		</tr>' + @AssetRows + N'</table>
+
+		<br/>
+		<table width="700" style="border-collapse:collapse; border:1px solid #C0C0C0;">
+		<tr>Web Link : http://tseacc/CICControl/Logon.aspx</tr>
+		</table>
+
+		</body>
+		</html>';
+END
+		/* =====================================================
+   1) CREATE → ส่งผู้จัดการ
+   ===================================================== */
+ELSE IF @StatusID = 1
+BEGIN
+    -- ===== HTML แบบที่ 1 =====
+    SET @Body = N'
+		<html>
+		<body style="font-family:Tahoma; font-size:14px;">
+		<head>Notify details about CIC documents as below. </head>
+		</b><br/><br/>
+		<table width="700" style="border-collapse:collapse; border:1px solid #C0C0C0;">
+		<tr>
+			<td colspan="3" align="center" bgcolor="#ff5733" height="35">
+				CIC CONTROL SYSTEM
+			</td>
+		</tr>
+		<tr><td width="25%">From</td><td>:</td><td>' + ISNULL(@EmployeeName,'-') + N'</td></tr>
+		<tr><td>Status</td><td>:</td><td>' + ISNULL(@StatusName,'-') + N'</td></tr>
+		<tr><td>Dept No.</td><td>:</td><td>' + @Dept_No + N'</td></tr>
+		<tr><td>CIC No.</td><td>:</td><td>' + ISNULL(CAST(@CIC_No AS NVARCHAR(50)),'-') + N'</td></tr>
+		<tr><td>OUT Date</td><td>:</td><td>' + CONVERT(NVARCHAR(10),@OUT_Date,103) + N'</td></tr>
+		<tr><td>IN Date</td><td>:</td><td>' + CONVERT(NVARCHAR(10),@IN_Date,103) + N'</td></tr>
+		<tr><td>Asset Type</td><td>:</td><td>' + ISNULL(@AstTypeName,'-') + N'</td></tr>
+		<tr><td>Reason</td><td>:</td><td>' + ISNULL(@CICReason,'-') + N'</td></tr>
+		<tr><td>Vendor</td><td>:</td><td>' + ISNULL(@VendorName,'-') + N'</td></tr>
+		<tr><td>Objective</td><td>:</td><td>' + ISNULL(@Objective,'-') + N'</td></tr>
+		</table>
+
+		<br/>
+		<table width="700" style="border-collapse:collapse; border:1px solid #C0C0C0;">
+		<tr bgcolor="#00b33c">
+		<td>Item</td><td>Asset</td><td>Model</td><td>Qty</td><td>Unit</td>
+		</tr>' + @AssetRows + N'</table>
+
+		<br/>
+		<table width="700" style="border-collapse:collapse; border:1px solid #C0C0C0;">
+		<tr>Web Link :
+            <a href="https://web.ts-engineering.com/CIC_APPROVE/Vw_Approve/Approve/' + @Dept_No + N'">
+                คลิกเพื่อเปิดเอกสาร
+            </a></tr>
+		</table>
+
+		</body>
+		</html>';
+END
+
+/* =====================================================
+   2) MANAGER / ACCOUNT APPROVE → ส่ง CIC หรือ บัญชี
+   ===================================================== */
+ELSE IF @StatusID IN (2,4)
+BEGIN
+    -- ===== HTML แบบที่ 2 =====
+    SET @Body = N'
+		<html>
+		<body style="font-family:Tahoma; font-size:14px;">
+		<head>Notify details about CIC documents as below. </head>
+		</b><br/><br/>
+		<table width="700" style="border-collapse:collapse; border:1px solid #C0C0C0;">
+		<tr>
+			<td colspan="3" align="center" bgcolor="#ff5733" height="35">
+				CIC CONTROL SYSTEM
+			</td>
+		</tr>
+		<tr><td width="25%">From</td><td>:</td><td>' + ISNULL(@EmployeeName,'-') + N'</td></tr>
+		<tr><td>Status</td><td>:</td><td>' + ISNULL(@StatusName,'-') + N'</td></tr>
+		<tr><td>Dept No.</td><td>:</td><td>' + @Dept_No + N'</td></tr>
+		<tr><td>CIC No.</td><td>:</td><td>' + ISNULL(CAST(@CIC_No AS NVARCHAR(50)),'-') + N'</td></tr>
+		<tr><td>OUT Date</td><td>:</td><td>' + CONVERT(NVARCHAR(10),@OUT_Date,103) + N'</td></tr>
+		<tr><td>IN Date</td><td>:</td><td>' + CONVERT(NVARCHAR(10),@IN_Date,103) + N'</td></tr>
+		<tr><td>Asset Type</td><td>:</td><td>' + ISNULL(@AstTypeName,'-') + N'</td></tr>
+		<tr><td>Reason</td><td>:</td><td>' + ISNULL(@CICReason,'-') + N'</td></tr>
+		<tr><td>Vendor</td><td>:</td><td>' + ISNULL(@VendorName,'-') + N'</td></tr>
+		<tr><td>Objective</td><td>:</td><td>' + ISNULL(@Objective,'-') + N'</td></tr>
+		</table>
+
+		<br/>
+		<table width="700" style="border-collapse:collapse; border:1px solid #C0C0C0;">
+		<tr bgcolor="#00b33c">
+		<td>Item</td><td>Asset</td><td>Model</td><td>Qty</td><td>Unit</td>
+		</tr>' + @AssetRows + N'</table>
+
+		<br/>
+		<table width="700" style="border-collapse:collapse; border:1px solid #C0C0C0;">
+		<tr>Web Link : http://tseacc/CICControl/Logon.aspx</tr>
+		</table>
+
+		</body>
+		</html>';
+END
+
+
+
+    /* =====================================================
+       10) Send Mail
+       ===================================================== */
+    IF @ToEmail IS NOT NULL
+    BEGIN
+        EXEC msdb.dbo.sp_send_dbmail
+            @profile_name = 'cic-alert',
+            @recipients   = @ToEmail,
+            @subject      = @Subject,
+            @body         = @Body,
+            @body_format  = 'HTML';
+    END
+END

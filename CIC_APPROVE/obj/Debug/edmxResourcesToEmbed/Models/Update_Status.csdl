@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CICCONTROL_SPRINGModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="trn_CIC">
+    <Key>
+      <PropertyRef Name="CIC_ID" />
+    </Key>
+    <Property Name="CIC_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Dept_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CIC_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CICTypeID" Type="Int32" />
+    <Property Name="StatusID" Type="Int32" />
+    <Property Name="AstTypeID" Type="Int32" />
+    <Property Name="IN_Date" Type="DateTime" Precision="0" />
+    <Property Name="OUT_Date" Type="DateTime" Precision="0" />
+    <Property Name="EmployeeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="VendorID" Type="Int64" />
+    <Property Name="VendorContact" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Vehicle" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Brand" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="License" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CICReasonID" Type="Int32" />
+    <Property Name="Last_update" Type="DateTime" Precision="3" />
+    <Property Name="Last_user" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Last_CIC_update" Type="DateTime" Precision="3" />
+    <Property Name="Last_CIC" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Last_App_update" Type="DateTime" Precision="3" />
+    <Property Name="Last_App" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Last_PO_update" Type="DateTime" Precision="3" />
+    <Property Name="Last_PO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Last_Sale_update" Type="DateTime" Precision="3" />
+    <Property Name="Last_Sale" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="closed" Type="Boolean" />
+    <Property Name="Close_Date" Type="DateTime" Precision="3" />
+    <Property Name="Closed_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Cancel_Date" Type="DateTime" Precision="3" />
+    <Property Name="Cancel_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Objective" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CancelApp_Update" Type="DateTime" Precision="3" />
+    <Property Name="CancelApp_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="NotApp_Update" Type="DateTime" Precision="3" />
+    <Property Name="Notapp_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Create_Date" Type="DateTime" Precision="3" />
+    <Property Name="Create_By" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CancelClose_Update" Type="DateTime" Precision="3" />
+    <Property Name="CancelClose_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Cancelcomment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CICUserID" Type="Int32" />
+    <Property Name="CIC_No_OLD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CIC_No_REF" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FlagDel" Type="Boolean" />
+    <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Delete_Update" Type="DateTime" Precision="3" />
+    <Property Name="Delete_User" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CloseRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CICTransfer" Type="Boolean" />
+    <Property Name="WaitApporveDate" Type="DateTime" Precision="3" />
+    <Property Name="UploadUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="UploadDatetime" Type="DateTime" Precision="3" />
+    <Property Name="EmployeeCode2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Last_App2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ChangeDate" Type="DateTime" Precision="3" />
+    <Property Name="FlagChange" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="trn_CICAttach">
+    <Key>
+      <PropertyRef Name="CICAttachID" />
+    </Key>
+    <Property Name="CICAttachID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CIC_ID" Type="Int64" />
+    <Property Name="AttachPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AttachFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AttachUpdate" Type="DateTime" Precision="3" />
+    <Property Name="AttachUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="AttachClosed" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="UserProfile">
+    <Key>
+      <PropertyRef Name="UserProfileID" />
+    </Key>
+    <Property Name="UserProfileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserProfileLogon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="EmployeeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="UserTypeID" Type="Int32" />
+    <Property Name="SignaturePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ERFlag" Type="Boolean" />
+    <Property Name="Closed" Type="Boolean" />
+    <Property Name="Cancel" Type="Boolean" />
+    <Property Name="UserFlag" Type="Boolean" />
+    <Property Name="LastUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+    <Property Name="SignatureImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="RequestFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="UserRolesID" />
+    </Key>
+    <Property Name="UserRolesID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserProfileLogon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CompGroupCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CompanyCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PlantCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="DepartmentCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="DivisionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LastDateTime" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Vw_Approve">
+    <Key>
+      <PropertyRef Name="CIC_ID" />
+      <PropertyRef Name="CICDetailID" />
+    </Key>
+    <Property Name="NO_" Type="Int64" />
+    <Property Name="CIC_ID" Type="Int64" Nullable="false" />
+    <Property Name="CICDetailID" Type="Int64" Nullable="false" />
+    <Property Name="CICTypeID" Type="Int32" />
+    <Property Name="CIC" Type="String" MaxLength="31" FixedLength="false" Unicode="true" />
+    <Property Name="Dept_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CIC_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StatusID" Type="Int32" />
+    <Property Name="StatusName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Item" Type="Int32" />
+    <Property Name="AssetList" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="UnitID" Type="Int32" />
+    <Property Name="UnitAlias" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Actual_Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Rate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ScrapRet" Type="Boolean" />
+    <Property Name="Scrap" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="LastUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LastDateTime" Type="DateTime" Precision="3" />
+    <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="AstTypeID" Type="Int32" />
+    <Property Name="AstTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="VendorID" Type="Int64" />
+    <Property Name="Vendor" Type="String" MaxLength="276" FixedLength="false" Unicode="true" />
+    <Property Name="VendorContact" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="EmployeeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="EmployeeUsername" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Name_user" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+    <Property Name="ContactNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="SubDivisionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Factory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SubDivisionName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="IN_Date" Type="DateTime" Precision="0" />
+    <Property Name="OUT_Date" Type="DateTime" Precision="0" />
+    <Property Name="Vehicle" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Brand" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="License" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CICReasonID" Type="Int32" />
+    <Property Name="CICReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Last_update" Type="DateTime" Precision="3" />
+    <Property Name="Last_user" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Last_User_Update" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+    <Property Name="Last_CIC_update" Type="DateTime" Precision="3" />
+    <Property Name="Last_CIC" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Cicapp" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+    <Property Name="Date_approve" Type="DateTime" Precision="3" />
+    <Property Name="Manager_approve" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Managerapp" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+    <Property Name="closed" Type="Boolean" />
+    <Property Name="Close_Date" Type="DateTime" Precision="3" />
+    <Property Name="Closed_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Close_by" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+    <Property Name="Cancel_Date" Type="DateTime" Precision="3" />
+    <Property Name="Cancel_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Objective" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Create_Date" Type="DateTime" Precision="3" />
+    <Property Name="Create_By" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Create_By_User" Type="String" MaxLength="301" FixedLength="false" Unicode="true" />
+    <Property Name="CancelClose_Update" Type="DateTime" Precision="3" />
+    <Property Name="CancelClose_User" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Cancelcomment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CICUserID" Type="Int32" />
+    <Property Name="CIC_No_OLD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CIC_No_REF" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FlagDel" Type="Boolean" />
+    <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Delete_Update" Type="DateTime" Precision="3" />
+    <Property Name="Delete_User" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CloseRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CICTransfer" Type="Boolean" />
+    <Property Name="WaitApporveDate" Type="DateTime" Precision="3" />
+    <Property Name="UploadUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="UploadDatetime" Type="DateTime" Precision="3" />
+    <Property Name="EmployeeCode2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Last_App2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ChangeDate" Type="DateTime" Precision="3" />
+    <Property Name="FlagChange" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Vw_Manager">
+    <Key>
+      <PropertyRef Name="UserProfileID" />
+    </Key>
+    <Property Name="UserProfileID" Type="Int32" Nullable="false" />
+    <Property Name="UserProfileLogon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="EmployeeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="UserTypeID" Type="Int32" />
+    <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="CICCONTROL_SPRINGEntities2" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="trn_CIC" EntityType="Self.trn_CIC" />
+    <EntitySet Name="trn_CICAttach" EntityType="Self.trn_CICAttach" />
+    <EntitySet Name="UserProfiles" EntityType="Self.UserProfile" />
+    <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+    <EntitySet Name="Vw_Approve" EntityType="Self.Vw_Approve" />
+    <EntitySet Name="Vw_Manager" EntityType="Self.Vw_Manager" />
+    <FunctionImport Name="Send_CIC_Mail">
+      <Parameter Name="Dept_No" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+</Schema>
