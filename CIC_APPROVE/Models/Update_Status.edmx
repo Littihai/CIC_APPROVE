@@ -67,6 +67,33 @@
           <Property Name="ChangeDate" Type="datetime" />
           <Property Name="FlagChange" Type="bit" />
         </EntityType>
+        <EntityType Name="trn_CIC14InList">
+          <Key>
+            <PropertyRef Name="CIC14InListID" />
+          </Key>
+          <Property Name="CIC14InListID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CICDetailID" Type="bigint" />
+          <Property Name="INFlag" Type="bit" />
+          <Property Name="IN_Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IN_Scrap" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BalanceAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ArriveDate" Type="date" />
+          <Property Name="INUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="INUpdate" Type="datetime" />
+          <Property Name="FlagApp" Type="bit" />
+          <Property Name="UserApprove" Type="nvarchar" MaxLength="20" />
+          <Property Name="DateApprove" Type="datetime" />
+          <Property Name="RefDoc" Type="nvarchar" MaxLength="255" />
+          <Property Name="InvNo" Type="nvarchar" MaxLength="100" />
+          <Property Name="InvDate" Type="date" />
+          <Property Name="GINo" Type="nvarchar" MaxLength="100" />
+          <Property Name="CICNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="CICUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="CICUpdate" Type="datetime" />
+          <Property Name="FlagAppCIC" Type="bit" />
+          <Property Name="CICApp" Type="nvarchar" MaxLength="20" />
+          <Property Name="CICAppDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="trn_CICAttach">
           <Key>
             <PropertyRef Name="CICAttachID" />
@@ -202,6 +229,43 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Approve' does not have a 
           <Property Name="FlagChange" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_ApproveIN' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Vw_ApproveIN">
+          <Key>
+            <PropertyRef Name="CICDetailID" />
+            <PropertyRef Name="CIC14InListID" />
+          </Key>
+          <Property Name="CICDetailID" Type="bigint" Nullable="false" />
+          <Property Name="CIC14InListID" Type="bigint" Nullable="false" />
+          <Property Name="Create_By" Type="nvarchar" MaxLength="20" />
+          <Property Name="Dept_No" Type="nvarchar" MaxLength="50" />
+          <Property Name="CICReason" Type="nvarchar" MaxLength="255" />
+          <Property Name="AssetList" Type="nvarchar" MaxLength="255" />
+          <Property Name="Model" Type="nvarchar" MaxLength="255" />
+          <Property Name="UnitDesc" Type="nvarchar" MaxLength="150" />
+          <Property Name="INFlag" Type="bit" />
+          <Property Name="IN_Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IN_Scrap" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BalanceAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ArriveDate" Type="date" />
+          <Property Name="INUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="INUpdate" Type="datetime" />
+          <Property Name="FlagApp" Type="bit" />
+          <Property Name="UserApprove" Type="nvarchar" MaxLength="20" />
+          <Property Name="DateApprove" Type="datetime" />
+          <Property Name="Costcenter" Type="nvarchar" MaxLength="20" />
+          <Property Name="Item" Type="int" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Actual_Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ScrapRet" Type="bit" />
+          <Property Name="Scrap" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="InvNo" Type="nvarchar" MaxLength="100" />
+          <Property Name="InvDate" Type="date" />
+          <Property Name="Prefix" Type="nvarchar" MaxLength="20" />
+          <Property Name="ThFirstName" Type="nvarchar" MaxLength="150" />
+          <Property Name="ThLastName" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Vw_Manager">
           <Key>
@@ -218,6 +282,7 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
         </Function>
         <EntityContainer Name="CICCONTROL_SPRINGModelStoreContainer">
           <EntitySet Name="trn_CIC" EntityType="Self.trn_CIC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_CIC14InList" EntityType="Self.trn_CIC14InList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_CICAttach" EntityType="Self.trn_CICAttach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
@@ -304,6 +369,39 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
     [Vw_Approve].[ChangeDate] AS [ChangeDate], 
     [Vw_Approve].[FlagChange] AS [FlagChange]
     FROM [dbo].[Vw_Approve] AS [Vw_Approve]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Vw_ApproveIN" EntityType="Self.Vw_ApproveIN" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Vw_ApproveIN].[CICDetailID] AS [CICDetailID], 
+    [Vw_ApproveIN].[CIC14InListID] AS [CIC14InListID], 
+    [Vw_ApproveIN].[Create_By] AS [Create_By], 
+    [Vw_ApproveIN].[Dept_No] AS [Dept_No], 
+    [Vw_ApproveIN].[CICReason] AS [CICReason], 
+    [Vw_ApproveIN].[AssetList] AS [AssetList], 
+    [Vw_ApproveIN].[Model] AS [Model], 
+    [Vw_ApproveIN].[UnitDesc] AS [UnitDesc], 
+    [Vw_ApproveIN].[INFlag] AS [INFlag], 
+    [Vw_ApproveIN].[IN_Amount] AS [IN_Amount], 
+    [Vw_ApproveIN].[IN_Scrap] AS [IN_Scrap], 
+    [Vw_ApproveIN].[BalanceAmount] AS [BalanceAmount], 
+    [Vw_ApproveIN].[ArriveDate] AS [ArriveDate], 
+    [Vw_ApproveIN].[INUser] AS [INUser], 
+    [Vw_ApproveIN].[INUpdate] AS [INUpdate], 
+    [Vw_ApproveIN].[FlagApp] AS [FlagApp], 
+    [Vw_ApproveIN].[UserApprove] AS [UserApprove], 
+    [Vw_ApproveIN].[DateApprove] AS [DateApprove], 
+    [Vw_ApproveIN].[Costcenter] AS [Costcenter], 
+    [Vw_ApproveIN].[Item] AS [Item], 
+    [Vw_ApproveIN].[Amount] AS [Amount], 
+    [Vw_ApproveIN].[Actual_Amount] AS [Actual_Amount], 
+    [Vw_ApproveIN].[ScrapRet] AS [ScrapRet], 
+    [Vw_ApproveIN].[Scrap] AS [Scrap], 
+    [Vw_ApproveIN].[InvNo] AS [InvNo], 
+    [Vw_ApproveIN].[InvDate] AS [InvDate], 
+    [Vw_ApproveIN].[Prefix] AS [Prefix], 
+    [Vw_ApproveIN].[ThFirstName] AS [ThFirstName], 
+    [Vw_ApproveIN].[ThLastName] AS [ThLastName]
+    FROM [dbo].[Vw_ApproveIN] AS [Vw_ApproveIN]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Vw_Manager" EntityType="Self.Vw_Manager" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -531,9 +629,73 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
           <EntitySet Name="Vw_Approve" EntityType="Self.Vw_Approve" />
           <EntitySet Name="Vw_Manager" EntityType="Self.Vw_Manager" />
           <FunctionImport Name="Send_CIC_Mail">
-            <Parameter Name="Dept_No" Mode="In" Type="String" />
+          <Parameter Name="Dept_No" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="trn_CIC14InList" EntityType="CICCONTROL_SPRINGModel.trn_CIC14InList" />
+          <EntitySet Name="Vw_ApproveIN" EntityType="CICCONTROL_SPRINGModel.Vw_ApproveIN" />
         </EntityContainer>
+        <EntityType Name="trn_CIC14InList">
+          <Key>
+            <PropertyRef Name="CIC14InListID" />
+          </Key>
+          <Property Name="CIC14InListID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CICDetailID" Type="Int64" />
+          <Property Name="INFlag" Type="Boolean" />
+          <Property Name="IN_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IN_Scrap" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BalanceAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ArriveDate" Type="DateTime" Precision="0" />
+          <Property Name="INUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="INUpdate" Type="DateTime" Precision="3" />
+          <Property Name="FlagApp" Type="Boolean" />
+          <Property Name="UserApprove" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DateApprove" Type="DateTime" Precision="3" />
+          <Property Name="RefDoc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="InvNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="InvDate" Type="DateTime" Precision="0" />
+          <Property Name="GINo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CICNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CICUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CICUpdate" Type="DateTime" Precision="3" />
+          <Property Name="FlagAppCIC" Type="Boolean" />
+          <Property Name="CICApp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CICAppDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Vw_ApproveIN">
+          <Key>
+            <PropertyRef Name="CICDetailID" />
+            <PropertyRef Name="CIC14InListID" />
+          </Key>
+          <Property Name="CICDetailID" Type="Int64" Nullable="false" />
+          <Property Name="CIC14InListID" Type="Int64" Nullable="false" />
+          <Property Name="Create_By" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Dept_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CICReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AssetList" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UnitDesc" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="INFlag" Type="Boolean" />
+          <Property Name="IN_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IN_Scrap" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BalanceAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ArriveDate" Type="DateTime" Precision="0" />
+          <Property Name="INUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="INUpdate" Type="DateTime" Precision="3" />
+          <Property Name="FlagApp" Type="Boolean" />
+          <Property Name="UserApprove" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DateApprove" Type="DateTime" Precision="3" />
+          <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Item" Type="Int32" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Actual_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ScrapRet" Type="Boolean" />
+          <Property Name="Scrap" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="InvNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="InvDate" Type="DateTime" Precision="0" />
+          <Property Name="Prefix" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ThFirstName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ThLastName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -750,6 +912,69 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="Send_CIC_Mail" FunctionName="CICCONTROL_SPRINGModel.Store.Send_CIC_Mail" />
+          <EntitySetMapping Name="trn_CIC14InList">
+            <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.trn_CIC14InList">
+              <MappingFragment StoreEntitySet="trn_CIC14InList">
+                <ScalarProperty Name="CICAppDate" ColumnName="CICAppDate" />
+                <ScalarProperty Name="CICApp" ColumnName="CICApp" />
+                <ScalarProperty Name="FlagAppCIC" ColumnName="FlagAppCIC" />
+                <ScalarProperty Name="CICUpdate" ColumnName="CICUpdate" />
+                <ScalarProperty Name="CICUser" ColumnName="CICUser" />
+                <ScalarProperty Name="CICNo" ColumnName="CICNo" />
+                <ScalarProperty Name="GINo" ColumnName="GINo" />
+                <ScalarProperty Name="InvDate" ColumnName="InvDate" />
+                <ScalarProperty Name="InvNo" ColumnName="InvNo" />
+                <ScalarProperty Name="RefDoc" ColumnName="RefDoc" />
+                <ScalarProperty Name="DateApprove" ColumnName="DateApprove" />
+                <ScalarProperty Name="UserApprove" ColumnName="UserApprove" />
+                <ScalarProperty Name="FlagApp" ColumnName="FlagApp" />
+                <ScalarProperty Name="INUpdate" ColumnName="INUpdate" />
+                <ScalarProperty Name="INUser" ColumnName="INUser" />
+                <ScalarProperty Name="ArriveDate" ColumnName="ArriveDate" />
+                <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+                <ScalarProperty Name="IN_Scrap" ColumnName="IN_Scrap" />
+                <ScalarProperty Name="IN_Amount" ColumnName="IN_Amount" />
+                <ScalarProperty Name="INFlag" ColumnName="INFlag" />
+                <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
+                <ScalarProperty Name="CIC14InListID" ColumnName="CIC14InListID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vw_ApproveIN">
+            <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.Vw_ApproveIN">
+              <MappingFragment StoreEntitySet="Vw_ApproveIN">
+                <ScalarProperty Name="ThLastName" ColumnName="ThLastName" />
+                <ScalarProperty Name="ThFirstName" ColumnName="ThFirstName" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="InvDate" ColumnName="InvDate" />
+                <ScalarProperty Name="InvNo" ColumnName="InvNo" />
+                <ScalarProperty Name="Scrap" ColumnName="Scrap" />
+                <ScalarProperty Name="ScrapRet" ColumnName="ScrapRet" />
+                <ScalarProperty Name="Actual_Amount" ColumnName="Actual_Amount" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Item" ColumnName="Item" />
+                <ScalarProperty Name="Costcenter" ColumnName="Costcenter" />
+                <ScalarProperty Name="DateApprove" ColumnName="DateApprove" />
+                <ScalarProperty Name="UserApprove" ColumnName="UserApprove" />
+                <ScalarProperty Name="FlagApp" ColumnName="FlagApp" />
+                <ScalarProperty Name="INUpdate" ColumnName="INUpdate" />
+                <ScalarProperty Name="INUser" ColumnName="INUser" />
+                <ScalarProperty Name="ArriveDate" ColumnName="ArriveDate" />
+                <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+                <ScalarProperty Name="IN_Scrap" ColumnName="IN_Scrap" />
+                <ScalarProperty Name="IN_Amount" ColumnName="IN_Amount" />
+                <ScalarProperty Name="INFlag" ColumnName="INFlag" />
+                <ScalarProperty Name="UnitDesc" ColumnName="UnitDesc" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="AssetList" ColumnName="AssetList" />
+                <ScalarProperty Name="CICReason" ColumnName="CICReason" />
+                <ScalarProperty Name="Dept_No" ColumnName="Dept_No" />
+                <ScalarProperty Name="Create_By" ColumnName="Create_By" />
+                <ScalarProperty Name="CIC14InListID" ColumnName="CIC14InListID" />
+                <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

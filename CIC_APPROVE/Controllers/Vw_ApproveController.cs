@@ -293,6 +293,80 @@ namespace CIC_APPROVE.Controllers
             return RedirectToAction("Approve", new { deptNo = Dept_No, user = ApproveUser });
         }
 
+        // ==============================
+        // DETAILS PAGE
+        // ==============================
+        public ActionResult Detail(string deptNo, string user)
+        {
+            var data = db.Vw_ApproveIN
+                         .Where(x => x.Dept_No == deptNo)
+                         .ToList();
+
+            ViewBag.DeptNo = deptNo;
+            ViewBag.User = user;
+
+            return View(data);
+        }
+        // =========================
+        // APPROVE ALL
+        // =========================
+        [HttpPost]
+        public ActionResult ApproveAll(string deptNo, string user)
+        {
+            var detailIds = db.Vw_ApproveIN
+                              .Where(x => x.Dept_No == deptNo)
+                              .Select(x => x.CICDetailID)
+                              .ToList();
+
+            // อนุมัติเฉพาะรายการที่ยังไม่ถูกอนุมัติ
+            var records = db.trn_CIC14InList
+                            .Where(x => x.CICDetailID.HasValue &&
+                                        detailIds.Contains(x.CICDetailID.Value) &&
+                                        x.FlagApp == false)
+                            .ToList();
+
+            if (records.Any())
+            {
+                var approveDate = DateTime.Now;
+
+                foreach (var item in records)
+                {
+                    item.FlagApp = true;
+                    item.UserApprove = user;
+                    item.DateApprove = approveDate; // วันที่ของรอบนี้เท่านั้น
+                }
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Detail", new { deptNo = deptNo, user = user });
+        }
+        [HttpPost]
+        public ActionResult CancelAll(string deptNo, string user)
+        {
+            var detailIds = db.Vw_ApproveIN
+                              .Where(x => x.Dept_No == deptNo)
+                              .Select(x => x.CICDetailID)
+                              .ToList();
+
+            var records = db.trn_CIC14InList
+     .Where(x => x.CICDetailID.HasValue &&
+                 detailIds.Contains(x.CICDetailID.Value) &&
+                 x.FlagApp == true)
+     .ToList();
+
+            foreach (var item in records)
+            {
+                item.FlagApp = false;
+                item.UserApprove = null;
+                item.DateApprove = null;
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("Detail", new { deptNo = deptNo, user = user });
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

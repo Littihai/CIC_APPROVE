@@ -191,6 +191,9 @@
     <Compile Include="Models\trn_CIC.cs">
       <DependentUpon>Update_Status.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\trn_CIC14InList.cs">
+      <DependentUpon>Update_Status.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\trn_CICAttach.cs">
       <DependentUpon>Update_Status.tt</DependentUpon>
     </Compile>
@@ -217,6 +220,9 @@
     </Compile>
     <Compile Include="Models\UserRoles.cs" />
     <Compile Include="Models\Vw_Approve.cs">
+      <DependentUpon>Update_Status.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Vw_ApproveIN.cs">
       <DependentUpon>Update_Status.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Vw_Manager.cs">
@@ -488,14 +494,12 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Vw_Approve\Create.cshtml" />
-    <Content Include="Views\Vw_Approve\Delete.cshtml" />
-    <Content Include="Views\Vw_Approve\Details.cshtml" />
     <Content Include="Views\Vw_Approve\Edit.cshtml" />
     <Content Include="Views\Vw_Approve\Index.cshtml" />
     <Content Include="Views\Vw_Approve\Approve.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Vw_Approve\ApproveError.cshtml" />
+    <Content Include="Views\Vw_Approve\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

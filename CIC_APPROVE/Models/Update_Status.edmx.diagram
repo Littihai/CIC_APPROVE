@@ -4,13 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6e697719ddb84857a14368f46e704fe4" Name="Diagram1" ZoomLevel="98">
+      <Diagram DiagramId="6e697719ddb84857a14368f46e704fe4" Name="Diagram1" ZoomLevel="51">
         <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.trn_CIC" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.trn_CICAttach" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.UserProfile" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.UserRole" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.Vw_Approve" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.Vw_Manager" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.trn_CIC14InList" Width="1.5" PointX="7.375" PointY="3.75" />
+        <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.Vw_ApproveIN" Width="1.5" PointX="9.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

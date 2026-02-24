@@ -1,0 +1,186 @@
+﻿@model List<CIC_APPROVE.Models.Vw_ApproveIN>
+
+@{
+    ViewBag.Title = "CIC OUT-IN Detail";
+
+    bool hasPending = Model.Any(x => x.FlagApp != true);
+    bool hasApproved = Model.Any(x => x.FlagApp == true);
+    bool allApproved = Model.Any() && Model.All(x => x.FlagApp == true);
+
+    var deptNo = Request.QueryString["deptNo"];
+    var user = Request.QueryString["user"];
+
+    var firstItem = Model.FirstOrDefault();
+    var attachList = ViewBag.AttachList
+        as List<CIC_APPROVE.Models.trn_CICAttach>;
+}
+
+<div class="container py-5">
+
+    <!-- HEADER -->
+    <div class="card mb-3">
+        <div class="card-body d-flex justify-content-between">
+            <h5 class="fw-bold">
+                CIC OUT-IN ใบนำของออก-เข้า [14]
+            </h5>
+
+            <div>
+                Dept No : <strong>@deptNo</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- ปุ่มไฟล์แนบ -->
+    <div class="mb-3">
+        @if (firstItem != null)
+        {
+            <button class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#attachModal">
+                ไฟล์แนบ
+            </button>
+        }
+    </div>
+
+    <!-- ตารางรายการ -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">รายการทรัพย์สิน</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width:5%">No</th>
+                            <th>Asset</th>
+                            <th>Model</th>
+                            <th>Qty</th>
+                            <th>สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int no = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@no</td>
+                                <td class="text-start">@item.AssetList</td>
+                                <td class="text-start">@item.Model</td>
+                                <td>@item.IN_Amount</td>
+                                <td>
+                                    @if (item.FlagApp == true)
+                                    {
+                                        <span class="badge bg-success">
+                                            อนุมัติแล้ว
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            ยังไม่อนุมัติ
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                            no++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ไฟล์แนบ -->
+    <div class="modal fade" id="attachModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content shadow-lg">
+
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">ไฟล์แนบ</h5>
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="attachContainer"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var attachList = @Html.Raw(
+            Json.Encode(ViewBag.AttachList ?? new List<object>())
+        );
+
+        document.getElementById('attachModal')
+            .addEventListener('show.bs.modal', function () {
+
+                var container = document.getElementById('attachContainer');
+                container.innerHTML = "";
+
+                if (!attachList || attachList.length === 0) {
+                    container.innerHTML =
+                        "<div class='alert alert-warning'>ไม่มีไฟล์แนบ</div>";
+                    return;
+                }
+
+                var table = "<table class='table table-bordered'>";
+                table += "<thead class='table-primary'><tr>";
+                table += "<th>ชื่อไฟล์</th><th width='150'>เปิดไฟล์</th>";
+                table += "</tr></thead><tbody>";
+
+                attachList.forEach(function (file) {
+
+                    table += "<tr>";
+                    table += "<td>" + file.AttachFile + "</td>";
+                    table += "<td>";
+                    table += "<a href='/Vw_Approve/OpenFile?id="
+                        + file.CICAttachID +
+                        "' target='_blank' ";
+                    table += "class='btn btn-success btn-sm w-100'>";
+                    table += "เปิดไฟล์</a>";
+                    table += "</td></tr>";
+                });
+
+                table += "</tbody></table>";
+                container.innerHTML = table;
+            });
+    </script>
+
+    <!-- ปุ่มอนุมัติ -->
+    @using (Html.BeginForm("ApproveAll", "Vw_Approve", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("deptNo", deptNo)
+        @Html.Hidden("user", user)
+
+        <div class="text-center mt-5 d-flex justify-content-center gap-3">
+
+            <!-- อนุมัติทั้งหมด -->
+            <button type="submit"
+                    class="btn btn-success btn-lg"
+                    style="width:200px;"
+                    @(allApproved ? "disabled" : "")>
+                อนุมัติทั้งหมด
+            </button>
+
+            <!-- ยกเลิกทั้งหมด -->
+            <button type="submit"
+                    formaction="@Url.Action("CancelAll","Vw_Approve")"
+                    class="btn btn-danger btn-lg"
+                    style="width:200px;"
+                    @(hasApproved ? "" : "disabled")>
+                ยกเลิกอนุมัติทั้งหมด
+            </button>
+
+        </div>
+    }
+
+</div>

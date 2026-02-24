@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\04726ly\GitHub\CIC_APPROVE\CIC_APPROVE\Models\Update_Status.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\04726ly\GitHub\CIC_Approve\CIC_APPROVE\Models\Update_Status.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
