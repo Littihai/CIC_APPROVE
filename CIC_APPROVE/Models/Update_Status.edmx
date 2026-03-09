@@ -67,6 +67,30 @@
           <Property Name="ChangeDate" Type="datetime" />
           <Property Name="FlagChange" Type="bit" />
         </EntityType>
+        <EntityType Name="trn_CIC12OutList">
+          <Key>
+            <PropertyRef Name="CIC12OutListID" />
+          </Key>
+          <Property Name="CIC12OutListID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CICDetailID" Type="bigint" />
+          <Property Name="OutFlag" Type="bit" />
+          <Property Name="LeaveDate" Type="date" />
+          <Property Name="OutAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BalanceAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FlagApp" Type="bit" />
+          <Property Name="UserApprove" Type="nvarchar" MaxLength="20" />
+          <Property Name="DateApprove" Type="datetime" />
+          <Property Name="Pay" Type="bit" />
+          <Property Name="RefDoc" Type="nvarchar" MaxLength="255" />
+          <Property Name="RefDate" Type="date" />
+          <Property Name="OutUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="OutDateTime" Type="datetime" />
+          <Property Name="CICUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="CICUpdate" Type="datetime" />
+          <Property Name="FlagAppCIC" Type="bit" />
+          <Property Name="CICApp" Type="nvarchar" MaxLength="20" />
+          <Property Name="CICAppDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="trn_CIC14InList">
           <Key>
             <PropertyRef Name="CIC14InListID" />
@@ -232,11 +256,17 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Approve' does not have a 
 warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_ApproveIN' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Vw_ApproveIN">
           <Key>
-            <PropertyRef Name="CICDetailID" />
             <PropertyRef Name="CIC14InListID" />
           </Key>
           <Property Name="CICDetailID" Type="bigint" Nullable="false" />
           <Property Name="CIC14InListID" Type="bigint" Nullable="false" />
+          <Property Name="FlagApp" Type="bit" />
+          <Property Name="UserApprove" Type="nvarchar" MaxLength="20" />
+          <Property Name="Prefixma" Type="nvarchar" MaxLength="20" />
+          <Property Name="ThFirstNamema" Type="nvarchar" MaxLength="150" />
+          <Property Name="ThLastNamema" Type="nvarchar" MaxLength="150" />
+          <Property Name="DateApprove" Type="datetime" />
+          <Property Name="StatusID" Type="int" />
           <Property Name="Create_By" Type="nvarchar" MaxLength="20" />
           <Property Name="Dept_No" Type="nvarchar" MaxLength="50" />
           <Property Name="CICReason" Type="nvarchar" MaxLength="255" />
@@ -250,9 +280,6 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_ApproveIN' does not have 
           <Property Name="ArriveDate" Type="date" />
           <Property Name="INUser" Type="nvarchar" MaxLength="20" />
           <Property Name="INUpdate" Type="datetime" />
-          <Property Name="FlagApp" Type="bit" />
-          <Property Name="UserApprove" Type="nvarchar" MaxLength="20" />
-          <Property Name="DateApprove" Type="datetime" />
           <Property Name="Costcenter" Type="nvarchar" MaxLength="20" />
           <Property Name="Item" Type="int" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
@@ -264,6 +291,49 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_ApproveIN' does not have 
           <Property Name="Prefix" Type="nvarchar" MaxLength="20" />
           <Property Name="ThFirstName" Type="nvarchar" MaxLength="150" />
           <Property Name="ThLastName" Type="nvarchar" MaxLength="150" />
+          <Property Name="RefDoc" Type="nvarchar" MaxLength="255" />
+          <Property Name="GINo" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_ApproveOUT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Vw_ApproveOUT">
+          <Key>
+            <PropertyRef Name="Expr6" />
+            <PropertyRef Name="CIC12OutListID" />
+          </Key>
+          <Property Name="CICDetailID" Type="bigint" Nullable="false" />
+          <Property Name="CIC12OutListID" Type="bigint" Nullable="false" />
+          <Property Name="Item" Type="int" />
+          <Property Name="AssetList" Type="nvarchar" MaxLength="255" />
+          <Property Name="Model" Type="nvarchar" MaxLength="255" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="UnitID" Type="int" />
+          <Property Name="Create_By" Type="nvarchar" MaxLength="20" />
+          <Property Name="Actual_Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Dept_No" Type="nvarchar" MaxLength="50" />
+          <Property Name="Costcenter" Type="nvarchar" MaxLength="20" />
+          <Property Name="Expr6" Type="bigint" Nullable="false" />
+          <Property Name="OutFlag" Type="bit" />
+          <Property Name="LeaveDate" Type="date" />
+          <Property Name="OutAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BalanceAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FlagApp" Type="bit" />
+          <Property Name="UserApprove" Type="nvarchar" MaxLength="20" />
+          <Property Name="Pay" Type="bit" />
+          <Property Name="RefDate" Type="date" />
+          <Property Name="RefDoc" Type="nvarchar" MaxLength="255" />
+          <Property Name="DateApprove" Type="datetime" />
+          <Property Name="OutUser" Type="nvarchar" MaxLength="20" />
+          <Property Name="OutDateTime" Type="datetime" />
+          <Property Name="FlagAppCIC" Type="bit" />
+          <Property Name="UnitDesc" Type="nvarchar" MaxLength="150" />
+          <Property Name="Prefix" Type="nvarchar" MaxLength="20" />
+          <Property Name="ThFirstName" Type="nvarchar" MaxLength="150" />
+          <Property Name="ThLastName" Type="nvarchar" MaxLength="150" />
+          <Property Name="CICTypeID" Type="int" />
+          <Property Name="Prefixma" Type="nvarchar" MaxLength="150" />
+          <Property Name="ThFirstNamema" Type="nvarchar" MaxLength="150" />
+          <Property Name="ThLastNamema" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -282,6 +352,7 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
         </Function>
         <EntityContainer Name="CICCONTROL_SPRINGModelStoreContainer">
           <EntitySet Name="trn_CIC" EntityType="Self.trn_CIC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_CIC12OutList" EntityType="Self.trn_CIC12OutList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_CIC14InList" EntityType="Self.trn_CIC14InList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_CICAttach" EntityType="Self.trn_CICAttach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
@@ -374,6 +445,13 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
             <DefiningQuery>SELECT 
     [Vw_ApproveIN].[CICDetailID] AS [CICDetailID], 
     [Vw_ApproveIN].[CIC14InListID] AS [CIC14InListID], 
+    [Vw_ApproveIN].[FlagApp] AS [FlagApp], 
+    [Vw_ApproveIN].[UserApprove] AS [UserApprove], 
+    [Vw_ApproveIN].[Prefixma] AS [Prefixma], 
+    [Vw_ApproveIN].[ThFirstNamema] AS [ThFirstNamema], 
+    [Vw_ApproveIN].[ThLastNamema] AS [ThLastNamema], 
+    [Vw_ApproveIN].[DateApprove] AS [DateApprove], 
+    [Vw_ApproveIN].[StatusID] AS [StatusID], 
     [Vw_ApproveIN].[Create_By] AS [Create_By], 
     [Vw_ApproveIN].[Dept_No] AS [Dept_No], 
     [Vw_ApproveIN].[CICReason] AS [CICReason], 
@@ -387,9 +465,6 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
     [Vw_ApproveIN].[ArriveDate] AS [ArriveDate], 
     [Vw_ApproveIN].[INUser] AS [INUser], 
     [Vw_ApproveIN].[INUpdate] AS [INUpdate], 
-    [Vw_ApproveIN].[FlagApp] AS [FlagApp], 
-    [Vw_ApproveIN].[UserApprove] AS [UserApprove], 
-    [Vw_ApproveIN].[DateApprove] AS [DateApprove], 
     [Vw_ApproveIN].[Costcenter] AS [Costcenter], 
     [Vw_ApproveIN].[Item] AS [Item], 
     [Vw_ApproveIN].[Amount] AS [Amount], 
@@ -400,8 +475,47 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
     [Vw_ApproveIN].[InvDate] AS [InvDate], 
     [Vw_ApproveIN].[Prefix] AS [Prefix], 
     [Vw_ApproveIN].[ThFirstName] AS [ThFirstName], 
-    [Vw_ApproveIN].[ThLastName] AS [ThLastName]
+    [Vw_ApproveIN].[ThLastName] AS [ThLastName], 
+    [Vw_ApproveIN].[RefDoc] AS [RefDoc], 
+    [Vw_ApproveIN].[GINo] AS [GINo]
     FROM [dbo].[Vw_ApproveIN] AS [Vw_ApproveIN]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Vw_ApproveOUT" EntityType="Self.Vw_ApproveOUT" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Vw_ApproveOUT].[CICDetailID] AS [CICDetailID], 
+    [Vw_ApproveOUT].[CIC12OutListID] AS [CIC12OutListID], 
+    [Vw_ApproveOUT].[Item] AS [Item], 
+    [Vw_ApproveOUT].[AssetList] AS [AssetList], 
+    [Vw_ApproveOUT].[Model] AS [Model], 
+    [Vw_ApproveOUT].[Amount] AS [Amount], 
+    [Vw_ApproveOUT].[UnitID] AS [UnitID], 
+    [Vw_ApproveOUT].[Create_By] AS [Create_By], 
+    [Vw_ApproveOUT].[Actual_Amount] AS [Actual_Amount], 
+    [Vw_ApproveOUT].[Dept_No] AS [Dept_No], 
+    [Vw_ApproveOUT].[Costcenter] AS [Costcenter], 
+    [Vw_ApproveOUT].[Expr6] AS [Expr6], 
+    [Vw_ApproveOUT].[OutFlag] AS [OutFlag], 
+    [Vw_ApproveOUT].[LeaveDate] AS [LeaveDate], 
+    [Vw_ApproveOUT].[OutAmount] AS [OutAmount], 
+    [Vw_ApproveOUT].[BalanceAmount] AS [BalanceAmount], 
+    [Vw_ApproveOUT].[FlagApp] AS [FlagApp], 
+    [Vw_ApproveOUT].[UserApprove] AS [UserApprove], 
+    [Vw_ApproveOUT].[Pay] AS [Pay], 
+    [Vw_ApproveOUT].[RefDate] AS [RefDate], 
+    [Vw_ApproveOUT].[RefDoc] AS [RefDoc], 
+    [Vw_ApproveOUT].[DateApprove] AS [DateApprove], 
+    [Vw_ApproveOUT].[OutUser] AS [OutUser], 
+    [Vw_ApproveOUT].[OutDateTime] AS [OutDateTime], 
+    [Vw_ApproveOUT].[FlagAppCIC] AS [FlagAppCIC], 
+    [Vw_ApproveOUT].[UnitDesc] AS [UnitDesc], 
+    [Vw_ApproveOUT].[Prefix] AS [Prefix], 
+    [Vw_ApproveOUT].[ThFirstName] AS [ThFirstName], 
+    [Vw_ApproveOUT].[ThLastName] AS [ThLastName], 
+    [Vw_ApproveOUT].[CICTypeID] AS [CICTypeID], 
+    [Vw_ApproveOUT].[Prefixma] AS [Prefixma], 
+    [Vw_ApproveOUT].[ThFirstNamema] AS [ThFirstNamema], 
+    [Vw_ApproveOUT].[ThLastNamema] AS [ThLastNamema]
+    FROM [dbo].[Vw_ApproveOUT] AS [Vw_ApproveOUT]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Vw_Manager" EntityType="Self.Vw_Manager" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -631,15 +745,41 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
           <FunctionImport Name="Send_CIC_Mail">
           <Parameter Name="Dept_No" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="trn_CIC12OutList" EntityType="CICCONTROL_SPRINGModel.trn_CIC12OutList" />
           <EntitySet Name="trn_CIC14InList" EntityType="CICCONTROL_SPRINGModel.trn_CIC14InList" />
           <EntitySet Name="Vw_ApproveIN" EntityType="CICCONTROL_SPRINGModel.Vw_ApproveIN" />
+          <EntitySet Name="Vw_ApproveOUT" EntityType="CICCONTROL_SPRINGModel.Vw_ApproveOUT" />
         </EntityContainer>
+        <EntityType Name="trn_CIC12OutList">
+          <Key>
+            <PropertyRef Name="CIC12OutListID" />
+          </Key>
+          <Property Name="CIC12OutListID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CICDetailID" Type="Int64" Nullable="false" />
+          <Property Name="OutFlag" Type="Boolean" />
+          <Property Name="LeaveDate" Type="DateTime" Precision="0" />
+          <Property Name="OutAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BalanceAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FlagApp" Type="Boolean" />
+          <Property Name="UserApprove" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DateApprove" Type="DateTime" Precision="3" />
+          <Property Name="Pay" Type="Boolean" />
+          <Property Name="RefDoc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RefDate" Type="DateTime" Precision="0" />
+          <Property Name="OutUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OutDateTime" Type="DateTime" Precision="3" />
+          <Property Name="CICUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CICUpdate" Type="DateTime" Precision="3" />
+          <Property Name="FlagAppCIC" Type="Boolean" />
+          <Property Name="CICApp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CICAppDate" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="trn_CIC14InList">
           <Key>
             <PropertyRef Name="CIC14InListID" />
           </Key>
           <Property Name="CIC14InListID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CICDetailID" Type="Int64" />
+          <Property Name="CICDetailID" Type="Int64" Nullable="false" />
           <Property Name="INFlag" Type="Boolean" />
           <Property Name="IN_Amount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="IN_Scrap" Type="Decimal" Precision="18" Scale="2" />
@@ -663,11 +803,17 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
         </EntityType>
         <EntityType Name="Vw_ApproveIN">
           <Key>
-            <PropertyRef Name="CICDetailID" />
             <PropertyRef Name="CIC14InListID" />
           </Key>
           <Property Name="CICDetailID" Type="Int64" Nullable="false" />
           <Property Name="CIC14InListID" Type="Int64" Nullable="false" />
+          <Property Name="FlagApp" Type="Boolean" />
+          <Property Name="UserApprove" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Prefixma" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ThFirstNamema" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ThLastNamema" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DateApprove" Type="DateTime" Precision="3" />
+          <Property Name="StatusID" Type="Int32" />
           <Property Name="Create_By" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Dept_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CICReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -681,9 +827,6 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
           <Property Name="ArriveDate" Type="DateTime" Precision="0" />
           <Property Name="INUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="INUpdate" Type="DateTime" Precision="3" />
-          <Property Name="FlagApp" Type="Boolean" />
-          <Property Name="UserApprove" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="DateApprove" Type="DateTime" Precision="3" />
           <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Item" Type="Int32" />
           <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
@@ -695,6 +838,47 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
           <Property Name="Prefix" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ThFirstName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ThLastName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="RefDoc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GINo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Vw_ApproveOUT">
+          <Key>
+            <PropertyRef Name="Expr6" />
+            <PropertyRef Name="CIC12OutListID" />
+          </Key>
+          <Property Name="CICDetailID" Type="Int64" Nullable="false" />
+          <Property Name="CIC12OutListID" Type="Int64" Nullable="false" />
+          <Property Name="Item" Type="Int32" />
+          <Property Name="AssetList" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="UnitID" Type="Int32" />
+          <Property Name="Create_By" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Actual_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Dept_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Expr6" Type="Int64" Nullable="false" />
+          <Property Name="OutFlag" Type="Boolean" />
+          <Property Name="LeaveDate" Type="DateTime" Precision="0" />
+          <Property Name="OutAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BalanceAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FlagApp" Type="Boolean" />
+          <Property Name="UserApprove" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Pay" Type="Boolean" />
+          <Property Name="RefDate" Type="DateTime" Precision="0" />
+          <Property Name="RefDoc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DateApprove" Type="DateTime" Precision="3" />
+          <Property Name="OutUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OutDateTime" Type="DateTime" Precision="3" />
+          <Property Name="FlagAppCIC" Type="Boolean" />
+          <Property Name="UnitDesc" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Prefix" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ThFirstName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ThLastName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CICTypeID" Type="Int32" />
+          <Property Name="Prefixma" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ThFirstNamema" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ThLastNamema" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -912,6 +1096,31 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="Send_CIC_Mail" FunctionName="CICCONTROL_SPRINGModel.Store.Send_CIC_Mail" />
+          <EntitySetMapping Name="trn_CIC12OutList">
+            <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.trn_CIC12OutList">
+              <MappingFragment StoreEntitySet="trn_CIC12OutList">
+                <ScalarProperty Name="CICAppDate" ColumnName="CICAppDate" />
+                <ScalarProperty Name="CICApp" ColumnName="CICApp" />
+                <ScalarProperty Name="FlagAppCIC" ColumnName="FlagAppCIC" />
+                <ScalarProperty Name="CICUpdate" ColumnName="CICUpdate" />
+                <ScalarProperty Name="CICUser" ColumnName="CICUser" />
+                <ScalarProperty Name="OutDateTime" ColumnName="OutDateTime" />
+                <ScalarProperty Name="OutUser" ColumnName="OutUser" />
+                <ScalarProperty Name="RefDate" ColumnName="RefDate" />
+                <ScalarProperty Name="RefDoc" ColumnName="RefDoc" />
+                <ScalarProperty Name="Pay" ColumnName="Pay" />
+                <ScalarProperty Name="DateApprove" ColumnName="DateApprove" />
+                <ScalarProperty Name="UserApprove" ColumnName="UserApprove" />
+                <ScalarProperty Name="FlagApp" ColumnName="FlagApp" />
+                <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+                <ScalarProperty Name="OutAmount" ColumnName="OutAmount" />
+                <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+                <ScalarProperty Name="OutFlag" ColumnName="OutFlag" />
+                <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
+                <ScalarProperty Name="CIC12OutListID" ColumnName="CIC12OutListID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="trn_CIC14InList">
             <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.trn_CIC14InList">
               <MappingFragment StoreEntitySet="trn_CIC14InList">
@@ -943,6 +1152,8 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
           <EntitySetMapping Name="Vw_ApproveIN">
             <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.Vw_ApproveIN">
               <MappingFragment StoreEntitySet="Vw_ApproveIN">
+                <ScalarProperty Name="GINo" ColumnName="GINo" />
+                <ScalarProperty Name="RefDoc" ColumnName="RefDoc" />
                 <ScalarProperty Name="ThLastName" ColumnName="ThLastName" />
                 <ScalarProperty Name="ThFirstName" ColumnName="ThFirstName" />
                 <ScalarProperty Name="Prefix" ColumnName="Prefix" />
@@ -954,9 +1165,6 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Item" ColumnName="Item" />
                 <ScalarProperty Name="Costcenter" ColumnName="Costcenter" />
-                <ScalarProperty Name="DateApprove" ColumnName="DateApprove" />
-                <ScalarProperty Name="UserApprove" ColumnName="UserApprove" />
-                <ScalarProperty Name="FlagApp" ColumnName="FlagApp" />
                 <ScalarProperty Name="INUpdate" ColumnName="INUpdate" />
                 <ScalarProperty Name="INUser" ColumnName="INUser" />
                 <ScalarProperty Name="ArriveDate" ColumnName="ArriveDate" />
@@ -970,7 +1178,53 @@ warning 6002: The table/view 'CICCONTROL_SPRING.dbo.Vw_Manager' does not have a 
                 <ScalarProperty Name="CICReason" ColumnName="CICReason" />
                 <ScalarProperty Name="Dept_No" ColumnName="Dept_No" />
                 <ScalarProperty Name="Create_By" ColumnName="Create_By" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="DateApprove" ColumnName="DateApprove" />
+                <ScalarProperty Name="ThLastNamema" ColumnName="ThLastNamema" />
+                <ScalarProperty Name="ThFirstNamema" ColumnName="ThFirstNamema" />
+                <ScalarProperty Name="Prefixma" ColumnName="Prefixma" />
+                <ScalarProperty Name="UserApprove" ColumnName="UserApprove" />
+                <ScalarProperty Name="FlagApp" ColumnName="FlagApp" />
                 <ScalarProperty Name="CIC14InListID" ColumnName="CIC14InListID" />
+                <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vw_ApproveOUT">
+            <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.Vw_ApproveOUT">
+              <MappingFragment StoreEntitySet="Vw_ApproveOUT">
+                <ScalarProperty Name="ThLastNamema" ColumnName="ThLastNamema" />
+                <ScalarProperty Name="ThFirstNamema" ColumnName="ThFirstNamema" />
+                <ScalarProperty Name="Prefixma" ColumnName="Prefixma" />
+                <ScalarProperty Name="CICTypeID" ColumnName="CICTypeID" />
+                <ScalarProperty Name="ThLastName" ColumnName="ThLastName" />
+                <ScalarProperty Name="ThFirstName" ColumnName="ThFirstName" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="UnitDesc" ColumnName="UnitDesc" />
+                <ScalarProperty Name="FlagAppCIC" ColumnName="FlagAppCIC" />
+                <ScalarProperty Name="OutDateTime" ColumnName="OutDateTime" />
+                <ScalarProperty Name="OutUser" ColumnName="OutUser" />
+                <ScalarProperty Name="DateApprove" ColumnName="DateApprove" />
+                <ScalarProperty Name="RefDoc" ColumnName="RefDoc" />
+                <ScalarProperty Name="RefDate" ColumnName="RefDate" />
+                <ScalarProperty Name="Pay" ColumnName="Pay" />
+                <ScalarProperty Name="UserApprove" ColumnName="UserApprove" />
+                <ScalarProperty Name="FlagApp" ColumnName="FlagApp" />
+                <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+                <ScalarProperty Name="OutAmount" ColumnName="OutAmount" />
+                <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+                <ScalarProperty Name="OutFlag" ColumnName="OutFlag" />
+                <ScalarProperty Name="Expr6" ColumnName="Expr6" />
+                <ScalarProperty Name="Costcenter" ColumnName="Costcenter" />
+                <ScalarProperty Name="Dept_No" ColumnName="Dept_No" />
+                <ScalarProperty Name="Actual_Amount" ColumnName="Actual_Amount" />
+                <ScalarProperty Name="Create_By" ColumnName="Create_By" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="AssetList" ColumnName="AssetList" />
+                <ScalarProperty Name="Item" ColumnName="Item" />
+                <ScalarProperty Name="CIC12OutListID" ColumnName="CIC12OutListID" />
                 <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
               </MappingFragment>
             </EntityTypeMapping>

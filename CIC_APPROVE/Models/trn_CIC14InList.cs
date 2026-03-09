@@ -15,7 +15,7 @@ namespace CIC_APPROVE.Models
     public partial class trn_CIC14InList
     {
         public long CIC14InListID { get; set; }
-        public Nullable<long> CICDetailID { get; set; }
+        public long CICDetailID { get; set; }
         public Nullable<bool> INFlag { get; set; }
         public Nullable<decimal> IN_Amount { get; set; }
         public Nullable<decimal> IN_Scrap { get; set; }

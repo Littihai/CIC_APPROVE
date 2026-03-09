@@ -166,6 +166,7 @@
     </Compile>
     <Compile Include="Helpers\CryptoHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApproveFullDetailVM.cs" />
     <Compile Include="Models\ApproveViewModel.cs" />
     <Compile Include="Models\Approve_Employee.cs" />
     <Compile Include="Models\Employee.Context.cs">
@@ -189,6 +190,9 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\trn_CIC.cs">
+      <DependentUpon>Update_Status.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\trn_CIC12OutList.cs">
       <DependentUpon>Update_Status.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\trn_CIC14InList.cs">
@@ -223,6 +227,9 @@
       <DependentUpon>Update_Status.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Vw_ApproveIN.cs">
+      <DependentUpon>Update_Status.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Vw_ApproveOUT.cs">
       <DependentUpon>Update_Status.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Vw_Manager.cs">
@@ -499,7 +506,8 @@
     <Content Include="Views\Vw_Approve\Approve.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Vw_Approve\ApproveError.cshtml" />
-    <Content Include="Views\Vw_Approve\Detail.cshtml" />
+    <Content Include="Views\Vw_Approve\DetailIn.cshtml" />
+    <Content Include="Views\Vw_Approve\DetailOut.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -33,8 +33,10 @@ namespace CIC_APPROVE.Models
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<Vw_Approve> Vw_Approve { get; set; }
         public virtual DbSet<Vw_Manager> Vw_Manager { get; set; }
+        public virtual DbSet<trn_CIC12OutList> trn_CIC12OutList { get; set; }
         public virtual DbSet<trn_CIC14InList> trn_CIC14InList { get; set; }
         public virtual DbSet<Vw_ApproveIN> Vw_ApproveIN { get; set; }
+        public virtual DbSet<Vw_ApproveOUT> Vw_ApproveOUT { get; set; }
     
         public virtual int Send_CIC_Mail(string dept_No)
         {

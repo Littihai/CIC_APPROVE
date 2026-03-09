@@ -211,5 +211,138 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="Send_CIC_Mail" FunctionName="CICCONTROL_SPRINGModel.Store.Send_CIC_Mail" />
+    <EntitySetMapping Name="trn_CIC12OutList">
+      <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.trn_CIC12OutList">
+        <MappingFragment StoreEntitySet="trn_CIC12OutList">
+          <ScalarProperty Name="CICAppDate" ColumnName="CICAppDate" />
+          <ScalarProperty Name="CICApp" ColumnName="CICApp" />
+          <ScalarProperty Name="FlagAppCIC" ColumnName="FlagAppCIC" />
+          <ScalarProperty Name="CICUpdate" ColumnName="CICUpdate" />
+          <ScalarProperty Name="CICUser" ColumnName="CICUser" />
+          <ScalarProperty Name="OutDateTime" ColumnName="OutDateTime" />
+          <ScalarProperty Name="OutUser" ColumnName="OutUser" />
+          <ScalarProperty Name="RefDate" ColumnName="RefDate" />
+          <ScalarProperty Name="RefDoc" ColumnName="RefDoc" />
+          <ScalarProperty Name="Pay" ColumnName="Pay" />
+          <ScalarProperty Name="DateApprove" ColumnName="DateApprove" />
+          <ScalarProperty Name="UserApprove" ColumnName="UserApprove" />
+          <ScalarProperty Name="FlagApp" ColumnName="FlagApp" />
+          <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+          <ScalarProperty Name="OutAmount" ColumnName="OutAmount" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="OutFlag" ColumnName="OutFlag" />
+          <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
+          <ScalarProperty Name="CIC12OutListID" ColumnName="CIC12OutListID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="trn_CIC14InList">
+      <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.trn_CIC14InList">
+        <MappingFragment StoreEntitySet="trn_CIC14InList">
+          <ScalarProperty Name="CICAppDate" ColumnName="CICAppDate" />
+          <ScalarProperty Name="CICApp" ColumnName="CICApp" />
+          <ScalarProperty Name="FlagAppCIC" ColumnName="FlagAppCIC" />
+          <ScalarProperty Name="CICUpdate" ColumnName="CICUpdate" />
+          <ScalarProperty Name="CICUser" ColumnName="CICUser" />
+          <ScalarProperty Name="CICNo" ColumnName="CICNo" />
+          <ScalarProperty Name="GINo" ColumnName="GINo" />
+          <ScalarProperty Name="InvDate" ColumnName="InvDate" />
+          <ScalarProperty Name="InvNo" ColumnName="InvNo" />
+          <ScalarProperty Name="RefDoc" ColumnName="RefDoc" />
+          <ScalarProperty Name="DateApprove" ColumnName="DateApprove" />
+          <ScalarProperty Name="UserApprove" ColumnName="UserApprove" />
+          <ScalarProperty Name="FlagApp" ColumnName="FlagApp" />
+          <ScalarProperty Name="INUpdate" ColumnName="INUpdate" />
+          <ScalarProperty Name="INUser" ColumnName="INUser" />
+          <ScalarProperty Name="ArriveDate" ColumnName="ArriveDate" />
+          <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+          <ScalarProperty Name="IN_Scrap" ColumnName="IN_Scrap" />
+          <ScalarProperty Name="IN_Amount" ColumnName="IN_Amount" />
+          <ScalarProperty Name="INFlag" ColumnName="INFlag" />
+          <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
+          <ScalarProperty Name="CIC14InListID" ColumnName="CIC14InListID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vw_ApproveIN">
+      <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.Vw_ApproveIN">
+        <MappingFragment StoreEntitySet="Vw_ApproveIN">
+          <ScalarProperty Name="GINo" ColumnName="GINo" />
+          <ScalarProperty Name="RefDoc" ColumnName="RefDoc" />
+          <ScalarProperty Name="ThLastName" ColumnName="ThLastName" />
+          <ScalarProperty Name="ThFirstName" ColumnName="ThFirstName" />
+          <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+          <ScalarProperty Name="InvDate" ColumnName="InvDate" />
+          <ScalarProperty Name="InvNo" ColumnName="InvNo" />
+          <ScalarProperty Name="Scrap" ColumnName="Scrap" />
+          <ScalarProperty Name="ScrapRet" ColumnName="ScrapRet" />
+          <ScalarProperty Name="Actual_Amount" ColumnName="Actual_Amount" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Item" ColumnName="Item" />
+          <ScalarProperty Name="Costcenter" ColumnName="Costcenter" />
+          <ScalarProperty Name="INUpdate" ColumnName="INUpdate" />
+          <ScalarProperty Name="INUser" ColumnName="INUser" />
+          <ScalarProperty Name="ArriveDate" ColumnName="ArriveDate" />
+          <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+          <ScalarProperty Name="IN_Scrap" ColumnName="IN_Scrap" />
+          <ScalarProperty Name="IN_Amount" ColumnName="IN_Amount" />
+          <ScalarProperty Name="INFlag" ColumnName="INFlag" />
+          <ScalarProperty Name="UnitDesc" ColumnName="UnitDesc" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="AssetList" ColumnName="AssetList" />
+          <ScalarProperty Name="CICReason" ColumnName="CICReason" />
+          <ScalarProperty Name="Dept_No" ColumnName="Dept_No" />
+          <ScalarProperty Name="Create_By" ColumnName="Create_By" />
+          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+          <ScalarProperty Name="DateApprove" ColumnName="DateApprove" />
+          <ScalarProperty Name="ThLastNamema" ColumnName="ThLastNamema" />
+          <ScalarProperty Name="ThFirstNamema" ColumnName="ThFirstNamema" />
+          <ScalarProperty Name="Prefixma" ColumnName="Prefixma" />
+          <ScalarProperty Name="UserApprove" ColumnName="UserApprove" />
+          <ScalarProperty Name="FlagApp" ColumnName="FlagApp" />
+          <ScalarProperty Name="CIC14InListID" ColumnName="CIC14InListID" />
+          <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vw_ApproveOUT">
+      <EntityTypeMapping TypeName="CICCONTROL_SPRINGModel.Vw_ApproveOUT">
+        <MappingFragment StoreEntitySet="Vw_ApproveOUT">
+          <ScalarProperty Name="ThLastNamema" ColumnName="ThLastNamema" />
+          <ScalarProperty Name="ThFirstNamema" ColumnName="ThFirstNamema" />
+          <ScalarProperty Name="Prefixma" ColumnName="Prefixma" />
+          <ScalarProperty Name="CICTypeID" ColumnName="CICTypeID" />
+          <ScalarProperty Name="ThLastName" ColumnName="ThLastName" />
+          <ScalarProperty Name="ThFirstName" ColumnName="ThFirstName" />
+          <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+          <ScalarProperty Name="UnitDesc" ColumnName="UnitDesc" />
+          <ScalarProperty Name="FlagAppCIC" ColumnName="FlagAppCIC" />
+          <ScalarProperty Name="OutDateTime" ColumnName="OutDateTime" />
+          <ScalarProperty Name="OutUser" ColumnName="OutUser" />
+          <ScalarProperty Name="DateApprove" ColumnName="DateApprove" />
+          <ScalarProperty Name="RefDoc" ColumnName="RefDoc" />
+          <ScalarProperty Name="RefDate" ColumnName="RefDate" />
+          <ScalarProperty Name="Pay" ColumnName="Pay" />
+          <ScalarProperty Name="UserApprove" ColumnName="UserApprove" />
+          <ScalarProperty Name="FlagApp" ColumnName="FlagApp" />
+          <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+          <ScalarProperty Name="OutAmount" ColumnName="OutAmount" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="OutFlag" ColumnName="OutFlag" />
+          <ScalarProperty Name="Expr6" ColumnName="Expr6" />
+          <ScalarProperty Name="Costcenter" ColumnName="Costcenter" />
+          <ScalarProperty Name="Dept_No" ColumnName="Dept_No" />
+          <ScalarProperty Name="Actual_Amount" ColumnName="Actual_Amount" />
+          <ScalarProperty Name="Create_By" ColumnName="Create_By" />
+          <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="AssetList" ColumnName="AssetList" />
+          <ScalarProperty Name="Item" ColumnName="Item" />
+          <ScalarProperty Name="CIC12OutListID" ColumnName="CIC12OutListID" />
+          <ScalarProperty Name="CICDetailID" ColumnName="CICDetailID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

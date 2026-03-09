@@ -1,0 +1,875 @@
+﻿@model CIC_APPROVE.Models.ApproveFullDetailVM
+
+@{
+    ViewBag.Title = "CIC DetailIn";
+
+    bool canApprove = false;
+
+    if (Model.Approve.StatusID == 5 || Model.Approve.StatusID == 10)
+    {
+        canApprove = true;
+    }
+}
+@{
+    bool hasPending = Model.ApproveIN.Any(x => x.FlagApp != true);
+    bool hasApproved = Model.ApproveIN.Any(x => x.FlagApp == true);
+}
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <title>CIC OUT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 2px;
+        }
+
+        /* input readonly ตัวอักษรสีน้ำเงิน */
+        .card input[readonly],
+        .card textarea[readonly] {
+            color: #0d6efd !important;
+            /* Bootstrap primary blue */
+            background-color: #fff;
+            /* ไม่ให้เป็นสีเทา */
+            opacity: 1;
+            /* กัน Bootstrap ทำให้ซีด */
+            font-weight: 500;
+        }
+
+        .card {
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn:hover {
+                transform: scale(1.05);
+            }
+
+        .btn-green {
+            background-color: #28a745; /* เขียว Bootstrap */
+            color: white;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+        .table-scroll {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+            .table-scroll table {
+                white-space: nowrap;
+            }
+    </style>
+
+</head>
+<body>
+    <br />
+    <!-- Header Card -->
+    <div class="card mb-4">
+        <div class="card-body">
+
+            <h5 class="mb-1">
+                @Html.DisplayFor(modelItem => @Model.Approve.CIC)
+            </h5>
+
+            <div class="row mt-3 align-items-center text-end">
+                <div class="col text-start text-success fw-bold" id="company_name">
+                    บริษัท ไทยซัมมิท เอนจิเนียริง จำกัด
+                </div>
+                <div class="col-auto">
+                    Dept. No :
+                    @Html.DisplayFor(modelItem => @Model.Approve.Dept_No)
+                </div>
+
+                <div class="col-auto">
+                    CIC No :@Html.DisplayFor(modelItem => @Model.Approve.CIC_No)
+                </div>
+                <div class="col-auto">
+                    สถานะ :
+                    <span class="fw-semibold">
+                        @Html.DisplayFor(modelItem => @Model.Approve.StatusName)
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    @{
+        var firstItem = Model.Approve;
+    }
+
+    <div class="mb-3">
+        <button class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#detailModal">
+            รายละเอียด
+        </button>
+
+        @if (firstItem != null)
+        {
+            <button class="btn btn-primary me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#attachModal"
+                    data-cicid="@firstItem.CIC_ID">
+                ไฟล์แนบ
+            </button>
+        }
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="attachModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content shadow-lg">
+
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">ไฟล์แนบ</h5>
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="attachContainer"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+    var attachList = @Html.Raw(
+        Json.Encode(ViewBag.AttachList ?? new List<object>())
+    );
+
+    var modal = document.getElementById('attachModal');
+
+    modal.addEventListener('show.bs.modal', function (event) {
+
+        var button = event.relatedTarget;
+        var cicId = button.getAttribute('data-cicid');
+
+        var container = document.getElementById('attachContainer');
+        container.innerHTML = "";
+
+        if (!attachList || attachList.length === 0) {
+            container.innerHTML =
+                "<div class='alert alert-warning'>ไม่มีไฟล์แนบ</div>";
+            return;
+        }
+
+        // กรองตาม CIC_ID และเรียงตาม ID
+        var files = attachList
+            .filter(x => x.CIC_ID == cicId)
+            .sort((a, b) => a.CICAttachID - b.CICAttachID);
+
+        if (!files || files.length === 0) {
+            container.innerHTML =
+                "<div class='alert alert-warning'>ไม่มีไฟล์แนบ</div>";
+            return;
+        }
+
+        // กันไฟล์ชื่อซ้ำ
+        var uniqueFiles = [];
+        var fileNames = new Set();
+
+        files.forEach(function (file) {
+            if (!fileNames.has(file.AttachFile)) {
+                fileNames.add(file.AttachFile);
+                uniqueFiles.push(file);
+            }
+        });
+
+        if (uniqueFiles.length === 0) {
+            container.innerHTML =
+                "<div class='alert alert-warning'>ไม่มีไฟล์แนบ</div>";
+            return;
+        }
+
+        // สร้างตาราง
+        var table = document.createElement("table");
+        table.className = "table table-bordered table-striped";
+
+        table.innerHTML = `
+            <thead class="table-primary">
+                <tr>
+                    <th>ชื่อไฟล์</th>
+                    <th width="150">เปิดไฟล์</th>
+                </tr>
+            </thead>
+        `;
+
+        var tbody = document.createElement("tbody");
+
+        uniqueFiles.forEach(function (file) {
+
+            var row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${file.AttachFile ? file.AttachFile : ""}</td>
+                <td>
+                    <a href='@Url.Action("OpenFile","Vw_Approve")?id=${file.CICAttachID}'
+                       target='_blank'
+                       class='btn btn-sm btn-success w-100'>
+                       เปิดไฟล์
+                    </a>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+
+        table.appendChild(tbody);
+        container.appendChild(table);
+    });
+    </script>
+    @*==================================================================================================================================*@
+    <div class="card mb-4">
+        <div class="card-body">
+
+            @{ var header = Model.Approve;
+
+                string currentDept = header.Dept_No ?? "";
+
+                bool is12 = currentDept.StartsWith("12");
+                bool is14 = currentDept.StartsWith("14");
+
+                bool showIn = false;
+                bool showOut = false;
+
+                if (header.CICTypeID == 1 || header.CICTypeID == 2 || header.CICTypeID == 4)
+                {
+                    showIn = true;
+                }
+
+                if (header.CICTypeID == 3 || header.CICTypeID == 2 || header.CICTypeID == 4)
+                {
+                    showOut = true;
+                }
+
+                string colDateIn = (showIn && showOut) ? "col-md-6" : "col-md-12";
+                string colDateOut = (showIn && showOut) ? "col-md-6" : "col-md-12";
+
+                string colContact = "col-md-6";
+                string colVendor = "col-md-6";
+
+                string inDate = "";
+                string outDate = "";
+
+                if (header.IN_Date.HasValue)
+                {
+                    inDate = header.IN_Date.Value.ToString("dd/MM/yyyy");
+                }
+
+                if (header.OUT_Date.HasValue)
+                {
+                    outDate = header.OUT_Date.Value.ToString("dd/MM/yyyy");
+                } }
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <label>ประเภททรัพย์สิน</label>
+                    <input type="text" class="form-control"
+                           value="@header.AstTypeName" readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label>สาเหตุการทำ CIC</label>
+                    <input type="text" class="form-control"
+                           value="@header.CICReason" readonly />
+                </div>
+
+                @if (showIn)
+                {
+                    <div class="@colDateIn">
+                        <label>
+                            @(is14 ? "วันที่คาดว่าจะนำเข้า" : "วันที่นำเข้า")
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               value="@inDate"
+                               readonly />
+                    </div>}
+
+                @if (showOut)
+                {
+                    <div class="@colDateOut">
+                        <label>
+                            @(is12 ? "วันที่คาดว่าจะนำออก" : "วันที่นำออก")
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               value="@outDate"
+                               readonly />
+                    </div>}
+
+                <div class="@colContact">
+                    <label>ผู้ติดต่อชื่อ</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.VendorContact"
+                           readonly />
+                </div>
+
+                <div class="@colVendor">
+                    <label>นำไปที่</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.Vendor"
+                           readonly />
+                </div>
+
+                <div class="col-md-3">
+                    <label>ทะเบียน</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.License"
+                           readonly />
+                </div>
+
+                <div class="col-md-3">
+                    <label>พาหนะ</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.Vehicle"
+                           readonly />
+                </div>
+
+                <div class="col-md-3">
+                    <label>ยี่ห้อ</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.Brand"
+                           readonly />
+                </div>
+
+                <div class="col-md-3">
+                    <label>วัตถุประสงค์</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.Objective"
+                           readonly />
+                </div>
+
+                <div class="col-md-3">
+                    <label>ชื่อ-สกุล</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.Name_user"
+                           readonly />
+                </div>
+
+                <div class="col-md-3">
+                    <label>แผนก</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.SubDivisionName"
+                           readonly />
+                </div>
+
+                <div class="col-md-3">
+                    <label>อีเมล</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.Email"
+                           readonly />
+                </div>
+
+                <div class="col-md-3">
+                    <label>เบอร์ติดต่อ</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.ContactNo"
+                           readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label>หมายเหตุ</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.Remark"
+                           readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label>โรงงาน</label>
+                    <input type="text"
+                           class="form-control"
+                           value="@header.Factory"
+                           readonly />
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <div class="container-fluid px-0">
+
+        <!-- ================= TABLE FORM (ใช้ร่วมกัน) ================= -->
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "mainForm" }))
+        {
+            @Html.Hidden("deptNo", Model.Approve.Dept_No)
+            @Html.Hidden("user", Request.QueryString["user"])
+
+            <div class="table-scroll">
+
+                <!-- ================= TABLE FORM (ใช้ร่วมกัน) ================= -->
+                @using (Html.BeginForm("ApproveSelected", "Vw_Approve", FormMethod.Post, new { id = "mainForm" }))
+                {
+
+                    <table class="table table-bordered text-center align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width:60px;">
+                                    <input type="checkbox" id="checkAll" />
+                                </th>
+                                <th>No.</th>
+                                <th class="text-start">Asset</th>
+                                <th>Model</th> <!--โมเดล-->
+                                <th>Unit</th> <!--หน่วย-->
+                                <th>Quantity</th> <!--เข้ามา-->
+                                <th>Scrap(Kg)</th>
+                                <th>Balance</th> <!--คงเหลือ-->
+                                <th>Date</th>
+                                <th>Approve</th> <!--อนุมัติโดย-->
+                                <th>Date</th>
+                                <th>Inv No.</th>
+                                @*<th>Inv Date</th>*@
+                                <th>GI No.</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{ int i = 1; }
+
+                            @foreach (var item in Model.ApproveIN)
+                            {
+                                bool isApproved = item.FlagApp == true;
+
+                                <tr>
+                                    <td>
+                                        <input type="checkbox"
+                                               name="selectedIds"
+                                               value="@item.CIC14InListID"
+                                               class="row-check"
+                                               data-flag="@(isApproved ? "true" : "false")" />
+                                    </td>
+
+                                    <td>@i</td>
+                                    <td class="text-start">@item.AssetList</td>
+                                    <td>@item.Model</td> <!--โมเดล-->
+                                    <td>@item.UnitDesc</td> <!--หน่วย-->
+                                    <td>@item.IN_Amount</td> <!--เข้ามา-->
+                                    <td>@item.IN_Scrap</td>
+                                    <td>@item.BalanceAmount</td> <!--คงเหลือ-->
+                                    <td>@(item.ArriveDate == null ? "" : item.ArriveDate.Value.ToString("dd/MM/yyyy"))</td>
+                                    <td>@item.Prefixma @item.ThFirstNamema  @item.ThLastNamema</td><!--อนุมัติโดย-->
+                                    <td>
+                                        @(item.DateApprove != null
+                    ? item.DateApprove.Value.ToString("dd/MM/yyyy")
+                    : "")
+                                    </td>
+                                    <td>@item.InvNo</td>
+                                    @*<td>@(item.DateApprove == null ? "" : item.DateApprove.Value.ToString("dd/MM/yyyy"))</td>*@
+                                    <td>@item.GINo</td>
+
+
+                                    <td>
+                                        <span class="badge rounded-pill px-3 py-2 fw-semibold
+                    @(isApproved
+                        ? "bg-success-subtle text-success border border-success"
+                        : "bg-warning-subtle text-warning border border-warning")">
+                                            @(isApproved ? "อนุมัติแล้ว" : "รออนุมัติ")
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+
+                }
+
+            </div>}
+
+    </div>
+
+    <div class="mt-3 d-flex justify-content-center gap-3">
+        <button type="button" id="btnApprove" class="btn btn-success" style="width:200px;">
+            อนุมัติ
+        </button>
+
+        <button type="button" id="btnCancel" class="btn btn-danger" style="width:200px;">
+            ยกเลิกอนุมัติ
+        </button>
+    </div>
+    @*=====================================================================================================================*@
+
+    <!-- Detail Modal รายละเอียดเอกสาร-->
+
+<div class="modal fade" id="detailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="detailModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">รายละเอียดเอกสาร</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                @{ var approve = Model.Approve; }
+
+                @if (approve != null)
+                {
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">สร้างเอกสาร</label>
+                            <input type="text" class="form-control"
+                                   value="@approve.Create_By_User"
+                                   readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">วันที่</label>
+                            <input type="text"
+                                   class="form-control"
+                                   readonly
+                                   value="@(approve.Create_Date.HasValue
+                                            ? approve.Create_Date.Value.ToString("dd/MM/yyyy")
+                                            : "")" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">ผจก. อนุมัติ</label>
+                            <input type="text" class="form-control"
+                                   value="@approve.Managerapp"
+                                   readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">วันที่อนุมัติ</label>
+                            <input type="text"
+                                   class="form-control"
+                                   readonly
+                                   value="@(approve.Date_approve.HasValue
+                                            ? approve.Date_approve.Value.ToString("dd/MM/yyyy")
+                                            : "")" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">CIC อนุมัติ</label>
+                            <input type="text" class="form-control"
+                                   value="@approve.Cicapp"
+                                   readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">วันที่ CIC</label>
+                            <input type="text" class="form-control"
+                                   readonly
+                                   value="@(approve.Last_CIC_update.HasValue
+                                            ? approve.Last_CIC_update.Value.ToString("dd/MM/yyyy")
+                                            : "")" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">ปิดเอกสาร</label>
+                            <input type="text" class="form-control"
+                                   value="@approve.Close_by"
+                                   readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">วันที่ปิด</label>
+                            <input type="text" class="form-control"
+                                   readonly
+                                   value="@(approve.Close_Date.HasValue
+                                            ? approve.Close_Date.Value.ToString("dd/MM/yyyy")
+                                            : "")" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label">บันทึกข้อมูลล่าสุด</label>
+                            <input type="text" class="form-control"
+                                   readonly
+                                   value="@(approve.Last_update.HasValue
+                                            ? approve.Last_update.Value.ToString("dd/MM/yyyy")
+                                            : "")" />
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    ปิด
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+    @*=====================================================================================================================*@
+
+</body>
+    <style>
+        .table thead th {
+            font-weight: 1294;
+            font-size: 14px;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+            transition: 0.2s;
+        }
+
+        .action-bar {
+            border-top: 1px solid #e9ecef;
+            padding-top: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .action-btn {
+            min-width: 220px;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const allCheckboxes = document.querySelectorAll(".row-check");
+    const checkAll = document.getElementById("checkAll");
+    const btnApprove = document.getElementById("btnApprove");
+    const btnCancel = document.getElementById("btnCancel");
+    const form = document.getElementById("mainForm");
+
+    let activeFlag = null;
+    let isSubmitting = false;
+
+    // ===============================
+    // ตรวจสอบว่ามีสถานะเดียวทั้งหมดไหม
+    // ===============================
+    function detectSingleStatus() {
+        const flags = Array.from(allCheckboxes).map(cb => cb.dataset.flag);
+        const uniqueFlags = [...new Set(flags)];
+
+        if (uniqueFlags.length === 1) {
+            activeFlag = uniqueFlags[0];
+        }
+    }
+
+    // ===============================
+    // Reset UI
+    // ===============================
+    function resetUI() {
+        activeFlag = null;
+        allCheckboxes.forEach(cb => cb.disabled = false);
+        btnApprove.disabled = true;
+        btnCancel.disabled = true;
+        checkAll.checked = false;
+    }
+
+    // ===============================
+    // Update UI
+    // ===============================
+    function updateUI() {
+
+        const checked = document.querySelectorAll(".row-check:checked");
+
+        if (checked.length === 0) {
+            resetUI();
+            return;
+        }
+
+        activeFlag = checked[0].dataset.flag;
+
+        allCheckboxes.forEach(cb => {
+            if (cb.dataset.flag !== activeFlag && !cb.checked) {
+                cb.disabled = true;
+            }
+        });
+
+        btnApprove.disabled = activeFlag !== "false";
+        btnCancel.disabled = activeFlag !== "true";
+
+        const sameStatus = Array.from(allCheckboxes)
+            .filter(cb => cb.dataset.flag === activeFlag);
+
+        const sameChecked = sameStatus.filter(cb => cb.checked);
+
+        checkAll.checked = sameStatus.length === sameChecked.length;
+    }
+
+    // ===============================
+    // Event เลือกทีละรายการ
+    // ===============================
+    allCheckboxes.forEach(cb => {
+        cb.addEventListener("change", updateUI);
+    });
+
+    // ===============================
+    // Select All
+    // ===============================
+    checkAll.addEventListener("change", function () {
+
+        if (!activeFlag) {
+            const flags = Array.from(allCheckboxes).map(cb => cb.dataset.flag);
+            const uniqueFlags = [...new Set(flags)];
+
+            if (uniqueFlags.length > 1) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'ไม่สามารถเลือกทั้งหมดได้',
+                    text: 'กรุณาเลือกอย่างน้อย 1 รายการเพื่อกำหนดสถานะก่อน',
+                    confirmButtonText: 'ตกลง',
+                    confirmButtonColor: '#d33'
+                });
+
+                this.checked = false;
+                return;
+            }
+
+            activeFlag = uniqueFlags[0];
+        }
+
+        allCheckboxes.forEach(cb => {
+            if (cb.dataset.flag === activeFlag) {
+                cb.checked = this.checked;
+            }
+        });
+
+        updateUI();
+    });
+
+    // ===============================
+    // เตรียม Submit
+    // ===============================
+    function prepareSubmit(actionUrl, actionText, successText) {
+
+        if (isSubmitting) return;
+
+        const selected = document.querySelectorAll(".row-check:checked");
+
+        if (selected.length === 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'กรุณาเลือกรายการ',
+                text: 'คุณยังไม่ได้เลือกรายการที่ต้องการดำเนินการ',
+                confirmButtonText: 'ตกลง'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: `ยืนยัน${actionText}?`,
+            html: `
+                <b>จำนวนรายการ:</b> ${selected.length} รายการ<br>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            cancelButtonText: 'ยกเลิก',
+            confirmButtonText: 'ยืนยัน',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#DC3545',
+            reverseButtons: true
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                isSubmitting = true;
+
+                Swal.fire({
+                    title: 'กำลังดำเนินการ...',
+                    html: 'กรุณารอสักครู่',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // เปิด checkbox ทั้งหมดก่อน submit
+                allCheckboxes.forEach(cb => cb.disabled = false);
+
+                form.action = actionUrl;
+                form.submit();
+            }
+        });
+    }
+
+    // ===============================
+    // Approve
+    // ===============================
+    btnApprove.addEventListener("click", function () {
+        prepareSubmit(
+            '@Url.Action("ApproveSelected", "Vw_Approve")',
+            'การอนุมัติ',
+            'อนุมัติสำเร็จ'
+        );
+    });
+
+    // ===============================
+    // Cancel
+    // ===============================
+    btnCancel.addEventListener("click", function () {
+        prepareSubmit(
+            '@Url.Action("CancelSelected", "Vw_Approve")',
+            'การยกเลิกอนุมัติ',
+            'ยกเลิกสำเร็จ'
+        );
+    });
+
+    // เริ่มต้น
+    btnApprove.disabled = true;
+    btnCancel.disabled = true;
+
+    detectSingleStatus();
+});
+    </script>

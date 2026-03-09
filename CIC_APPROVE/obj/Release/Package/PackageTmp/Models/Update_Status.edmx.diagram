@@ -11,6 +11,10 @@
         <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.UserRole" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.Vw_Approve" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.Vw_Manager" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.trn_CIC12OutList" Width="1.5" PointX="11.375" PointY="9.75" />
+        <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.trn_CIC14InList" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.Vw_ApproveIN" Width="1.5" PointX="9.375" PointY="6.75" />
+        <EntityTypeShape EntityType="CICCONTROL_SPRINGModel.Vw_ApproveOUT" Width="1.875" PointX="11.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

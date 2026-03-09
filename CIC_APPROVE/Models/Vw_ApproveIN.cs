@@ -16,6 +16,13 @@ namespace CIC_APPROVE.Models
     {
         public long CICDetailID { get; set; }
         public long CIC14InListID { get; set; }
+        public Nullable<bool> FlagApp { get; set; }
+        public string UserApprove { get; set; }
+        public string Prefixma { get; set; }
+        public string ThFirstNamema { get; set; }
+        public string ThLastNamema { get; set; }
+        public Nullable<System.DateTime> DateApprove { get; set; }
+        public Nullable<int> StatusID { get; set; }
         public string Create_By { get; set; }
         public string Dept_No { get; set; }
         public string CICReason { get; set; }
@@ -29,9 +36,6 @@ namespace CIC_APPROVE.Models
         public Nullable<System.DateTime> ArriveDate { get; set; }
         public string INUser { get; set; }
         public Nullable<System.DateTime> INUpdate { get; set; }
-        public Nullable<bool> FlagApp { get; set; }
-        public string UserApprove { get; set; }
-        public Nullable<System.DateTime> DateApprove { get; set; }
         public string Costcenter { get; set; }
         public Nullable<int> Item { get; set; }
         public Nullable<decimal> Amount { get; set; }
@@ -43,5 +47,7 @@ namespace CIC_APPROVE.Models
         public string Prefix { get; set; }
         public string ThFirstName { get; set; }
         public string ThLastName { get; set; }
+        public string RefDoc { get; set; }
+        public string GINo { get; set; }
     }
 }

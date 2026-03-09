@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using CIC_APPROVE.Models;
 using System.IO;
 using System.Web;
+using System.Data.SqlClient;
 namespace CIC_APPROVE.Controllers
 {
     public class Vw_ApproveController : Controller
@@ -110,7 +111,7 @@ namespace CIC_APPROVE.Controllers
             ViewBag.UserTypeID = userProfile.UserTypeID;
             ViewBag.StatusID = data.First().StatusID ?? 0;
 
-            // 🔥 สำคัญมาก: ส่งไฟล์แนบไป View ด้วย
+            // สำคัญมาก: ส่งไฟล์แนบไป View ด้วย
             ViewBag.AttachList = db.trn_CICAttach
                                    .Where(x => x.AttachClosed != true)
                                    .Select(x => new
@@ -296,16 +297,121 @@ namespace CIC_APPROVE.Controllers
         // ==============================
         // DETAILS PAGE
         // ==============================
-        public ActionResult Detail(string deptNo, string user)
+        //public ActionResult Detail(string deptNo)
+        //{
+        //    if (string.IsNullOrEmpty(deptNo))
+        //        return HttpNotFound();
+
+        //    var approve = db.Vw_Approve
+        //                    .FirstOrDefault(x => x.Dept_No == deptNo);
+
+        //    var approveIN = db.Vw_ApproveIN
+        //                      .Where(x => x.Dept_No == deptNo)
+        //                      .ToList();
+
+        //    if (approve == null)
+        //        return HttpNotFound();
+
+        //    var vm = new ApproveFullDetailVM
+        //    {
+        //        Approve = approve,
+        //        ApproveIN = approveIN
+        //    };
+
+        //    return View(vm);
+        //}
+        //public ActionResult DetailIn(string deptNo)
+        //{
+        //    if (string.IsNullOrEmpty(deptNo))
+        //        return HttpNotFound();
+
+        //    var approve = db.Vw_Approve
+        //                    .FirstOrDefault(x => x.Dept_No == deptNo);
+
+        //    var approveIN = db.Vw_ApproveIN
+        //                      .Where(x => x.Dept_No == deptNo)
+        //                      .ToList();
+
+        //    var approveOUT = db.Vw_ApproveOUT
+        //                       .Where(x => x.Dept_No == deptNo)
+        //                       .ToList();
+
+        //    if (approve == null)
+        //        return HttpNotFound();
+
+        //    var vm = new ApproveFullDetailVM
+        //    {
+        //        Approve = approve,
+        //        ApproveIN = approveIN,
+        //        ApproveOUT = approveOUT
+        //    };
+
+        //    return View(vm);
+        //}
+        public ActionResult DetailIn(string deptNo, string user, string token)
         {
-            var data = db.Vw_ApproveIN
-                         .Where(x => x.Dept_No == deptNo)
-                         .ToList();
+            if (string.IsNullOrEmpty(token))
+            {
+                if (!string.IsNullOrEmpty(deptNo) && !string.IsNullOrEmpty(user))
+                {
+                    string raw = deptNo + "|" + user;
+                    string encryptedToken = UrlEncryptionHelper.Encrypt(raw);
+                    return RedirectToAction("DetailIn", new { token = encryptedToken });
+                }
 
-            ViewBag.DeptNo = deptNo;
-            ViewBag.User = user;
+                return Content("Invalid Request");
+            }
 
-            return View(data);
+            string decrypted;
+
+            try
+            {
+                decrypted = UrlEncryptionHelper.Decrypt(token);
+            }
+            catch
+            {
+                return Content("Token ไม่ถูกต้อง");
+            }
+
+            var parts = decrypted.Split('|');
+            if (parts.Length != 2)
+                return Content("Token Format ผิด");
+
+            string finalDeptNo = parts[0];
+            string finalUser = parts[1];
+
+            var approve = db.Vw_Approve
+                            .FirstOrDefault(x => x.Dept_No == finalDeptNo);
+
+            var approveIN = db.Vw_ApproveIN
+                              .Where(x => x.Dept_No == finalDeptNo)
+                              .ToList();
+
+            var approveOUT = db.Vw_ApproveOUT
+                               .Where(x => x.Dept_No == finalDeptNo)
+                               .ToList();
+
+            if (approve == null)
+                return HttpNotFound();
+
+            var vm = new ApproveFullDetailVM
+            {
+                Approve = approve,
+                ApproveIN = approveIN,
+                ApproveOUT = approveOUT
+            };
+
+            ViewBag.ApproveUser = finalUser;
+            ViewBag.AttachList = db.trn_CICAttach
+            .Where(x => x.CIC_ID == approve.CIC_ID && x.AttachClosed != true)
+            .Select(x => new
+            {
+                x.CICAttachID,
+                x.CIC_ID,
+                x.AttachFile
+            })
+            .ToList();
+            return View(vm);
         }
         // =========================
         // APPROVE ALL
@@ -318,12 +424,175 @@ namespace CIC_APPROVE.Controllers
                               .Select(x => x.CICDetailID)
                               .ToList();
 
-            // อนุมัติเฉพาะรายการที่ยังไม่ถูกอนุมัติ
             var records = db.trn_CIC14InList
-                            .Where(x => x.CICDetailID.HasValue &&
-                                        detailIds.Contains(x.CICDetailID.Value) &&
-                                        x.FlagApp == false)
-                            .ToList();
+                .Where(x => detailIds.Contains(x.CICDetailID) &&
+                            x.FlagApp == false)
+                .ToList();
+            if (records.Any())
+            {
+                var approveDate = DateTime.Now;
+
+                foreach (var item in records)
+                {
+                    item.FlagApp = true;
+                    item.UserApprove = user;
+                    item.DateApprove = approveDate;
+                }
+
+                db.SaveChanges();
+
+                db.Send_CIC_Mail(deptNo);
+
+                TempData["Success"] = "อนุมัติสำเร็จ";
+            }
+            else
+            {
+                TempData["Error"] = "ไม่พบรายการที่สามารถอนุมัติได้";
+            }
+
+            string raw = deptNo + "|" + user;
+            string token = UrlEncryptionHelper.Encrypt(raw);
+
+            return RedirectToAction("DetailIn", new { token });
+        }
+        [HttpPost]
+        public ActionResult ApproveSelected(List<long> selectedIds, string deptNo, string user)
+        {
+            if (selectedIds != null && selectedIds.Any())
+            {
+                var items = db.trn_CIC14InList
+                              .Where(x => selectedIds.Contains(x.CIC14InListID)
+                                          && x.FlagApp == false)
+                              .ToList();
+
+                foreach (var item in items)
+                {
+                    item.FlagApp = true;
+                    item.DateApprove = DateTime.Now;
+                    item.UserApprove = user;
+                }
+
+                db.SaveChanges();
+
+                db.Send_CIC_Mail(deptNo);
+            }
+
+            string raw = deptNo + "|" + user;
+            string token = UrlEncryptionHelper.Encrypt(raw);
+
+            return RedirectToAction("DetailIn", new { token });
+        }
+
+        [HttpPost]
+        public ActionResult CancelSelected(List<long> selectedIds, string deptNo, string user)
+        {
+            if (selectedIds != null && selectedIds.Any())
+            {
+                var items = db.trn_CIC14InList
+                              .Where(x => selectedIds.Contains(x.CIC14InListID)
+                                          && x.FlagApp == true)
+                              .ToList();
+
+                foreach (var item in items)
+                {
+                    item.FlagApp = false;
+                    item.DateApprove = null;
+                    item.UserApprove = null;
+                }
+
+                db.SaveChanges();
+
+                db.Send_CIC_Mail(deptNo);
+            }
+
+            string raw = deptNo + "|" + user;
+            string token = UrlEncryptionHelper.Encrypt(raw);
+
+            return RedirectToAction("DetailIn", new { token });
+        }
+
+        // =========================
+        // APPROVE ALL OUT
+        // =========================
+        public ActionResult DetailOut(string deptNo, string user, string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                if (!string.IsNullOrEmpty(deptNo) && !string.IsNullOrEmpty(user))
+                {
+                    string raw = deptNo + "|" + user;
+                    string encryptedToken = UrlEncryptionHelper.Encrypt(raw);
+                    return RedirectToAction("DetailOut", new { token = encryptedToken });
+                }
+
+                return Content("Invalid Request");
+            }
+
+            string decrypted;
+
+            try
+            {
+                decrypted = UrlEncryptionHelper.Decrypt(token);
+            }
+            catch
+            {
+                return Content("Token ไม่ถูกต้อง");
+            }
+
+            var parts = decrypted.Split('|');
+            if (parts.Length != 2)
+                return Content("Token Format ผิด");
+
+            string finalDeptNo = parts[0];
+            string finalUser = parts[1];
+
+            var approve = db.Vw_Approve
+                            .FirstOrDefault(x => x.Dept_No == finalDeptNo);
+
+            var approveIN = db.Vw_ApproveIN
+                              .Where(x => x.Dept_No == finalDeptNo)
+                              .ToList();
+
+            var approveOUT = db.Vw_ApproveOUT
+                               .Where(x => x.Dept_No == finalDeptNo)
+                               .ToList();
+
+            if (approve == null)
+                return HttpNotFound();
+
+            var vm = new ApproveFullDetailVM
+            {
+                Approve = approve,
+                ApproveIN = approveIN,
+                ApproveOUT = approveOUT
+            };
+
+            ViewBag.ApproveUser = finalUser;
+            ViewBag.AttachList = db.trn_CICAttach
+            .Where(x => x.CIC_ID == approve.CIC_ID && x.AttachClosed != true)
+            .Select(x => new
+            {
+                x.CICAttachID,
+                x.CIC_ID,
+                x.AttachFile
+            })
+            .ToList();
+            TempData["User"] = finalUser;
+            return View(vm);
+
+        }
+        [HttpPost]
+        public ActionResult ApproveAllOut(string deptNo, string user)
+        {
+            var detailIds = db.Vw_ApproveOUT
+                              .Where(x => x.Dept_No == deptNo)
+                              .Select(x => x.CICDetailID)
+                              .ToList();
+
+            var records = db.trn_CIC12OutList
+                .Where(x => detailIds.Contains(x.CICDetailID) &&
+                            x.FlagApp == false)
+                .ToList();
 
             if (records.Any())
             {
@@ -333,40 +602,76 @@ namespace CIC_APPROVE.Controllers
                 {
                     item.FlagApp = true;
                     item.UserApprove = user;
-                    item.DateApprove = approveDate; // วันที่ของรอบนี้เท่านั้น
+                    item.DateApprove = approveDate;
                 }
 
                 db.SaveChanges();
+                db.Send_CIC_Mail(deptNo);
+
+                TempData["Success"] = "อนุมัติสำเร็จ";
+            }
+            else
+            {
+                TempData["Error"] = "ไม่พบรายการที่สามารถอนุมัติได้";
             }
 
-            return RedirectToAction("Detail", new { deptNo = deptNo, user = user });
+            string raw = deptNo + "|" + user;
+            string token = UrlEncryptionHelper.Encrypt(raw);
+
+            return RedirectToAction("DetailOut", new { token = token });
         }
         [HttpPost]
-        public ActionResult CancelAll(string deptNo, string user)
+        public ActionResult ApproveSelectedOut(List<long> selectedIds, string deptNo, string user)
         {
-            var detailIds = db.Vw_ApproveIN
-                              .Where(x => x.Dept_No == deptNo)
-                              .Select(x => x.CICDetailID)
+            if (selectedIds != null && selectedIds.Any())
+            {
+                var items = db.trn_CIC12OutList
+                              .Where(x => selectedIds.Contains(x.CIC12OutListID)
+                                          && x.FlagApp == false)
                               .ToList();
 
-            var records = db.trn_CIC14InList
-     .Where(x => x.CICDetailID.HasValue &&
-                 detailIds.Contains(x.CICDetailID.Value) &&
-                 x.FlagApp == true)
-     .ToList();
+                foreach (var item in items)
+                {
+                    item.FlagApp = true;
+                    item.DateApprove = DateTime.Now;
+                    item.UserApprove = user;
+                }
 
-            foreach (var item in records)
-            {
-                item.FlagApp = false;
-                item.UserApprove = null;
-                item.DateApprove = null;
+                db.SaveChanges();
+                db.Send_CIC_Mail(deptNo);
             }
 
-            db.SaveChanges();
+            string raw = deptNo + "|" + user;
+            string token = UrlEncryptionHelper.Encrypt(raw);
 
-            return RedirectToAction("Detail", new { deptNo = deptNo, user = user });
+            return RedirectToAction("DetailOut", new { token });
         }
+        [HttpPost]
+        public ActionResult CancelSelectedOut(List<long> selectedIds, string deptNo, string user)
+        {
+            if (selectedIds != null && selectedIds.Any())
+            {
+                var items = db.trn_CIC12OutList
+                              .Where(x => selectedIds.Contains(x.CIC12OutListID)
+                                          && x.FlagApp == true)
+                              .ToList();
 
+                foreach (var item in items)
+                {
+                    item.FlagApp = false;
+                    item.DateApprove = null;
+                    item.UserApprove = null;
+                }
+
+                db.SaveChanges();
+                db.Send_CIC_Mail(deptNo);
+            }
+
+            string raw = deptNo + "|" + user;
+            string token = UrlEncryptionHelper.Encrypt(raw);
+
+            return RedirectToAction("DetailOut", new { token });
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

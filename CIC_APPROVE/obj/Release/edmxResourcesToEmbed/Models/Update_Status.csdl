@@ -214,5 +214,139 @@
     <FunctionImport Name="Send_CIC_Mail">
       <Parameter Name="Dept_No" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="trn_CIC12OutList" EntityType="CICCONTROL_SPRINGModel.trn_CIC12OutList" />
+    <EntitySet Name="trn_CIC14InList" EntityType="CICCONTROL_SPRINGModel.trn_CIC14InList" />
+    <EntitySet Name="Vw_ApproveIN" EntityType="CICCONTROL_SPRINGModel.Vw_ApproveIN" />
+    <EntitySet Name="Vw_ApproveOUT" EntityType="CICCONTROL_SPRINGModel.Vw_ApproveOUT" />
   </EntityContainer>
+  <EntityType Name="trn_CIC12OutList">
+    <Key>
+      <PropertyRef Name="CIC12OutListID" />
+    </Key>
+    <Property Name="CIC12OutListID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CICDetailID" Type="Int64" Nullable="false" />
+    <Property Name="OutFlag" Type="Boolean" />
+    <Property Name="LeaveDate" Type="DateTime" Precision="0" />
+    <Property Name="OutAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="BalanceAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="FlagApp" Type="Boolean" />
+    <Property Name="UserApprove" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="DateApprove" Type="DateTime" Precision="3" />
+    <Property Name="Pay" Type="Boolean" />
+    <Property Name="RefDoc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="RefDate" Type="DateTime" Precision="0" />
+    <Property Name="OutUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="OutDateTime" Type="DateTime" Precision="3" />
+    <Property Name="CICUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CICUpdate" Type="DateTime" Precision="3" />
+    <Property Name="FlagAppCIC" Type="Boolean" />
+    <Property Name="CICApp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CICAppDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="trn_CIC14InList">
+    <Key>
+      <PropertyRef Name="CIC14InListID" />
+    </Key>
+    <Property Name="CIC14InListID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CICDetailID" Type="Int64" Nullable="false" />
+    <Property Name="INFlag" Type="Boolean" />
+    <Property Name="IN_Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="IN_Scrap" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="BalanceAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="ArriveDate" Type="DateTime" Precision="0" />
+    <Property Name="INUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="INUpdate" Type="DateTime" Precision="3" />
+    <Property Name="FlagApp" Type="Boolean" />
+    <Property Name="UserApprove" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="DateApprove" Type="DateTime" Precision="3" />
+    <Property Name="RefDoc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="InvNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="InvDate" Type="DateTime" Precision="0" />
+    <Property Name="GINo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CICNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CICUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CICUpdate" Type="DateTime" Precision="3" />
+    <Property Name="FlagAppCIC" Type="Boolean" />
+    <Property Name="CICApp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CICAppDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Vw_ApproveIN">
+    <Key>
+      <PropertyRef Name="CIC14InListID" />
+    </Key>
+    <Property Name="CICDetailID" Type="Int64" Nullable="false" />
+    <Property Name="CIC14InListID" Type="Int64" Nullable="false" />
+    <Property Name="FlagApp" Type="Boolean" />
+    <Property Name="UserApprove" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Prefixma" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ThFirstNamema" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ThLastNamema" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DateApprove" Type="DateTime" Precision="3" />
+    <Property Name="StatusID" Type="Int32" />
+    <Property Name="Create_By" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Dept_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CICReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="AssetList" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UnitDesc" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="INFlag" Type="Boolean" />
+    <Property Name="IN_Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="IN_Scrap" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="BalanceAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="ArriveDate" Type="DateTime" Precision="0" />
+    <Property Name="INUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="INUpdate" Type="DateTime" Precision="3" />
+    <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Item" Type="Int32" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Actual_Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="ScrapRet" Type="Boolean" />
+    <Property Name="Scrap" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="InvNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="InvDate" Type="DateTime" Precision="0" />
+    <Property Name="Prefix" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ThFirstName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ThLastName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="RefDoc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="GINo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Vw_ApproveOUT">
+    <Key>
+      <PropertyRef Name="Expr6" />
+      <PropertyRef Name="CIC12OutListID" />
+    </Key>
+    <Property Name="CICDetailID" Type="Int64" Nullable="false" />
+    <Property Name="CIC12OutListID" Type="Int64" Nullable="false" />
+    <Property Name="Item" Type="Int32" />
+    <Property Name="AssetList" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="UnitID" Type="Int32" />
+    <Property Name="Create_By" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Actual_Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Dept_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Costcenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Expr6" Type="Int64" Nullable="false" />
+    <Property Name="OutFlag" Type="Boolean" />
+    <Property Name="LeaveDate" Type="DateTime" Precision="0" />
+    <Property Name="OutAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="BalanceAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="FlagApp" Type="Boolean" />
+    <Property Name="UserApprove" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Pay" Type="Boolean" />
+    <Property Name="RefDate" Type="DateTime" Precision="0" />
+    <Property Name="RefDoc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DateApprove" Type="DateTime" Precision="3" />
+    <Property Name="OutUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="OutDateTime" Type="DateTime" Precision="3" />
+    <Property Name="FlagAppCIC" Type="Boolean" />
+    <Property Name="UnitDesc" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Prefix" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ThFirstName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ThLastName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="CICTypeID" Type="Int32" />
+    <Property Name="Prefixma" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ThFirstNamema" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ThLastNamema" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>
