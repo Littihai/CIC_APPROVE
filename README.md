@@ -1,5 +1,12 @@
 # CIC_Approve
 
+![Version](https://img.shields.io/badge/version-1.0-blue)
+![Status](https://img.shields.io/badge/status-production-green)
+![Platform](https://img.shields.io/badge/.NET-MVC-blue)
+![License](https://img.shields.io/badge/license-internal-red)
+![Database](https://img.shields.io/badge/database-SQL%20Server-CC2927)
+![Language](https://img.shields.io/badge/language-C%23-239120)
+
 > **Multi-Level Document Approval Workflow System**  
 > ASP.NET MVC · SQL Server · Email-Driven Approval · Tokenized Deep-Link
 
